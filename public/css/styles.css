@@ -1,0 +1,69 @@
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", "Arial", sans-serif;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.home{
+  background-image:url("/img/fondo1.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  width: 100vw;
+}
+
+.txtHome{
+  font-family: 'Bungee Spice', cursive;
+  font-size: 180px;
+}
+.pixel {
+  border: none;
+  box-shadow: inset 6px 6px 0px 0px rgba(255,255,255,0.35), inset -6px -6px 0px 0px rgba(0,0,0,0.15), 12px 12px 0px 0px rgba(0,0,0,0.20);
+  font-size: 30px;
+  margin: 30px;
+  color: #ffffff;
+  transition: all ease-in-out 0.2s;
+  height: 80px;
+  width: 120px;
+}
+.pixel:hover {
+  box-shadow: inset 6px 6px 0px 0px rgba(0,0,0,0.0), inset -6px -6px 0px 0px rgba(0,0,0,0.15), 0px 0px 0px 0px rgba(0,0,0,0.20);
+}
+.yellow {
+  background: #fbba00;
+}
+
+.home2{
+  background-image:url("/img/fondo1.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  width: 100vw;
+}
+
+.pixel1 {
+  border: none;
+  box-shadow: inset 6px 6px 0px 0px rgba(255,255,255,0.35), inset -6px -6px 0px 0px rgba(0,0,0,0.15), 12px 12px 0px 0px rgba(0,0,0,0.20);
+  font-size: 23px;
+  margin: 30px;
+  color: #ffffff;
+  transition: all ease-in-out 0.2s;
+  height: 100px;
+  width: 150px;
+}
+
+.btnSesion{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.containerSesion{
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
