@@ -19,6 +19,7 @@
   font-family: 'Bungee Spice', cursive;
   font-size: 180px;
 }
+
 .pixel {
   border: none;
   box-shadow: inset 6px 6px 0px 0px rgba(255,255,255,0.35), inset -6px -6px 0px 0px rgba(0,0,0,0.15), 12px 12px 0px 0px rgba(0,0,0,0.20);
@@ -29,11 +30,17 @@
   height: 80px;
   width: 120px;
 }
+
 .pixel:hover {
   box-shadow: inset 6px 6px 0px 0px rgba(0,0,0,0.0), inset -6px -6px 0px 0px rgba(0,0,0,0.15), 0px 0px 0px 0px rgba(0,0,0,0.20);
 }
+
 .yellow {
   background: #fbba00;
+}
+
+.grey{
+  background: #e9e9e9; 
 }
 
 .home2{
@@ -44,6 +51,13 @@
   width: 100vw;
 }
 
+.login{
+  background-image:url("/img/fondo2.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  width: 100vw;
+}
 .pixel1 {
   border: none;
   box-shadow: inset 6px 6px 0px 0px rgba(255,255,255,0.35), inset -6px -6px 0px 0px rgba(0,0,0,0.15), 12px 12px 0px 0px rgba(0,0,0,0.20);
@@ -54,6 +68,26 @@
   height: 100px;
   width: 150px;
 }
+
+.pixel2{
+  border: none;
+  box-shadow: inset 6px 6px 0px 0px rgba(255,255,255,0.35), inset -6px -6px 0px 0px rgba(0,0,0,0.15), 12px 12px 0px 0px rgba(0,0,0,0.20);
+  font-size: 23px;
+  margin: 30px;
+  color: #000000;
+  transition: all ease-in-out 0.2s;
+  height: 100px;
+  width: 150px;
+}
+
+.pixel1:hover {
+  box-shadow: inset 6px 6px 0px 0px rgba(0,0,0,0.0), inset -6px -6px 0px 0px rgba(0,0,0,0.15), 0px 0px 0px 0px rgba(0,0,0,0.20);
+}
+
+.pixel2:hover {
+  box-shadow: inset 6px 6px 0px 0px rgba(0,0,0,0.0), inset -6px -6px 0px 0px rgba(0,0,0,0.15), 0px 0px 0px 0px rgba(0,0,0,0.20);
+}
+
 
 .btnSesion{
   display: flex;
@@ -66,4 +100,25 @@
   display: flex;
   justify-content: center;
   flex-direction: row;
+}
+
+.containerSesion2{
+  display: flex;
+  justify-content: center;
+}
+
+.css-input {
+  padding: 6px;
+  font-size: 19px;
+  border-width: 4px;
+  border-color: #4c4c4c;
+  background-color: #979797;
+  color: #000000;
+  border-style: solid;
+  border-radius: 8px;
+  box-shadow: -8px -6px 5px rgba(66,66,66,.75);
+  text-shadow: -3px 0px 3px rgba(207, 207, 207, 0.75);
+}
+.css-input:focus {
+  outline:none;
 }
