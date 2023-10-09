@@ -9,23 +9,29 @@ const {
   signOut,
   GoogleAuthProvider,
 } = require("firebase/auth");
-
+const bodyParser = require('body-parser'); //Para el manejo de los strings JSON
+const MySQL = require('./modulos/mysql'); //Añado el archivo mysql.js presente en la carpeta módulos
+const session = require('express-session'); //Para usar variables de sesión
 
 const app = express();
+app.use(express.static('public')); //Expongo al lado cliente la carpeta "public"
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false })); // habria que ponerlo en true ??? el firebase de Paul lo tenia en true
+app.use(bodyParser.json());
 app.use(express.static("public"));
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-const Listen_Port = 3000;
+const Listen_Port = 3001;
 
 app.listen(Listen_Port, function () {
   console.log(
     "Servidor NodeJS corriendo en http://localhost:" + Listen_Port + "/"
   );
 });
+
+app.use(session({secret: '123456', resave: true, saveUninitialized: true}));
 
 // Configuración de Firebase
 const firebaseConfig = {
@@ -42,6 +48,8 @@ const auth = getAuth(appFirebase);
 
 // Importar AuthService
 const authService = require("./authService");
+
+//start
 
 app.get("/", (req, res) => {
   res.render("home");
