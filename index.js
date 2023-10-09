@@ -89,9 +89,14 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/dashboard", (req, res) => {
+app.get("/home2", (req, res) => {
   // Agrega aquí la lógica para mostrar la página del dashboard
-  res.render("dashboard");
+  res.render("home2", null);
+});
+
+app.get("/prueba", (req, res) => {
+  // Agrega aquí la lógica para mostrar la página del dashboard
+  res.render("prueba", null);
 });
 
 /************************************** */
