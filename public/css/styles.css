@@ -17,7 +17,8 @@
 
 .txtHome{
   font-family: 'Bungee Spice', cursive;
-  font-size: 180px;
+  font-size: 140px;
+  animation: moveDown 0.6s ease-in-out 0.2s backwards;
 }
 
 .pixel {
