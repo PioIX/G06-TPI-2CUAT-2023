@@ -6,7 +6,11 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-
+body{
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden
+}
 .home{
   background-image:url("/img/fondo1.png");
   background-repeat: no-repeat;
@@ -15,9 +19,61 @@
   width: 100vw;
 }
 
-.txtHome{
+.txtHome {
   font-family: 'Bungee Spice', cursive;
-  font-size: 180px;
+  font-size: 140px;
+}
+
+/* Step 1: Build the Animation */
+@-webkit-keyframes aniload {
+  from {-webkit-transform:translate(0px, 1000px)}
+  to   {-webkit-transform:translate(0px, 0px)}
+}
+
+@-moz-keyframes aniload {
+  from {-moz-transform:translate(0px, 1000px)}
+  to   {-moz-transform:translate(0px, 0px)}
+}
+
+@-ms-keyframes aniload {
+  from {-ms-transform:translate(0px, 1000px)}
+  to   {-ms-transform:translate(0px, 0px)}
+}
+
+@-o-keyframes aniload {
+  from {-o-transform:translate(0px, 1000px)}
+  to   {-o-transform:translate(0px, 0px)}
+}
+
+@keyframes aniload {
+  from {transform:translate(0px, 1000px)}
+  to   {transform:translate(0px, 0px)}
+}
+
+/* Step 2: Call the Animation */
+#box1 {
+  -webkit-animation:aniload 1s;
+  -moz-animation:aniload 1s;
+  -ms-animation:aniload 1s;
+  -o-animation:aniload 1s;
+  animation:aniload 1s;
+
+}
+
+#box2 {
+  -webkit-animation:aniload 4s;
+  -moz-animation:aniload 4s;
+  -ms-animation:aniload 4s;
+  -o-animation:aniload 4s;
+  animation:aniload 4s;
+}
+
+#box3 { 
+  -webkit-animation:aniload 6s;
+  -moz-animation:aniload 6s;
+  -ms-animation:aniload 6s;
+  -o-animation:aniload 6s;
+  animation:aniload 6s;
 }
 
 .pixel {
@@ -122,4 +178,5 @@
 .css-input:focus {
   outline:none;
 }
+
 /*---------------------*/
