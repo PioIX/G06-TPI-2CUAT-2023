@@ -52,7 +52,6 @@ body{
 
 /* Step 2: Call the Animation */
 #box1 {
-  -webkit-animation:aniload 1s;
   -moz-animation:aniload 1s;
   -ms-animation:aniload 1s;
   -o-animation:aniload 1s;
@@ -61,19 +60,19 @@ body{
 }
 
 #box2 {
-  -webkit-animation:aniload 4s;
-  -moz-animation:aniload 4s;
-  -ms-animation:aniload 4s;
-  -o-animation:aniload 4s;
-  animation:aniload 4s;
+  -webkit-animation:aniload 3s;
+  -moz-animation:aniload 3s;
+  -ms-animation:aniload 3s;
+  -o-animation:aniload 3s;
+  animation:aniload 3s;
 }
 
 #box3 { 
-  -webkit-animation:aniload 6s;
-  -moz-animation:aniload 6s;
-  -ms-animation:aniload 6s;
-  -o-animation:aniload 6s;
-  animation:aniload 6s;
+  -webkit-animation:aniload 5s;
+  -moz-animation:aniload 5s;
+  -ms-animation:aniload 5s;
+  -o-animation:aniload 5s;
+  animation:aniload 5s;
 }
 
 .pixel {
@@ -107,12 +106,14 @@ body{
   width: 100vw;
 }
 
+
 .login{
-  background-image:url("/img/fondo2.jpg");
+  background-image:url("/img/fondo1.png");
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
   width: 100vw;
+
 }
 .pixel1 {
   border: none;
@@ -134,6 +135,10 @@ body{
   transition: all ease-in-out 0.2s;
   height: 100px;
   width: 150px;
+  -moz-animation:aniload 4s;
+  -ms-animation:aniload 4s;
+  -o-animation:aniload 4s;
+  animation:aniload 4s;
 }
 
 .pixel1:hover {
@@ -164,6 +169,10 @@ body{
 }
 
 .css-input {
+  -moz-animation:aniload 1s;
+  -ms-animation:aniload 1s;
+  -o-animation:aniload 1s;
+  animation:aniload 1s;
   padding: 6px;
   font-size: 19px;
   border-width: 4px;
