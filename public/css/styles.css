@@ -6,6 +6,7 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
 body{
   height: 100vh;
   width: 100vw;
@@ -26,53 +27,65 @@ body{
 
 /* Step 1: Build the Animation */
 @-webkit-keyframes aniload {
+  from {-webkit-transform:translate(-1000px, 0px)}
+  to   {-webkit-transform:translate(0px, 0px)}
+}
+
+@keyframes aniload {
+  from {transform:translate(-1000px,0px)}
+  to   {transform:translate(0px, 0px)}
+}
+
+@-webkit-keyframes aniload2 {
+  from {-webkit-transform:translate(1000px, 0px)}
+  to   {-webkit-transform:translate(0px, 0px)}
+}
+
+@keyframes aniload2 {
+  from {transform:translate(1000px,0px)}
+  to   {transform:translate(0px, 0px)}
+}
+
+@-webkit-keyframes aniload3 {
   from {-webkit-transform:translate(0px, 1000px)}
   to   {-webkit-transform:translate(0px, 0px)}
 }
 
-@-moz-keyframes aniload {
-  from {-moz-transform:translate(0px, 1000px)}
-  to   {-moz-transform:translate(0px, 0px)}
+@keyframes aniload3 {
+  from {transform:translate(0px,1000px)}
+  to   {transform:translate(0px, 0px)}
 }
 
-@-ms-keyframes aniload {
-  from {-ms-transform:translate(0px, 1000px)}
-  to   {-ms-transform:translate(0px, 0px)}
+@-webkit-keyframes aniload4 {
+  from {-webkit-transform:translate(0px, -1000px)}
+  to   {-webkit-transform:translate(0px, 0px)}
 }
 
-@-o-keyframes aniload {
-  from {-o-transform:translate(0px, 1000px)}
-  to   {-o-transform:translate(0px, 0px)}
-}
-
-@keyframes aniload {
-  from {transform:translate(0px, 1000px)}
+@keyframes aniload4 {
+  from {transform:translate(0px,-1000px)}
   to   {transform:translate(0px, 0px)}
 }
 
 /* Step 2: Call the Animation */
 #box1 {
   -moz-animation:aniload 1s;
-  -ms-animation:aniload 1s;
-  -o-animation:aniload 1s;
   animation:aniload 1s;
 
 }
 
 #box2 {
-  -webkit-animation:aniload 3s;
-  -moz-animation:aniload 3s;
-  -ms-animation:aniload 3s;
-  -o-animation:aniload 3s;
-  animation:aniload 3s;
+  -webkit-animation:aniload2 1s;
+  animation:aniload2 1s;
 }
 
 #box3 { 
-  -webkit-animation:aniload 5s;
-  -moz-animation:aniload 5s;
-  -ms-animation:aniload 5s;
-  -o-animation:aniload 5s;
-  animation:aniload 5s;
+  -webkit-animation:aniload3 1s;
+  animation:aniload3 1s;
+}
+
+#box4 {
+  -webkit-animation: aniload4 1s;
+  animation: aniload4 1s;
 }
 
 .pixel {
