@@ -51,15 +51,15 @@ body{
 
 /*ANIMACION DE HOME*/
 #box1 {
-  -moz-animation:aniload 1s;
-  animation:aniload 1s;
+  -moz-animation:aniload 3s;
+  animation:aniload 3s;
 
 }
 
 /*ANIMACION DE HOME*/
 #box2 {
-  -webkit-animation:aniload2 1s;
-  animation:aniload2 1s;
+  -webkit-animation:aniload2 3s;
+  animation:aniload2 3s;
 }
 
 /*ANIMACION PARA HOME 2 */
@@ -88,14 +88,14 @@ body{
 
 /*ANIMACION DE HOME 2*/
 #box3 { 
-  -webkit-animation:aniload3 1s;
-  animation:aniload3 1s;
+  -webkit-animation:aniload3 3s;
+  animation:aniload3 3s;
 }
 
 /*ANIMACION DE HOME 2*/
 #box4 {
-  -webkit-animation: aniload4 1s;
-  animation: aniload4 1s;
+  -webkit-animation: aniload4 3s;
+  animation: aniload4 3s;
 }
 
 /*ANIMACION PARA LOG IN y SIGN IN*/
@@ -148,24 +148,24 @@ body{
 
 /*ANIMACION DE LOS INPUT LOG IN y SIGN IN*/
 #box5{
-  -webkit-animation: aniload5 1s;
-  animation: aniload5 1s;
+  -webkit-animation: aniload5 3s;
+  animation: aniload5 3s;
 }
 
 /*ANIMACION DE LOS INPUT LOG IN y SIGN IN*/
 #box6{
-  -webkit-animation: aniload6 1s;
-  animation: aniload6 1s;
+  -webkit-animation: aniload6 3s;
+  animation: aniload6 3s;
 }
 
 #box7{
-  -webkit-animation: aniload7 1s;
-  animation: aniload7 1s;
+  -webkit-animation: aniload7 3s;
+  animation: aniload7 3s;
 }
 
 #box8{
-  -webkit-animation: aniload8 1s;
-  animation: aniload8 1s;  
+  -webkit-animation: aniload8 3s;
+  animation: aniload8 3s;  
 }
 
 
