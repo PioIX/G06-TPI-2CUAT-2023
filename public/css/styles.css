@@ -25,68 +25,149 @@ body{
   font-size: 140px;
 }
 
-/* Step 1: Build the Animation */
+/*ANIMACION PARA HOME*/
 @-webkit-keyframes aniload {
   from {-webkit-transform:translate(-1000px, 0px)}
   to   {-webkit-transform:translate(0px, 0px)}
 }
 
+/*ANIMACION PARA HOME*/
 @keyframes aniload {
   from {transform:translate(-1000px,0px)}
   to   {transform:translate(0px, 0px)}
 }
 
+/*ANIMACION PARA HOME*/
 @-webkit-keyframes aniload2 {
   from {-webkit-transform:translate(1000px, 0px)}
   to   {-webkit-transform:translate(0px, 0px)}
 }
 
+/*ANIMACION PARA HOME*/
 @keyframes aniload2 {
   from {transform:translate(1000px,0px)}
   to   {transform:translate(0px, 0px)}
 }
 
+/*ANIMACION DE HOME*/
+#box1 {
+  -moz-animation:aniload 3s;
+  animation:aniload 3s;
+
+}
+
+/*ANIMACION DE HOME*/
+#box2 {
+  -webkit-animation:aniload2 3s;
+  animation:aniload2 3s;
+}
+
+/*ANIMACION PARA HOME 2 */
 @-webkit-keyframes aniload3 {
   from {-webkit-transform:translate(0px, 1000px)}
   to   {-webkit-transform:translate(0px, 0px)}
 }
 
+/*ANIMACION PARA HOME 2*/
 @keyframes aniload3 {
   from {transform:translate(0px,1000px)}
   to   {transform:translate(0px, 0px)}
 }
 
+/*ANIMACION PARA HOME 2*/
 @-webkit-keyframes aniload4 {
   from {-webkit-transform:translate(0px, -1000px)}
   to   {-webkit-transform:translate(0px, 0px)}
 }
 
+/*ANIMACION PARA HOME 2*/
 @keyframes aniload4 {
   from {transform:translate(0px,-1000px)}
   to   {transform:translate(0px, 0px)}
 }
 
-/* Step 2: Call the Animation */
-#box1 {
-  -moz-animation:aniload 1s;
-  animation:aniload 1s;
-
-}
-
-#box2 {
-  -webkit-animation:aniload2 1s;
-  animation:aniload2 1s;
-}
-
+/*ANIMACION DE HOME 2*/
 #box3 { 
-  -webkit-animation:aniload3 1s;
-  animation:aniload3 1s;
+  -webkit-animation:aniload3 3s;
+  animation:aniload3 3s;
 }
 
+/*ANIMACION DE HOME 2*/
 #box4 {
-  -webkit-animation: aniload4 1s;
-  animation: aniload4 1s;
+  -webkit-animation: aniload4 3s;
+  animation: aniload4 3s;
 }
+
+/*ANIMACION PARA LOG IN y SIGN IN*/
+@-webkit-keyframes aniload5 {
+  from {-webkit-transform:translate(1000px, -1000px)}
+  to   {-webkit-transform:translate(0px, 0px)}
+}
+
+/*ANIMACION PARA LOG IN y SIGN IN*/
+@keyframes aniload5 {
+  from {transform:translate(1000px,-1000px)}
+  to   {transform:translate(0px, 0px)}
+}
+
+/*ANIMACION PARA LOG IN y SIGN IN*/
+@-webkit-keyframes aniload6 {
+  from {-webkit-transform:translate(1000px, 1000px)}
+  to   {-webkit-transform:translate(0px, 0px)}
+}
+
+/*ANIMACION PARA LOG IN y SIGN IN*/
+@keyframes aniload6 {
+  from {transform:translate(1000px, 1000px)}
+  to   {transform:translate(0px, 0px)}
+}
+
+/*ANIMACION PARA LOG IN y SIGN IN*/
+@-webkit-keyframes aniload7 {
+  from {-webkit-transform:translate(-1000px, -1000px)}
+  to   {-webkit-transform:translate(0px, 0px)}
+}
+
+/*ANIMACION PARA LOG IN y SIGN IN*/
+@keyframes aniload7 {
+  from {transform:translate(-1000px, -1000px)}
+  to   {transform:translate(0px, 0px)}
+}
+
+/*ANIMACION PARA LOG IN y SIGN IN*/
+@-webkit-keyframes aniload8 {
+  from {-webkit-transform:translate(-1000px, 1000px)}
+  to   {-webkit-transform:translate(0px, 0px)}
+}
+
+/*ANIMACION PARA LOG IN y SIGN IN*/
+@keyframes aniload8 {
+  from {transform:translate(-1000px, 1000px)}
+  to   {transform:translate(0px, 0px)}
+}
+
+/*ANIMACION DE LOS INPUT LOG IN y SIGN IN*/
+#box5{
+  -webkit-animation: aniload5 3s;
+  animation: aniload5 3s;
+}
+
+/*ANIMACION DE LOS INPUT LOG IN y SIGN IN*/
+#box6{
+  -webkit-animation: aniload6 3s;
+  animation: aniload6 3s;
+}
+
+#box7{
+  -webkit-animation: aniload7 3s;
+  animation: aniload7 3s;
+}
+
+#box8{
+  -webkit-animation: aniload8 3s;
+  animation: aniload8 3s;  
+}
+
 
 .pixel {
   border: none;

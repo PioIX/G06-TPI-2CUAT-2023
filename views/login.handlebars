@@ -3,14 +3,17 @@
     <div class="containerSesion2">
       <center>
         <form action="/login" method="post">
-          <input type="email" name="email" class="css-input" placeholder="Correo electrónico" required />
+          <input type="email" name="email" class="css-input" id="box5" placeholder="Correo electrónico" required />
           <br>
           <br>
           <br>
-          <input type="password" name="password" class="css-input" placeholder="Contraseña" required />
+          <input type="password" name="password" class="css-input" id="box6" placeholder="Contraseña" required />
           <br>
-          <button type="submit" class="pixel2 grey">Iniciar sesión</button>
+          <button type="submit" class="pixel2 grey" id="box7">Iniciar sesión</button>  
         </form>
+          <form action="/signin" method="get" class="container-sm">
+            <p class="" id="box8">¿No Tienes Cuenta?<button type="submit" class="" id="box8">Registrate</button></p>      
+          </form>
       </center>
     </div>
   </div>
