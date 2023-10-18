@@ -108,3 +108,6 @@ app.get("/prueba", (req, res) => {
 });
 
 /************************************** */
+app.post("/home3", (req,res) => {
+  res.render("home3", null);
+});
