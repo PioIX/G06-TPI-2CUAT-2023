@@ -168,6 +168,43 @@ body{
   animation: aniload8 3s;  
 }
 
+/*ANIMACION PARA HOME 3*/
+@-webkit-keyframes aniload9 {
+  from {-webkit-transform:translate(-1000px, -1000px)}
+  to   {-webkit-transform:translate(0px, 0px)}
+}
+
+/*ANIMACION PARA HOME 3*/
+@keyframes aniload9 {
+  from {transform:translate(-1000px, -1000px)}
+  to   {transform:translate(0px, 0px)}
+}
+
+
+/*ANIMACION PARA HOME 3*/
+@keyframes aniload10 {
+  from {transform:translate(1000px, 1000px)}
+  to   {transform:translate(0px, 0px)}
+}
+
+
+/*ANIMACION PARA HOME 3*/
+@keyframes aniload10 {
+  from {transform:translate(1000px, 1000px)}
+  to   {transform:translate(0px, 0px)}
+}
+
+/*ANIMACION DE LOS INPUT LOG IN y SIGN IN*/
+#box9{
+  -webkit-animation: aniload9 3s;
+  animation: aniload9 3s;
+}
+
+#box10{
+  -webkit-animation: aniload10 3s;
+  animation: aniload10 3s;
+}
+
 
 .pixel {
   border: none;

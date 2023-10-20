@@ -111,3 +111,11 @@ app.get("/prueba", (req, res) => {
 app.post("/home3", (req,res) => {
   res.render("home3", null);
 });
+
+app.get("/juego", (req, res) =>{
+  res.render("juego", null);
+});
+
+app.get("/skins", (req, res) =>{
+  res.render("skins", null);
+});
