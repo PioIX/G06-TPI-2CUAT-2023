@@ -9,6 +9,7 @@ const {
   signOut,
   GoogleAuthProvider,
 } = require("firebase/auth");
+
 const bodyParser = require('body-parser'); //Para el manejo de los strings JSON
 const MySQL = require('./modulos/mysql'); //Añado el archivo mysql.js presente en la carpeta módulos
 const session = require('express-session'); //Para usar variables de sesión
@@ -23,24 +24,22 @@ app.use(express.static("public"));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-const Listen_Port = 3001;
+const Listen_Port = 3000;
 
 app.listen(Listen_Port, function () {
   console.log(
     "Servidor NodeJS corriendo en http://localhost:" + Listen_Port + "/"
   );
 });
-
 app.use(session({secret: '123456', resave: true, saveUninitialized: true}));
-
 // Configuración de Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyA936j4rOJbIGAiPMENWJAMbIAeCULI8J8",
-  authDomain: "infothebest-3b261.firebaseapp.com",
-  projectId: "infothebest-3b261",
-  storageBucket: "infothebest-3b261.appspot.com",
-  messagingSenderId: "125429100089",
-  appId: "1:125429100089:web:707f20f776e39a3d8367e8",
+  apiKey: "AIzaSyBPffjAlSqMD7InPCDKwx9BGOu1mvCKIZM",
+  authDomain: "batalla-naval-1dfa8.firebaseapp.com",
+  projectId: "batalla-naval-1dfa8",
+  storageBucket: "batalla-naval-1dfa8.appspot.com",
+  messagingSenderId: "748374051771",
+  appId: "1:748374051771:web:e83795e9413b0ebb9ed29e"
 };
 
 const appFirebase = initializeApp(firebaseConfig);
@@ -88,7 +87,7 @@ app.post("/login", async (req, res) => {
       password,
     });
     // Aquí puedes redirigir al usuario a la página que desees después del inicio de sesión exitoso
-    res.redirect("/dashboard");
+    res.redirect("/home3");
   } catch (error) {
     console.error("Error en el inicio de sesión:", error);
     res.render("login", {
@@ -108,14 +107,10 @@ app.get("/prueba", (req, res) => {
 });
 
 /************************************** */
-app.post("/home3", (req,res) => {
+app.get("/home3", (req,res) => {
   res.render("home3", null);
 });
 
-app.get("/juego", (req, res) =>{
+app.get("/juego", (req,res) => {
   res.render("juego", null);
-});
-
-app.get("/skins", (req, res) =>{
-  res.render("skins", null);
 });
