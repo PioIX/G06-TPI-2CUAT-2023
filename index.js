@@ -51,6 +51,21 @@ const authService = require("./authService");
 //start
 
 app.get("/", (req, res) => {
+  /*let letrasAbecedario = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ'];
+  let tablero = `<div class="fondoJuego">
+  <table width="600" height="600px"; border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">`;
+  for(let i=0; i<letrasAbecedario.length; i++) {
+    tablero += `<tr align="center">`;
+    for (let x=1; x<16; x++) {
+      casillero=letrasAbecedario[i]+x;
+      tablero += `<td id="${casillero}" onclick="atacar(id)"><font color="#ffffff">1</font></td>`
+    }
+    tablero +=`</tr>`
+  }
+  tablero += `    </table>
+  </div>`
+
+  console.log(tablero);*/
   res.render("home");
 });
 

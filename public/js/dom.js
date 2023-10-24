@@ -1,3 +1,3 @@
-function a(){
-    console.log("a")
+function atacar(id){
+    console.log(id)
 }
