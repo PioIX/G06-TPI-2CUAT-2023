@@ -75,7 +75,10 @@ app.post("/register", async (req, res) => {
 
   try {
     await authService.registerUser(auth, { email, password });
-    await MySQL.realizarQuery(`INSERT INTO Usuarios (administrador, usuario, email, partida, partidasGanadas, barcosHundidos) VALUES (1, "${user}", "${email}", 0, 0, 0)`);
+    console.log(user);
+    await MySQL.realizarQuery(`INSERT INTO Usuarios (administrador, usuario, email, partida, partidasGanadas, barcosHundidos) VALUES (0, "${user}", "${email}", 0, 0, 0)`);
+    let respuesta = await MySQL.realizarQuery(`SELECT * FROM Usuarios WHERE email = ${email}`);
+    req.session.idUsuario= respuesta[0].id;
     res.render("register", {
       message: "Registro exitoso. Puedes iniciar sesión ahora.",
     });
@@ -86,7 +89,6 @@ app.post("/register", async (req, res) => {
     });
   }
 });
-
 app.get("/login", (req, res) => {
   res.render("login");
 });
@@ -100,6 +102,7 @@ app.post("/login", async (req, res) => {
       password,
     });
     // Aquí puedes redirigir al usuario a la página que desees después del inicio de sesión exitoso
+    
     res.redirect("/home3");
   } catch (error) {
     console.error("Error en el inicio de sesión:", error);
