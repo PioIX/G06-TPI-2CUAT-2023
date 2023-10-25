@@ -71,10 +71,11 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
-  const { email, password } = req.body;
+  const { user, email, password } = req.body;
 
   try {
     await authService.registerUser(auth, { email, password });
+    await MySQL.realizarQuery(`INSERT INTO Usuarios (administrador, usuario, email, partida, partidasGanadas, barcosHundidos) VALUES (1, "${user}", "${email}", 0, 0, 0)`);
     res.render("register", {
       message: "Registro exitoso. Puedes iniciar sesión ahora.",
     });
@@ -109,36 +110,39 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/home2", (req, res) => {
-  // Agrega aquí la lógica para mostrar la página del dashboard
   res.render("home2", null);
 });
 
 app.get("/prueba", (req, res) => {
-  // Agrega aquí la lógica para mostrar la página del dashboard
   res.render("prueba", null);
 });
 
 /************************************** */
 app.get("/home3", (req,res) => {
+  req.session.buscarPartida=0;
   res.render("home3", null);
 });
 
 app.get("/juego", (req,res) => {
   req.session.buscarPartida=1;
-  //res.render("juego", null);
+  console.log(req.session.buscarPartida);
+  res.render("juego", null);
 });
 
 io.on("connection", (socket) => {
   const req = socket.request;
   req.session.sala=1;
   socket.join(req.session.sala);
+  
 
   if (req.session.buscarPartida==1) {
+
+    console.log("entre al if");
     req.session.buscarPartida=0;
     socket.leave(req.session.sala)
     req.session.sala+=1;
     socket.join(req.session.sala);
-    io.to(req.session.sala).emit("buscarPartida", {mensaje: "Usuario está buscando partida"})
+    io./*to(req.session.sala).*/emit("buscarPartida", {mensaje: "Usuario está buscando partida"})
   }
 
   /*socket.on('nuevo-mensaje', async(data) => {

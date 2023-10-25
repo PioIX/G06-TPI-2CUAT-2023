@@ -13,3 +13,7 @@ socket.on("buscarPartida", data => {
 function atacar(id){
     console.log(id)
 }
+
+function buscarPartida(){
+    socket.emit("buscar-partida", null);
+}
