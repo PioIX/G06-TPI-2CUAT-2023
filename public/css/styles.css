@@ -332,3 +332,12 @@ body{
 }
 
 /*---------------------*/
+.numColumna{
+  width: 37.5px;
+  height: 37.5px;
+}
+
+.celda{
+  width: 37.5px;
+  height: 37.5px;
+}
