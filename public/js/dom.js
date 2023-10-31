@@ -4,9 +4,7 @@ function atacar(id){
 }
 
 function elegirBarco(id) {
-    document.getElementById("B2").value=1;
-    document.getElementById("B2").style.backgroundColor = "green";
-    var celda = document.getElementById(id);
+    let celda = document.getElementById(id);
     console.log(id[0]);
     if (celda.style.backgroundColor == "green"){
         celda.style.backgroundColor = "black";
@@ -25,6 +23,8 @@ function elegirBarco(id) {
     num = parseInt(num);
     console.log(num);
     console.log("celda a la derecha: ", id[0]+(num+1))
+    console.log("valor de celda clickeada: ", celda.value);
+    console.log("valor de C8", document.getElementById("C8").getAttribute("value"));
     /*
     let ido="B2";
     let celdaDerecha= ido[0]+(parseInt(ido[1])+1)
@@ -32,16 +32,47 @@ function elegirBarco(id) {
     console.log(document.getElementById(celdaDerecha).value);
     console.log(document.getElementById(celdaDerecha));
     console.log("Valor de la celda derecha: ", document.getElementById(celdaDerecha).textContent); */
-    let ido = "B2";
-    let celdaDerecha = ido[0] + (parseInt(ido[1]) + 1);
-    let elemento = document.getElementById(celdaDerecha);
-    let valor = elemento.getAttribute("value");
 
+    let b2 = document.getElementById("B2").getAttribute("value")
+    b2 = 1
+    document.getElementById("B2").style.backgroundColor = "green";
+    document.getElementById("B3").style.backgroundColor = "green";
+    document.getElementById("B4").style.backgroundColor = "green";
+    console.log("aaa")
+    console.log(document.getElementById("B2").getAttribute("value"))
+    let ido = "B2";//
+    let celdaDerecha = ido[0] + (parseInt(ido[1]) + 1);//
+    let numDerecha= (parseInt(ido[1]) + 1);//
+    let valor  = document.getElementById(celdaDerecha).getAttribute("value");
+    console.log("aaa");
+    console.log(document.getElementById(celdaDerecha).getAttribute("value"))
+    console.log("valor: ", valor);
+    while (valor!=0){
+        numDerecha = numDerecha +1
+        celdaDerecha= ido[0] + numDerecha;
+        console.log("celdaDerecha: ", celdaDerecha);
+        valor = document.getElementById(celdaDerecha).getAttribute(value);
+        console.log("valor: ", valor);
+    }
     if (valor ==0) {
-        console.log("entre al if")
         document.getElementById(celdaDerecha).style.backgroundColor = "red";
         document.getElementById(celdaDerecha).value = -1;
+    } 
+    /*
+    let celdaIzquierda = ido[0] + (parseInt(ido[1]) - 1);
+    let elemento2 = document.getElementById(celdaDerecha);
+    let valor2 = elemento.getAttribute("value");
+    while (valor2!=0){
+        celdaIzquierda= celdaIzquierda-1;
+        elemento = document.getElementById(celdaDerecha);
+        valor = elemento.getAttribute("value");
     }
+    if (valor ==0) {
+        document.getElementById(celdaDerecha).style.backgroundColor = "red";
+        document.getElementById(celdaDerecha).value = -1;
+    } */
+
+
     //hacer un  while que empieza a comparar la celda de la derecha hasta que encuentre un value 0.una vez q lo encuentra,
     //vuelve al inicio y arranca para la izq. una vez que estan encontrados los bordes, en el borde izquierdo buscar para arriba.
     //hasta el limite.dps para ajablo y quedaria algo asi   x?????
