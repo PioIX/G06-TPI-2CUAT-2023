@@ -1,38 +1,27 @@
 function atacar(id){
     console.log(id)
+    console.log("hola")
 
 }
 
 function elegirBarco(id) {
-    let celda = document.getElementById(id);
-    console.log(id[0]);
+    /*let celda = document.getElementById(id);
     let num = "";
-    num = parseInt(num);
-    if (celda.style.backgroundColor == "green"){
-        celda.style.backgroundColor = "black";
-        document.getElementById(id).value = 0;
-    }
-    else {
-        celda.style.backgroundColor = "green"
-        document.getElementById(id).value = 1;
-        let derecha = id[0]+(num+1);
-        derecha = JSON.stringify(derecha)
-        document.getElementById(derecha).value = -1;
-        document.getElementById(derecha).style.backgroundColor = "red";
-        document.getElementById(derecha).value = -1;
-        document.getElementById(derecha).style.backgroundColor = "red";
-    }
-    //let num = "";
     for(let i=0; i<id.length; i++) {
         if (i!=0) {
             num += id[i];
         }
     }
-    //num = parseInt(num);
-    console.log(num);
-    console.log("celda a la derecha: ", id[0]+(num+1))
-    console.log("valor de celda clickeada: ", celda.value);
-    console.log("valor de C8", document.getElementById("C8").getAttribute("value"));
+    num = parseInt(num);
+    console.log(id[0]);
+    if (celda.style.backgroundColor == "green"){
+        celda.style.backgroundColor = "black";
+    }
+    else {
+        celda.style.backgroundColor = "green"
+        let derecha = id[0]+(num+1);
+        document.getElementById(derecha).style.backgroundColor = "red";
+    } */
 
 
 
@@ -48,37 +37,34 @@ function elegirBarco(id) {
     console.log(document.getElementById(celdaDerecha).value);
     console.log(document.getElementById(celdaDerecha));
     console.log("Valor de la celda derecha: ", document.getElementById(celdaDerecha).textContent); */
-    let letras = ["A", "B", "C", "D", "E","F","G","H","I","J", "K", "L", "M","N","Ñ"]
-    for (let i=0;i<letras.length; i++){
-        for (let x=1; x<16; x++){
-            console.log("let ", (letras[0]+))
-        }
-    }
-    let b2 = document.getElementById("B2").getAttribute("value")
-    b2 = 1
     document.getElementById("B2").style.backgroundColor = "green";
     document.getElementById("B3").style.backgroundColor = "green";
     document.getElementById("B4").style.backgroundColor = "green";
-    console.log("aaa")
-    console.log(document.getElementById("B2").getAttribute("value"))
-    let ido = "B2";//
-    let celdaDerecha = ido[0] + (parseInt(ido[1]) + 1);//
-    let numDerecha= (parseInt(ido[1]) + 1);//
-    let valor  = document.getElementById(celdaDerecha).getAttribute("value");
-    console.log("aaa");
-    console.log(document.getElementById(celdaDerecha).getAttribute("value"))
-    console.log("valor: ", valor);
-    while (valor!=0){
-        numDerecha = numDerecha +1
-        celdaDerecha= ido[0] + numDerecha;
-        console.log("celdaDerecha: ", celdaDerecha);
-        valor = document.getElementById(celdaDerecha).getAttribute(value);
-        console.log("valor: ", valor);
+
+    let celdaPrueba = "B2";
+    let numPrueba = 0;
+    for(let i=0; i<celdaPrueba.length; i++) {
+        if (i!=0) {
+            if (i==1) {
+                numPrueba = celdaPrueba[i];
+            } else {
+                numPrueba += celdaPrueba[i];
+            }
+            
+        }
     }
-    if (valor ==0) {
-        document.getElementById(celdaDerecha).style.backgroundColor = "red";
-        document.getElementById(celdaDerecha).value = -1;
-    } 
+    let celdaDerecha = celdaPrueba[0]+(numPrueba+1);
+
+    console.log(document.getElementById("B2").style.backgroundColor);
+
+    while (document.getElementById(celdaDerecha).style.backgroundColor == "green") {
+        numPrueba+=1;
+        celdaDerecha= celdaPrueba[0]+(numPrueba);
+    }
+    if (document.getElementById(celdaDerecha).style.backgroundColor == "black"){
+        document.getElementById(celdaDerecha).style.backgroundColor = "red"
+    }
+        
     
     /*
     let celdaIzquierda = ido[0] + (parseInt(ido[1]) - 1);
@@ -101,6 +87,4 @@ function elegirBarco(id) {
     //                                                     oxxxxxo
     //                                                      o
     // solo quedaria rellenar
-
-    console.log(document.getElementById(id).value)
 }
