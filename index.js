@@ -129,3 +129,7 @@ app.get("/home3", (req,res) => {
 app.get("/juego", (req,res) => {
   res.render("juego", null);
 });
+
+app.get("/elegirBarco", (req,res) => {
+  res.render("elegirBarco", null);
+});
