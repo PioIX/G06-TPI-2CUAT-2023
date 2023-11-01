@@ -7,17 +7,21 @@
   box-sizing: border-box;
 }
 
-body{
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden
-}
 .home{
   background-image:url("/img/fondo1.png");
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
   width: 100vw;
+}
+
+.home1{
+  background-image:url("/img/fondo1.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden
 }
 
 .txtHome {
@@ -340,4 +344,23 @@ body{
 .celda{
   width: 37.5px;
   height: 37.5px;
+}
+
+.fondoJuego{
+  background-image: url("/img/fondo1.png");
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.pagJuego{
+  display: flex;
+  justify-content: space-between;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+.tablero{
+  margin-top: 50px;
 }
