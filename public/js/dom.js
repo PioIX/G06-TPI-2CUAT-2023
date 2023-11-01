@@ -6,6 +6,8 @@ function atacar(id){
 function elegirBarco(id) {
     let celda = document.getElementById(id);
     console.log(id[0]);
+    let num = "";
+    num = parseInt(num);
     if (celda.style.backgroundColor == "green"){
         celda.style.backgroundColor = "black";
         document.getElementById(id).value = 0;
@@ -13,18 +15,32 @@ function elegirBarco(id) {
     else {
         celda.style.backgroundColor = "green"
         document.getElementById(id).value = 1;
+        let derecha = id[0]+(num+1);
+        derecha = JSON.stringify(derecha)
+        document.getElementById(derecha).value = -1;
+        document.getElementById(derecha).style.backgroundColor = "red";
+        document.getElementById(derecha).value = -1;
+        document.getElementById(derecha).style.backgroundColor = "red";
     }
-    let num = "";
+    //let num = "";
     for(let i=0; i<id.length; i++) {
         if (i!=0) {
             num += id[i];
         }
     }
-    num = parseInt(num);
+    //num = parseInt(num);
     console.log(num);
     console.log("celda a la derecha: ", id[0]+(num+1))
     console.log("valor de celda clickeada: ", celda.value);
     console.log("valor de C8", document.getElementById("C8").getAttribute("value"));
+
+
+
+
+
+
+
+
     /*
     let ido="B2";
     let celdaDerecha= ido[0]+(parseInt(ido[1])+1)
@@ -32,7 +48,12 @@ function elegirBarco(id) {
     console.log(document.getElementById(celdaDerecha).value);
     console.log(document.getElementById(celdaDerecha));
     console.log("Valor de la celda derecha: ", document.getElementById(celdaDerecha).textContent); */
-
+    let letras = ["A", "B", "C", "D", "E","F","G","H","I","J", "K", "L", "M","N","Ñ"]
+    for (let i=0;i<letras.length; i++){
+        for (let x=1; x<16; x++){
+            console.log("let ", (letras[0]+))
+        }
+    }
     let b2 = document.getElementById("B2").getAttribute("value")
     b2 = 1
     document.getElementById("B2").style.backgroundColor = "green";
@@ -58,6 +79,7 @@ function elegirBarco(id) {
         document.getElementById(celdaDerecha).style.backgroundColor = "red";
         document.getElementById(celdaDerecha).value = -1;
     } 
+    
     /*
     let celdaIzquierda = ido[0] + (parseInt(ido[1]) - 1);
     let elemento2 = document.getElementById(celdaDerecha);
