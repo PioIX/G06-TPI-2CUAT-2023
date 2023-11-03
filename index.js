@@ -32,7 +32,7 @@ app.listen(Listen_Port, function () {
   );
 });
 app.use(session({secret: '123456', resave: true, saveUninitialized: true}));
-// Configuración de Firebase
+
 const firebaseConfig = {
   apiKey: "AIzaSyBPffjAlSqMD7InPCDKwx9BGOu1mvCKIZM",
   authDomain: "batalla-naval-1dfa8.firebaseapp.com",
@@ -45,12 +45,12 @@ const firebaseConfig = {
 const appFirebase = initializeApp(firebaseConfig);
 const auth = getAuth(appFirebase);
 
-// Importar AuthService
 const authService = require("./authService");
 
 //start
 
 app.get("/", (req, res) => {
+  console.log("soy un pedido GET / -home-")
   /*let letrasAbecedario = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ'];
   let tablero = `<div class="fondoJuego">
   <table width="600" height="600px"; border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">`;
@@ -64,23 +64,17 @@ app.get("/", (req, res) => {
   }
   tablero += `    </table>
   </div>`
-
   console.log(tablero);*/
-
-  /*let letras = ["A", "B", "C", "D", "E","F","G","H","I","J", "K", "L", "M","N","Ñ"]
-    for (let i=0;i<letras.length; i++){
-        for (let x=1; x<16; x++){
-            console.log("let ", (letras[i]+x),"= document.getElementById(", (letras[i]+x), ").getAttribute('value')")
-        }
-    } */
   res.render("home");
 });
 
 app.get("/register", (req, res) => {
+  console.log("soy un pedido GET /register")
   res.render("register");
 });
 
 app.post("/register", async (req, res) => {
+  console.log("soy un pedido POST /register")
   const { email, password } = req.body;
 
   try {
@@ -97,10 +91,12 @@ app.post("/register", async (req, res) => {
 });
 
 app.get("/login", (req, res) => {
+  console.log("soy un pedido GET /login")
   res.render("login");
 });
 
 app.post("/login", async (req, res) => {
+  console.log("soy un pedido POST /login")
   const { email, password } = req.body;
 
   try {
@@ -119,24 +115,29 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/home2", (req, res) => {
+  console.log("soy un pedido GET /home2")
   // Agrega aquí la lógica para mostrar la página del dashboard
   res.render("home2", null);
 });
 
 app.get("/prueba", (req, res) => {
+  console.log("soy un pedido GET /prueba")
   // Agrega aquí la lógica para mostrar la página del dashboard
   res.render("prueba", null);
 });
 
 /************************************** */
 app.get("/home3", (req,res) => {
+  console.log("soy un pedido GET /home3")
   res.render("home3", null);
 });
 
 app.get("/juego", (req,res) => {
+  console.log("soy un pedido GET /juego")
   res.render("juego", null);
 });
 
 app.get("/elegirBarco", (req,res) => {
+  console.log("soy un pedido GET /elegirBarco")
   res.render("elegirBarco", null);
 });
