@@ -1,9 +1,3 @@
-function atacar(id){
-    console.log(id)
-    console.log("hola")
-
-}
-
 function casillerosNegros() {
     let letras = ["A", "B", "C", "D", "E","F","G","H","I","J", "K", "L", "M","N","Ñ"]
     for (let i=0;i<letras.length; i++){
@@ -14,7 +8,18 @@ function casillerosNegros() {
     } 
 }
 
-function analizarDerecha (celdaPrueba) {
+document.addEventListener("DOMContentLoaded", function() {
+    casillerosNegros();
+});
+  
+
+function atacar(id){
+    console.log(id)
+    console.log("hola")
+
+}
+
+function analizarDerecha (celdaPrueba, color1, color2, color3) {
     let numPrueba = 0;
     for(let i=0; i<celdaPrueba.length; i++) {
         if (i!=0) {
@@ -31,25 +36,29 @@ function analizarDerecha (celdaPrueba) {
     }
     parseInt(numPrueba);
     let celdaDerecha = celdaPrueba[0]+(numPrueba);
-    try {
-        while (document.getElementById(celdaDerecha).style.backgroundColor == "green") {
+    if (document.getElementById(celdaDerecha).style.backgroundColor == "red"){ //color 2
+
+        alert("no se puede")
+    } else {
+        while (document.getElementById(celdaDerecha).style.backgroundColor == "green") { //color1
+
             numPrueba++;
             celdaDerecha= celdaPrueba[0]+(numPrueba);
+            if (numPrueba>15){
+                break;
+            }
         }
-    }
-    catch (error) {
-    }
-    finally {
-        if (document.getElementById(celdaDerecha).style.backgroundColor == "black" && numPrueba<16){
-            document.getElementById(celdaDerecha).style.backgroundColor = "red"
+        if (numPrueba<16) {
+            if (document.getElementById(celdaDerecha).style.backgroundColor == "black"){ //color3
+                document.getElementById(celdaDerecha).style.backgroundColor = "red"; //color1
+            }
         }
-    
-        return numPrueba;
+
     }
-    
+    return numPrueba;
 }
 
-function analizarIzquierda(celdaPrueba) {
+function analizarIzquierda(celdaPrueba, color1, color2) {
     let numPrueba = 0;
     for(let i=0; i<celdaPrueba.length; i++) {
         if (i!=0) {
@@ -66,67 +75,24 @@ function analizarIzquierda(celdaPrueba) {
     }
     parseInt(numPrueba);
     let celdaIzquierda = celdaPrueba[0]+(numPrueba);
-    while (numPrueba>0){
-        while (document.getElementById(celdaIzquierda).style.backgroundColor == "green") {
-            numPrueba--;
-            celdaIzquierda= celdaPrueba[0]+(numPrueba);
-        }
-    }
-    if (document.getElementById(celdaIzquierda).style.backgroundColor == "black" && numPrueba>0){
-        document.getElementById(celdaIzquierda).style.backgroundColor = "red";
-    }
-    return numPrueba;
-}
 
-function analizarArriba(celdaPrueba, derecha, izquierda) {
-    let letras = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ"];
-    let letraPrueba=0
-    for (let i=0; i<letras.length; i++){
-        if (letras[i]==celdaPrueba[0]){
-            letraPrueba=i;
+    while (document.getElementById(celdaIzquierda).style.backgroundColor == "green") {
+        numPrueba--;
+        celdaIzquierda= celdaPrueba[0]+(numPrueba);
+        if (numPrueba<1){
+            break;
         }
     }
-    let numPrueba = 0;
-    for(let i=0; i<celdaPrueba.length; i++) {
-        if (i!=0) {
-            if (celdaPrueba.length==2) {
-                numPrueba = parseInt(celdaPrueba[i]);
-            } else {
-                if (i==1){
-                    numPrueba = celdaPrueba[i];
-                } else {
-                    numPrueba += celdaPrueba[i];
-                }
-            }
-        }
-    }
-    parseInt(numPrueba);
-    let celdaArriba = letras[letraPrueba]+(numPrueba);
-    //console.log("celda arriba : ", celdaArriba)
-    while (letraPrueba>0) {
-        while (document.getElementById(celdaArriba).style.backgroundColor == "green") {
-            analizarDerecha(celdaArriba);
-            analizarIzquierda(celdaArriba);
-            letraPrueba--;
-            celdaArriba= letras[letraPrueba]+(numPrueba);
+    if (numPrueba>0) {
+        if (document.getElementById(celdaIzquierda).style.backgroundColor == "black"){
+            document.getElementById(celdaIzquierda).style.backgroundColor = "red";
         }
     }
    
-    if (document.getElementById(celdaArriba).style.backgroundColor == "black" && letraPrueba>0){
-        document.getElementById(celdaArriba).style.backgroundColor = "red";
-        console.log("hola")
-        for (let i=numPrueba; i<(derecha+1); i++){
-            console.log(letras[letraPrueba]+(i))
-            document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
-        }
-        for (let i=izquierda; i<numPrueba; i++){
-            console.log(letras[letraPrueba]+(i))
-            document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
-        }
-    }
+    return numPrueba;
 }
 
-function analizarAbajo(celdaPrueba, derecha, izquierda) {
+function analizarArriba(celdaPrueba, derecha, izquierda, color1, color2) {
     let letras = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ"];
     let letraPrueba=0
     for (let i=0; i<letras.length; i++){
@@ -150,32 +116,84 @@ function analizarAbajo(celdaPrueba, derecha, izquierda) {
     }
     parseInt(numPrueba);
     let celdaArriba = letras[letraPrueba]+(numPrueba);
-    while (letraPrueba>0) {
-        while (document.getElementById(celdaArriba).style.backgroundColor == "green") {
-            analizarDerecha(celdaArriba);
-            analizarIzquierda(celdaArriba);
-            letraPrueba++;
-            celdaArriba= letras[letraPrueba]+(numPrueba);
+    while (document.getElementById(celdaArriba).style.backgroundColor == "green") {
+        analizarDerecha(celdaArriba);
+        analizarIzquierda(celdaArriba);
+        letraPrueba--;
+        celdaArriba= letras[letraPrueba]+(numPrueba);
+        if (letraPrueba<0){
+            break;
         }
     }
-    
-    if (document.getElementById(celdaArriba).style.backgroundColor == "black" && letraPrueba>0){
-        document.getElementById(celdaArriba).style.backgroundColor = "red";
-        console.log("hola")
-        for (let i=numPrueba; i<(derecha+1); i++){
-            console.log(letras[letraPrueba]+(i))
-            document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
-        }
-        console.log("izquierda: ", izquierda)
-        for (let i=izquierda; i<numPrueba; i++){
-            document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
+    if (letraPrueba>(-1)){
+        if (document.getElementById(celdaArriba).style.backgroundColor == "black"){
+            document.getElementById(celdaArriba).style.backgroundColor = "red";
+            if (derecha<16){
+                for (let i=numPrueba; i<(derecha+1); i++){
+                    document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
+                }
+            }
+            if (izquierda>0){
+                for (let i=izquierda; i<numPrueba; i++){
+                    document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
+                }
+            }
         }
     }
 }
 
+function analizarAbajo(celdaPrueba, derecha, izquierda, color1, color2) {
+    let letras = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ"];
+    let letraPrueba=0
+    for (let i=0; i<letras.length; i++){
+        if (letras[i]==celdaPrueba[0]){
+            letraPrueba=i;
+        }
+    }
+    let numPrueba = 0;
+    for(let i=0; i<celdaPrueba.length; i++) {
+        if (i!=0) {
+            if (celdaPrueba.length==2) {
+                numPrueba = parseInt(celdaPrueba[i]);
+            } else {
+                if (i==1){
+                    numPrueba = celdaPrueba[i];
+                } else {
+                    numPrueba += celdaPrueba[i];
+                }
+            }
+        }
+    }
+    parseInt(numPrueba);
+    let celdaArriba = letras[letraPrueba]+(numPrueba);
+    while (document.getElementById(celdaArriba).style.backgroundColor == "green") {
+        analizarDerecha(celdaArriba);
+        analizarIzquierda(celdaArriba);
+        letraPrueba++;
+        celdaArriba= letras[letraPrueba]+(numPrueba);
+        if (letraPrueba>14){
+            break;
+        }
+    }
+    if (letraPrueba<15){
+        if (document.getElementById(celdaArriba).style.backgroundColor == "black"){
+            document.getElementById(celdaArriba).style.backgroundColor = "red";
+            if (derecha<16){
+                for (let i=numPrueba; i<(derecha+1); i++){
+                    document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
+                }
+            }
+            if (izquierda>0){
+                for (let i=izquierda; i<numPrueba; i++){
+                    document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
+                }
+            }
+        }
+    }
+    
+}
+
 function elegirBarco(id) {
-    //no borrar lo de abajo
-    casillerosNegros();
     let celda = id;
     let num = "";
     for(let i=0; i<id.length; i++) {
@@ -184,31 +202,25 @@ function elegirBarco(id) {
         }
     }
     num = parseInt(num);
-
-    console.log("aaaaaaaaa: ", celda);
+    let barco = "3x1";
+    let orientacion = "derecha"
+    //console.log("color celda viejo, ", document.getElementById(celda).style.backgroundColor);
     if (document.getElementById(celda).style.backgroundColor == "green"){
         document.getElementById(celda).style.backgroundColor = "black";
+        /*analizarDerecha(celda, "black", "red");
+        analizarIzquierda(celda, "black", "red");
+        analizarArriba(celda, analizarDerecha(celda), analizarIzquierda(celda), "black", "red");
+        analizarAbajo(celda, analizarDerecha(celda), analizarIzquierda(celda), "black", "red");*/
     }
-    else {
-        console.log("entre al else")
+    else if (document.getElementById(celda).style.backgroundColor == "black") {
         document.getElementById(celda).style.backgroundColor = "green";
-    } 
-
-    /*let ido="B2";
-    //no borrar lo de arriba
-
-    document.getElementById("D5").style.backgroundColor = "green";
-    document.getElementById("D3").style.backgroundColor = "green";
-    document.getElementById("D4").style.backgroundColor = "green";
-    document.getElementById("C5").style.backgroundColor = "green";
-    document.getElementById("C3").style.backgroundColor = "green";
-    document.getElementById("C4").style.backgroundColor = "green";
-
-    let celdaPrueba = "D3"; */
-    analizarDerecha(celda);
-    analizarIzquierda(celda);
-    analizarArriba(celda, analizarDerecha(celda), analizarIzquierda(celda));
-    analizarAbajo(celda, analizarDerecha(celda), analizarIzquierda(celda));
+        analizarDerecha(celda, "green", "red", "black");
+        analizarIzquierda(celda, "green", "red");
+        analizarArriba(celda, analizarDerecha(celda), analizarIzquierda(celda), "green", "red");
+        analizarAbajo(celda, analizarDerecha(celda), analizarIzquierda(celda), "green", "red");
+    } else {
+        alert("hay un rojo")
+    }
     
 
 
