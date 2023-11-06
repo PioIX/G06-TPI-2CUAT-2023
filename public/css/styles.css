@@ -24,6 +24,8 @@
   overflow: hidden
 }
 
+
+
 .txtHome {
   font-family: 'Bungee Spice', cursive;
   font-size: 140px;
@@ -344,10 +346,12 @@
 .celda{
   width: 37.5px;
   height: 37.5px;
+  background-color: #f3e8e8da;
+  border: 1px solid #000000;
 }
 
 .fondoJuego{
-  background-image: url("/img/fondo1.png");
+  background-image: url("/img/agua.png");
   width: 100vw;
   height: 100vh;
   background-size: cover;
@@ -363,4 +367,17 @@
 
 .tablero{
   margin-top: 50px;
+}
+
+
+.numColumna{
+  width: 37.5px;
+  height: 37.5px;
+  border: 1px solid #000000;
+}
+
+.letraFila{
+  width: 37.5px;
+  height: 37.5px;
+  border: 1px solid #000000;
 }

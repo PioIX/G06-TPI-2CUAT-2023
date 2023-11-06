@@ -51,7 +51,7 @@ const authService = require("./authService");
 //start
 
 app.get("/", (req, res) => {
-  /*let letrasAbecedario = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ'];
+  /*let letrasAbecedario = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
   let tablero = `<div class="fondoJuego">
   <table width="600" height="600px"; border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">`;
   for(let i=0; i<letrasAbecedario.length; i++) {
