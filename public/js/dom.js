@@ -36,7 +36,6 @@ function analizarDerecha (celdaPrueba) {
     }
     parseInt(numPrueba);
     let celdaDerecha = celdaPrueba[0]+(numPrueba);
-    let rojos = [];
     if (document.getElementById(celdaDerecha).style.backgroundColor == "red"){ //color 2
 
         alert("no se puede")
@@ -52,12 +51,11 @@ function analizarDerecha (celdaPrueba) {
         if (numPrueba<16) {
             if (document.getElementById(celdaDerecha).style.backgroundColor == "black"){ //color3
                 document.getElementById(celdaDerecha).style.backgroundColor = "red";
-                rojos.push[celdaDerecha];
             }
         }
 
     }
-    return {numPrueba, rojos};
+    return numPrueba;
 }
 
 function analizarIzquierda(celdaPrueba) {
@@ -143,7 +141,6 @@ function analizarArriba(celdaPrueba, derecha, izquierda) {
             }
         }
     }
-    return {};
 }
 
 function analizarAbajo(celdaPrueba, derecha, izquierda) {
@@ -218,10 +215,9 @@ function elegirBarco(id) {
     else if (document.getElementById(celda).style.backgroundColor == "black") {
         document.getElementById(celda).style.backgroundColor = "green";
         analizarDerecha(celda);
-        console.log(analizarDerecha(celda).rojos)
-        //analizarIzquierda(celda, "green", "red");
-        //analizarArriba(celda, analizarDerecha(celda), analizarIzquierda(celda), "green", "red");
-        //analizarAbajo(celda, analizarDerecha(celda), analizarIzquierda(celda), "green", "red");
+        analizarIzquierda(celda, "green", "red");
+        analizarArriba(celda, analizarDerecha(celda), analizarIzquierda(celda));
+        analizarAbajo(celda, analizarDerecha(celda), analizarIzquierda(celda));
     } else {
         alert("hay un rojo")
     }
