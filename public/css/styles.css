@@ -24,7 +24,14 @@
   overflow: hidden
 }
 
-
+.fondoLogin{
+  background-image:url("/img/agua.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden
+}
 
 .txtHome {
   font-family: 'Bungee Spice', cursive;
@@ -365,10 +372,17 @@
   margin-right: 100px;
 }
 
-.tablero{
+.tablero1{
   margin-top: 50px;
 }
 
+.tablero2{
+  margin-top: 50px;
+}
+
+.txtJuego{
+  font-family: 'Black Ops One', cursive;
+}
 
 .numColumna{
   width: 37.5px;
