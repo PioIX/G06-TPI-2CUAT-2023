@@ -25,7 +25,7 @@
 }
 
 .fondoLogin{
-  background-image:url("/img/agua.png");
+  background-image:url("/img/fondo1.png");
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
@@ -353,8 +353,9 @@
 .celda{
   width: 37.5px;
   height: 37.5px;
-  background-color: #f3e8e8da;
+  background-color: #93b5f3da;
   border: 1px solid #000000;
+  
 }
 
 .fondoJuego{
@@ -373,11 +374,18 @@
 }
 
 .tablero1{
-  margin-top: 50px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  margin-right: 25px;
+  margin-left: 25px;
 }
 
 .tablero2{
-  margin-top: 50px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  margin-right: 25px;
+  margin-left: 25px;
+
 }
 
 .txtJuego{
