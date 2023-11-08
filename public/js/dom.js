@@ -1,15 +1,50 @@
+let celda= {
+    barco: false,
+    tocado: false,
+    prohibidosX: [],
+    prohibidosY: []
+}
+
+
+let tablero = [ 
+[celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda],
+[celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda],
+[celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda],
+[celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda],
+[celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda],
+[celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda],
+[celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda],
+[celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda],
+[celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda],
+[celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda],
+[celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda],
+[celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda],
+[celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda],
+[celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda],
+[celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda,celda]]
+
+
+
+
+
 function casillerosNegros() {
     let letras = ["A", "B", "C", "D", "E","F","G","H","I","J", "K", "L", "M","N","Ñ"]
+    
+
     for (let i=0;i<letras.length; i++){
         for (let x=1; x<16; x++){
             let celda = letras[i]+x;
             document.getElementById(celda).style.backgroundColor = "black";
+            tablero[i][x-1].barco = true          
         }
     } 
+    
 }
 
 document.addEventListener("DOMContentLoaded", function() {
+    console.log("a",tablero[0][0])
     casillerosNegros();
+    console.log("ba",tablero[0][0])
 });
   
 
