@@ -132,7 +132,6 @@ function analizarVertical(numPrueba, letraPruebaOG, derecha, izquierda) {
                     document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
                     tablero[letraPrueba][i-1].prohibidoY.push(letraPruebaOG);
                     tablero[letraPrueba][i-1].prohibidoX.push(numPrueba);
-                    console.log(letraPrueba+(i-1), tablero[letraPrueba][i-1])
                 }
             }
             if (izquierda>0){
@@ -174,7 +173,6 @@ function analizarVertical(numPrueba, letraPruebaOG, derecha, izquierda) {
             if (izquierda>0){
                 for (let i=izquierda; i<numPrueba; i++){
                     document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
-                    console.log(celdaAbajo)
                     tablero[letraPrueba][i-1].prohibidoY.push(letraPruebaOG);
                     tablero[letraPrueba][i-1].prohibidoX.push(numPrueba);
                 }
@@ -184,40 +182,22 @@ function analizarVertical(numPrueba, letraPruebaOG, derecha, izquierda) {
 }
 
 function borrar(numero, letra) {
-    for (let i=0; i<tablero.length; i++){
-        for (let x=0; x<15; x++){
-            if (tablero[i][x].prohibidoX==numero && tablero[i][x]){
-                if (tablero[i][x].prohibidoX.length==1){
-                    document.getElementById(letras[i]+(x+1)).style.backgroundColor = "black";
-
-                    //falta que lo borre del array
-                }
-            }
-        }
-    }
-}
-
-/*
-function borrar(numero, letra) {
-    for (let i=0; i<tablero.length; i++){
-        for (let x=0; x<15; x++){
-            for(let z=0; z<tablero[i][x].prohibidoX.length; z++) {
-                if (tablero[i][x].prohibidoX[z]==numero && tablero[i][x].prohibidoX[z]==letra){
-                    if (tablero[i][x].prohibidoX.length==1){
+    for (let i=0; i<tablero.length; i++) {
+        for (let x=0; x<tablero[i].length; x++){
+            for (let z=0; z<tablero[i][x].prohibidoX.length; z++){
+                if (tablero[i][x].prohibidoX[z]==numero && tablero[i][x].prohibidoY[z]==letra) {
+                    if (tablero[i][x].prohibidoX.length == 1 && tablero[i][x].prohibidoY.length == 1) {
                         document.getElementById(letras[i]+(x+1)).style.backgroundColor = "black";
-                        if (tablero[i][x].prohibidoX[z]==numero) {
-                            tablero[i][x].prohibidoX.splice()
-                            tablero[i][x].prohibidoY.splice()
-                        }
                     }
+                    tablero[i][x].prohibidoX.splice(z, 1);
+                    tablero[i][x].prohibidoY.splice(z, 1);
                 }
             }
+        } 
 
-            tablero[i][x].prohibidoX.splice()
-        }
+
     }
 }
-*/
 
 function elegirBarco(id) {
     let celda = id;
@@ -228,15 +208,32 @@ function elegirBarco(id) {
         }
     }
     num = parseInt(num);
-    let barco = "3x1";
+    let tamaño = "3x2";
     let orientacion = "derecha";
     analizarCelda(celda);
+    let x = parseInt(tamaño[0]);
+    let y = parseInt(tamaño[2]);
+    let barco = [];
+    for (let i=0; i<x; i++){
+        barco.push(analizarCelda(celda).letraPrueba + (analizarCelda(celda).numPrueba+i))
+        for (let z=0; z<y; z++){
+            if (z>0){
+                barco.push(letras[z] + (analizarCelda(celda).numPrueba+i))
+            }
+        }
+    }
+
+    console.log(barco);
+
     if (document.getElementById(celda).style.backgroundColor == "green"){
         document.getElementById(celda).style.backgroundColor = "black";
         borrar(analizarCelda(celda).numPrueba, analizarCelda(celda).letraPrueba)
     }
     else if (document.getElementById(celda).style.backgroundColor == "black") {
-        document.getElementById(celda).style.backgroundColor = "green";
+        for (let i=0; i<barco.length; i++){
+            document.getElementById(barco[i]).style.background = "green";
+        }
+
         let hacer = true
         analizarHorizontal(analizarCelda(celda).numPrueba, analizarCelda(celda).letraPrueba, hacer);
         hacer = false
