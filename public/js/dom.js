@@ -23,7 +23,6 @@ function casillerosNegros() {
 
 document.addEventListener("DOMContentLoaded", function() {
     casillerosNegros();
-    console.log(tablero)
 });
   
 function analizarCelda (celdaPrueba) {
@@ -51,52 +50,67 @@ function analizarCelda (celdaPrueba) {
     return {numPrueba: numPrueba, letraPrueba: letras[letraPrueba]}
 }
 
-function analizarHorizontal (numPruebaOG, letraPrueba) {
+function analizarHorizontal (numPruebaOG, letraPruebaOG, prueba) {
     //derecha
     let numPrueba= numPruebaOG;
-    let celdaDerecha = letraPrueba+numPrueba;
+    let celdaDerecha = letraPruebaOG+numPrueba;
+    let letraPrueba= 0
     while (document.getElementById(celdaDerecha).style.backgroundColor == "green") { //color1
         numPrueba++;
-        celdaDerecha= letraPrueba+(numPrueba);
+        celdaDerecha= letraPruebaOG+(numPrueba);
         if (numPrueba>15){
             break;
         }
     }
     if (numPrueba<16) {
-        if (document.getElementById(celdaDerecha).style.backgroundColor == "black"){ //color3
+        if (document.getElementById(celdaDerecha).style.backgroundColor != "green"){ //color3
             document.getElementById(celdaDerecha).style.backgroundColor = "red";
             for (let i=0; i<letras.length; i++){
-                if ()
+                if (letras[i]==letraPruebaOG) {
+                    letraPrueba=i
+                }
             }
-            //tablero[letraPrueba][numPrueba].prohibidoY= 
-            console.log(letraPrueba+numPrueba)
+            if (prueba==true){
+                tablero[letraPrueba][numPrueba-1].prohibidoY.push(letraPruebaOG);
+                tablero[letraPrueba][numPrueba-1].prohibidoX.push(numPruebaOG);
+            }
         }
     }
     let derecha= numPrueba
     //izquierda
     numPrueba= numPruebaOG;
-    let celdaIzquierda = letraPrueba+(numPrueba);
+    let celdaIzquierda = letraPruebaOG+(numPrueba);
     while (document.getElementById(celdaIzquierda).style.backgroundColor == "green") {
         numPrueba--;
-        celdaIzquierda= letraPrueba+(numPrueba);
+        celdaIzquierda= letraPruebaOG+(numPrueba);
         if (numPrueba<1){
             break;
         }
     }
     if (numPrueba>0) {
-        if (document.getElementById(celdaIzquierda).style.backgroundColor == "black"){
+        if (document.getElementById(celdaIzquierda).style.backgroundColor != "green"){
             document.getElementById(celdaIzquierda).style.backgroundColor = "red";
-
+            for (let i=0; i<letras.length; i++){
+                if (letras[i]==letraPruebaOG) {
+                    letraPrueba=i
+                }
+            }
+            if (prueba==true){
+                tablero[letraPrueba][numPrueba-1].prohibidoY.push(letraPruebaOG);
+                tablero[letraPrueba][numPrueba-1].prohibidoX.push(numPruebaOG);
+            }
         }
     }
     let izquierda = numPrueba
     return {derecha, izquierda}
 }
 
-function analizarArriba(numPrueba, letraPruebaOG, derecha, izquierda) {
+function analizarVertical(numPrueba, letraPruebaOG, derecha, izquierda) {
     //arriba
     let celdaArriba = letraPruebaOG+(numPrueba);
-    let letraPrueba=0
+    let letraPrueba = 0
+    let letraArriba = "";
+    let letraAbajo = "";
     for (let i=0; i<letras.length; i++){
         if (letras[i]==letraPruebaOG){
             letraPrueba=i;
@@ -111,16 +125,21 @@ function analizarArriba(numPrueba, letraPruebaOG, derecha, izquierda) {
         }
     }
     if (letraPrueba>(-1)){
-        if (document.getElementById(celdaArriba).style.backgroundColor == "black"){
+        if (document.getElementById(celdaArriba).style.backgroundColor != "green"){
             document.getElementById(celdaArriba).style.backgroundColor = "red";
             if (derecha<16){
                 for (let i=numPrueba; i<(derecha+1); i++){
                     document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
+                    tablero[letraPrueba][i-1].prohibidoY.push(letraPruebaOG);
+                    tablero[letraPrueba][i-1].prohibidoX.push(numPrueba);
+                    console.log(letraPrueba+(i-1), tablero[letraPrueba][i-1])
                 }
             }
             if (izquierda>0){
                 for (let i=izquierda; i<numPrueba; i++){
                     document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
+                    tablero[letraPrueba][i-1].prohibidoY.push(letraPruebaOG);
+                    tablero[letraPrueba][i-1].prohibidoX.push(numPrueba);
                 }
             }
         }
@@ -141,23 +160,64 @@ function analizarArriba(numPrueba, letraPruebaOG, derecha, izquierda) {
             break;
         }
     }
+
     if (letraPrueba<15){
-        if (document.getElementById(celdaAbajo).style.backgroundColor == "black"){
+        if (document.getElementById(celdaAbajo).style.backgroundColor != "green"){
             document.getElementById(celdaAbajo).style.backgroundColor = "red";
             if (derecha<16){
                 for (let i=numPrueba; i<(derecha+1); i++){
                     document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
+                    tablero[letraPrueba][i-1].prohibidoY.push(letraPruebaOG);
+                    tablero[letraPrueba][i-1].prohibidoX.push(numPrueba);
                 }
             }
             if (izquierda>0){
                 for (let i=izquierda; i<numPrueba; i++){
                     document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
+                    console.log(celdaAbajo)
+                    tablero[letraPrueba][i-1].prohibidoY.push(letraPruebaOG);
+                    tablero[letraPrueba][i-1].prohibidoX.push(numPrueba);
                 }
             }
         }
     }
 }
 
+function borrar(numero, letra) {
+    for (let i=0; i<tablero.length; i++){
+        for (let x=0; x<15; x++){
+            if (tablero[i][x].prohibidoX==numero && tablero[i][x]){
+                if (tablero[i][x].prohibidoX.length==1){
+                    document.getElementById(letras[i]+(x+1)).style.backgroundColor = "black";
+
+                    //falta que lo borre del array
+                }
+            }
+        }
+    }
+}
+
+/*
+function borrar(numero, letra) {
+    for (let i=0; i<tablero.length; i++){
+        for (let x=0; x<15; x++){
+            for(let z=0; z<tablero[i][x].prohibidoX.length; z++) {
+                if (tablero[i][x].prohibidoX[z]==numero && tablero[i][x].prohibidoX[z]==letra){
+                    if (tablero[i][x].prohibidoX.length==1){
+                        document.getElementById(letras[i]+(x+1)).style.backgroundColor = "black";
+                        if (tablero[i][x].prohibidoX[z]==numero) {
+                            tablero[i][x].prohibidoX.splice()
+                            tablero[i][x].prohibidoY.splice()
+                        }
+                    }
+                }
+            }
+
+            tablero[i][x].prohibidoX.splice()
+        }
+    }
+}
+*/
 
 function elegirBarco(id) {
     let celda = id;
@@ -170,32 +230,23 @@ function elegirBarco(id) {
     num = parseInt(num);
     let barco = "3x1";
     let orientacion = "derecha";
+    analizarCelda(celda);
     if (document.getElementById(celda).style.backgroundColor == "green"){
         document.getElementById(celda).style.backgroundColor = "black";
+        borrar(analizarCelda(celda).numPrueba, analizarCelda(celda).letraPrueba)
     }
     else if (document.getElementById(celda).style.backgroundColor == "black") {
         document.getElementById(celda).style.backgroundColor = "green";
-        analizarCelda(celda);
-        analizarHorizontal(analizarCelda(celda).numPrueba, analizarCelda(celda).letraPrueba)
-        analizarArriba(
+        let hacer = true
+        analizarHorizontal(analizarCelda(celda).numPrueba, analizarCelda(celda).letraPrueba, hacer);
+        hacer = false
+        analizarVertical(
             analizarCelda(celda).numPrueba, 
             analizarCelda(celda).letraPrueba,
-            analizarHorizontal(analizarCelda(celda).numPrueba, analizarCelda(celda).letraPrueba).derecha,
-            analizarHorizontal(analizarCelda(celda).numPrueba, analizarCelda(celda).letraPrueba).izquierda);
-        //analizarAbajo(celda, analizarDerecha(celda), analizarIzquierda(celda));
+            analizarHorizontal(analizarCelda(celda).numPrueba, analizarCelda(celda).letraPrueba, hacer).derecha,
+            analizarHorizontal(analizarCelda(celda).numPrueba, analizarCelda(celda).letraPrueba).izquierda, hacer
+        );
     } else {
         alert("hay un rojo")
     }
-    
-
-
-    
-
-
-    //hacer un  while que empieza a comparar la celda de la derecha hasta que encuentre un value 0.una vez q lo encuentra,
-    //vuelve al inicio y arranca para la izq. una vez que estan encontrados los bordes, en el borde izquierdo buscar para arriba.
-    //hasta el limite.dps para ajablo y quedaria algo asi   x?????
-    //                                                     oxxxxxo
-    //                                                      o
-    // solo quedaria rellenar
 }
