@@ -1,3 +1,6 @@
+const IP = "ws://localhost:3001";
+const socket = io(IP);
+
 let tablero = ["A", "B", "C", "D", "E","F","G","H","I","J", "K", "L", "M","N","Ñ"];
 let letras = ["A", "B", "C", "D", "E","F","G","H","I","J", "K", "L", "M","N","Ñ"];
 let barcos = ["5x2", "4x1", "4x1", "3x1", "3x1", "3x1", "2x1", "2x1", "2x1", "2x1", "mina1", "mina2"]
@@ -119,11 +122,6 @@ function analizarHorizontal (numPruebaOG, letraPruebaOG, numOG, letraOG, hacer) 
     let izquierda = numPrueba
     return {derecha, izquierda}
 }
-
-
-
-
-
 
 function analizarVertical(numPrueba, letraPruebaOG, derecha, izquierda) {
     //arriba
@@ -259,18 +257,6 @@ function direccion () {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 function elegirBarco(id) {
     let celda = id;
     if (queBarco>11){
@@ -356,3 +342,12 @@ function elegirBarco(id) {
 
     
 }
+
+function buscarPartida () {
+    socket.emit("BuscarPartida", {idUsuario: idUsuario})
+}
+
+socket.on("connect", () => {
+    console.log("Me conecté a WS");
+    
+});

@@ -19,19 +19,29 @@ app.use(express.static('public')); //Expongo al lado cliente la carpeta "public"
 
 app.use(express.urlencoded({ extended: false })); // habria que ponerlo en true ??? el firebase de Paul lo tenia en true
 app.use(bodyParser.json());
-app.use(express.static("public"));
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 const Listen_Port = 3000;
 
-app.listen(Listen_Port, function () {
-  console.log(
-    "Servidor NodeJS corriendo en http://localhost:" + Listen_Port + "/"
-  );
+const server = app.listen(Listen_Port, function () {
+  console.log("Servidor NodeJS corriendo en http://localhost:" + Listen_Port + "/");
 });
-app.use(session({secret: '123456', resave: true, saveUninitialized: true}));
+
+const io = require('socket.io')(server);
+
+const sessionMiddleware = session({
+  secret: 'sararasthastka',
+  resave: true,
+  saveUninitialized: false,
+});
+
+app.use(sessionMiddleware);
+
+io.use(function(socket, next) {
+  sessionMiddleware(socket.request, socket.request.res, next);
+});
 
 const firebaseConfig = {
   apiKey: "AIzaSyBPffjAlSqMD7InPCDKwx9BGOu1mvCKIZM",
@@ -51,20 +61,6 @@ const authService = require("./authService");
 
 app.get("/", (req, res) => {
   console.log("soy un pedido GET / -home-")
-  /*let letrasAbecedario = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ'];
-  let tablero = `<div class="fondoJuego">
-  <table width="600" height="600px"; border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">`;
-  for(let i=0; i<letrasAbecedario.length; i++) {
-    tablero += `<tr align="center">`;
-    for (let x=1; x<16; x++) {
-      casillero=letrasAbecedario[i]+x;
-      tablero += `<td id="${casillero}" onclick="atacar(id)"><font color="#ffffff">1</font></td>`
-    }
-    tablero +=`</tr>`
-  }
-  tablero += `    </table>
-  </div>`
-  console.log(tablero);*/
   res.render("home");
 });
 
@@ -128,7 +124,8 @@ app.get("/prueba", (req, res) => {
 
 /************************************** */
 app.get("/home3", (req,res) => {
-  console.log("soy un pedido GET /home3")
+  console.log("soy un pedido GET /home3");
+  req.session.idPartida = 0;
   res.render("home3", null);
 });
 
@@ -141,3 +138,74 @@ app.get("/elegirBarco", (req,res) => {
   console.log("soy un pedido GET /elegirBarco")
   res.render("elegirBarco", null);
 });
+
+
+let jugadores = [];
+
+io.on("connection", (socket) => {
+  const req = socket.request;
+  socket.join(0);
+
+  console.log("aaaaaa");
+
+  socket.on ("buscarPartida", data => {
+    jugadores.push(data.idUsuario);
+    if (jugadores.length>=2){
+      //socket.
+    }
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  socket.on('nuevo-mensaje', async(data) => {
+      await MySQL.realizarQuery(`INSERT INTO mensajesSK (contenido, fecha, idUsuario, idGrupo) VALUES ("${data.mensaje}", "${data.hora}", ${data.idUsuario}, ${req.session.idGrupo})`);
+      let respuesta = await MySQL.realizarQuery(`SELECT * FROM UsuariosPorGruposSK WHERE idGrupo=${req.session.idGrupo}`);
+      io.to(req.session.idGrupo).emit("recibir-mensaje", {mensaje: data.mensaje, date: data.hora, idUsuario: data.idUsuario, usuarios: respuesta});
+  });
+
+  socket.on('elegir-chat', async(data) => {
+      socket.leave(req.session.idGrupo);
+      req.session.idGrupo=data.id;
+      socket.join(req.session.idGrupo);
+      io.to(req.session.idGrupo).emit("chat-elegido", await getMensajes(req, data.idUsuarioPrueba));
+
+  });
+
+
+  socket.on('disconnect', () => {
+      socket.leave(req.session.idGrupo);
+  });
+});
+setInterval(() => io.emit("server-message", { mensaje: "MENSAJE DEL SERVIDOR" }), 2000);
