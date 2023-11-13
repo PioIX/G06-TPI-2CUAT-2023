@@ -133,3 +133,7 @@ app.get("/juego", (req,res) => {
 app.get("/elegirBarco", (req,res) => {
   res.render("elegirBarco", null);
 });
+
+app.get("/admin", (req,res) => {
+  res.render("admin", null);
+});
