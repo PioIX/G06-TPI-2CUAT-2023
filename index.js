@@ -155,40 +155,6 @@ io.on("connection", (socket) => {
     }
   })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   socket.on('nuevo-mensaje', async(data) => {
       await MySQL.realizarQuery(`INSERT INTO mensajesSK (contenido, fecha, idUsuario, idGrupo) VALUES ("${data.mensaje}", "${data.hora}", ${data.idUsuario}, ${req.session.idGrupo})`);
       let respuesta = await MySQL.realizarQuery(`SELECT * FROM UsuariosPorGruposSK WHERE idGrupo=${req.session.idGrupo}`);

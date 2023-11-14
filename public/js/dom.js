@@ -266,56 +266,49 @@ function elegirBarco(id) {
     let mayor = -1;
     let barcosIguales = 0;
     for (let a = 0; a<barcos.length; a++){ //barcos
-        if (a != 0){
-            casilleros = 0;
-            if (parseInt(barcos[a][0])>parseInt(barcos[a][2])) {
-                mayor= parseInt(barcos[a][0]);
-            } else {
-                mayor = parseInt(barcos[a][2]);
+        casilleros = 0;
+        if (parseInt(barcos[a][0])>parseInt(barcos[a][2])) {
+            mayor= parseInt(barcos[a][0]);
+        } else {
+            mayor = parseInt(barcos[a][2]);
+        }
+        if (barcos[a].length<= 3) {
+            if (mayor == 2) {
+                barcosIguales = 4;
+            } else if (mayor == 3) {
+                barcosIguales = 3;
+            } else if (mayor == 4) {
+                barcosIguales = 2;
+            } else if (mayor == 5) {
+                barcosIguales = 1;
             }
-            if (barcos[a].length<= 3) {
-                if (mayor == 2) {
-                    barcosIguales = 4;
-                } else if (mayor == 3) {
-                    barcosIguales = 3;
-                } else if (mayor == 4) {
-                    barcosIguales = 2;
-                } else if (mayor == 5) {
-                    barcosIguales = 1;
-                }
-            }
-            for (let i = 0; i<tablero.length; i++){ //eje y
-                for (let x = 0; x<tablero[i].length; x++){ //eje x
-                    if (barcos[a] == tablero[i][x].tamaño) {
-                        casilleros++;
-                    }
-                }
-            }
-            if (barcos[a].length>3){
-                if (casilleros != 2) {
-                    queBarco = a;
-                }
-            } else {
-                if (barcos[a][0]*barcos[a][2]*barcosIguales != casilleros){
-                    queBarco = a;
+        }
+        for (let i = 0; i<tablero.length; i++){ //eje y
+            for (let x = 0; x<tablero[i].length; x++){ //eje x
+                if (barcos[a] == tablero[i][x].tamaño) {
+                    casilleros++;
                 }
             }
         }
-        
+        if (barcos[a].length>3){
+            if (casilleros != 2) {
+                queBarco = a;
+            }
+        } else {
+            if (barcos[a][0]*barcos[a][2]*barcosIguales != casilleros){
+                queBarco = a;
+            }
+        }
     }
-
-    /*if (queBarco==-1) {
-        alert("Ya pusiste todos tus barcos");
-    }
-    else {        
-    } */
     
     let tamaño = barcos[queBarco];
     let posicionX = parseInt(tamaño[0]);
     let posicionY = parseInt(tamaño[2]);
     let barco = [];
     let xd = true;
-    if (tamaño.length>3){
+    console.log(celda)
+    console.log(document.getElementById(celda).style.backgorundColor)
+    if (tamaño.length>3 && document.getElementById(celda).style.backgroundColor != "green"){
         document.getElementById(celda).style.background = "blue";
         for (let i = 0; i<tablero.length; i++){
             for (let x = 0; x<tablero[i].length; x++){
@@ -328,7 +321,10 @@ function elegirBarco(id) {
         if (queBarco==1){
             queBarco--;
         }
-    } else {
+    } else if (tamaño.length>3 && document.getElementById(celda).style.backgorundColor=="green"){
+        alert ("mina mal ubicada");
+    }
+    else {
 
         if (orientacion == "horizontal"){
             for (let i=0; i<posicionX; i++){
@@ -372,9 +368,30 @@ function elegirBarco(id) {
         } else {
             if (xd == false){
                 alert("El barco está mal ubicado")
-            } else if (document.getElementById(celda).style.backgroundColor == "black" && queBarco) {
+            } else if (document.getElementById(celda).style.backgroundColor == "black") {
+                console.log("epico ", queBarco)
                 if (queBarco == 0){
                     alert ("Ya pusiste todos tus barcos")
+                    let barcos = [];
+                    let orientacion = ""
+                    // socket on
+                    for (let i = 0; i<tablero.length; i++){
+                        for (let x = 0; x<tablero[i].length; x++){
+                            if (tablero[i][x].barco == true) {
+                                if (tablero[i][x].tamaño.length>3){
+                                    //------
+                                } else {
+                                    if (tablero[i][x].tamaño[0]>tablero[i][x].tamaño[2]){
+                                        orientacion = "horizontal";
+                                    } else {
+                                        orientacion = "vertical";
+                                    }
+                                }
+                                
+                                barcos.push({cabeza: (tablero[i][x].cabezaBarcoY+tablero[i][x].cabezaBarcoX), })
+                            }
+                        }
+                    }
                 } else {
                     for (let i=0; i<barco.length; i++){
                         document.getElementById(barco[i]).style.background = "green";
