@@ -1,9 +1,10 @@
-const IP = "ws://localhost:3001";
-const socket = io(IP);
+/* const IP = "ws://localhost:3001";
+const socket = io(IP); */
 
 let tablero = ["A", "B", "C", "D", "E","F","G","H","I","J", "K", "L", "M","N","Ñ"];
 let letras = ["A", "B", "C", "D", "E","F","G","H","I","J", "K", "L", "M","N","Ñ"];
-let barcos = ["5x2", "4x1", "4x1", "3x1", "3x1", "3x1", "2x1", "2x1", "2x1", "2x1", "mina1", "mina2"]
+//let barcos = ["5x2", "4x1", "4x1", "3x1", "3x1", "3x1", "2x1", "2x1", "2x1", "2x1", "mina1", "mina2"]
+let barcos = ["0x0", "mina", "2x1", "3x1", "4x1", "5x2"]
 let queBarco = 0;
 let orientacion = "horizontal";
 class Celda {
@@ -15,6 +16,7 @@ class Celda {
         this.clickeado = false;
         this.prohibidoY= [];
         this.prohibidoX= [];
+        this.tamaño = "";
     }
 } 
 
@@ -244,6 +246,7 @@ function borrar(numero, letra) {
         for (let x=0; x<tablero[i].length; x++){
             if (tablero[i][x].cabezaBarcoY == tablero [NumeroLetra(letra)][numero-1].cabezaBarcoY && tablero[i][x].cabezaBarcoX == tablero [NumeroLetra(letra)][numero-1].cabezaBarcoX){
                 document.getElementById(letras[i]+(x+1)).style.backgroundColor= "black";
+                tablero[i][x].tamaño = "";
             } 
         }
     }
@@ -259,71 +262,126 @@ function direccion () {
 
 function elegirBarco(id) {
     let celda = id;
-    if (queBarco>11){
-        alert ("pusiste todos los barcos");
-    } else {
-        let tamaño = barcos[queBarco];
-        console.log(tamaño)
-
-        analizarCelda(celda);
-        let posicionX = parseInt(tamaño[0]);
-        let posicionY = parseInt(tamaño[2]);
-        let barco = [];
-        let xd = true;
-        if (tamaño.length>3){
-            document.getElementById(celda).style.background = "blue";
-            queBarco++;
-        } else {
-
-            if (orientacion == "horizontal"){
-                for (let i=0; i<posicionX; i++){
-                    barco.push(analizarCelda(celda).letraPrueba + (analizarCelda(celda).numPrueba+i))
-                    for (let z=0; z<posicionY; z++){
-                        if (z>0){
-                            barco.push(letras[NumeroLetra(analizarCelda(celda).letraPrueba)+z]+ (analizarCelda(celda).numPrueba+i))
-                            if(NumeroLetra(analizarCelda(celda).letraPrueba)+z > 14 || analizarCelda(celda).numPrueba+i>15){
-                                xd=false
-                            }
-                        }
-                    }
-                }
-            } else if (orientacion=="vertical"){
-                for (let i=0; i<posicionY; i++){
-                    barco.push(analizarCelda(celda).letraPrueba + (analizarCelda(celda).numPrueba+i))
-                    for (let z=0; z<posicionX; z++){
-                        if (z>0){
-                            barco.push(letras[NumeroLetra(analizarCelda(celda).letraPrueba)+z]+ (analizarCelda(celda).numPrueba+i))
-                            if(NumeroLetra(analizarCelda(celda).letraPrueba)+z > 14 || analizarCelda(celda).numPrueba+i>15){
-                                xd=false
-                            }
-                        }
-                    }
-                }
-            }
-            
-    
-            if (xd==true){
-                for (let a=0; a<barco.length; a++){
-                    if (document.getElementById(barco[a]).style.backgroundColor != "black"){
-                        xd = false
-                    }
-                }
-            }
-    
-    
-            if (document.getElementById(celda).style.backgroundColor == "green"){
-                document.getElementById(celda).style.backgroundColor = "black";
-                borrar(analizarCelda(celda).numPrueba, analizarCelda(celda).letraPrueba)
+    let casilleros = 0;
+    let mayor = -1;
+    let barcosIguales = 0;
+    for (let a = 0; a<barcos.length; a++){ //barcos
+        if (a != 0){
+            casilleros = 0;
+            if (parseInt(barcos[a][0])>parseInt(barcos[a][2])) {
+                mayor= parseInt(barcos[a][0]);
             } else {
-                if (xd == false){
-                    alert("El barco está mal ubicado")
-                } else if (document.getElementById(celda).style.backgroundColor == "black") {
-                    queBarco++;
+                mayor = parseInt(barcos[a][2]);
+            }
+            if (barcos[a].length<= 3) {
+                if (mayor == 2) {
+                    barcosIguales = 4;
+                } else if (mayor == 3) {
+                    barcosIguales = 3;
+                } else if (mayor == 4) {
+                    barcosIguales = 2;
+                } else if (mayor == 5) {
+                    barcosIguales = 1;
+                }
+            }
+            for (let i = 0; i<tablero.length; i++){ //eje y
+                for (let x = 0; x<tablero[i].length; x++){ //eje x
+                    if (barcos[a] == tablero[i][x].tamaño) {
+                        casilleros++;
+                    }
+                }
+            }
+            if (barcos[a].length>3){
+                if (casilleros != 2) {
+                    queBarco = a;
+                }
+            } else {
+                if (barcos[a][0]*barcos[a][2]*barcosIguales != casilleros){
+                    queBarco = a;
+                }
+            }
+        }
+        
+    }
+
+    /*if (queBarco==-1) {
+        alert("Ya pusiste todos tus barcos");
+    }
+    else {        
+    } */
+    
+    let tamaño = barcos[queBarco];
+    let posicionX = parseInt(tamaño[0]);
+    let posicionY = parseInt(tamaño[2]);
+    let barco = [];
+    let xd = true;
+    if (tamaño.length>3){
+        document.getElementById(celda).style.background = "blue";
+        for (let i = 0; i<tablero.length; i++){
+            for (let x = 0; x<tablero[i].length; x++){
+                if (analizarCelda(celda).numPrueba -1 == x && NumeroLetra(analizarCelda(celda).letraPrueba) == i){
+                    tablero[i][x].mina = true;
+                    tablero[i][x].tamaño = tamaño;
+                }
+            }
+        }
+        if (queBarco==1){
+            queBarco--;
+        }
+    } else {
+
+        if (orientacion == "horizontal"){
+            for (let i=0; i<posicionX; i++){
+                barco.push(analizarCelda(celda).letraPrueba + (analizarCelda(celda).numPrueba+i))
+                for (let z=0; z<posicionY; z++){
+                    if (z>0){
+                        barco.push(letras[NumeroLetra(analizarCelda(celda).letraPrueba)+z]+ (analizarCelda(celda).numPrueba+i))
+                        if(NumeroLetra(analizarCelda(celda).letraPrueba)+z > 14 || analizarCelda(celda).numPrueba+i>15){
+                            xd=false
+                        }
+                    }
+                }
+            }
+        } else if (orientacion=="vertical"){
+            for (let i=0; i<posicionY; i++){
+                barco.push(analizarCelda(celda).letraPrueba + (analizarCelda(celda).numPrueba+i))
+                for (let z=0; z<posicionX; z++){
+                    if (z>0){
+                        barco.push(letras[NumeroLetra(analizarCelda(celda).letraPrueba)+z]+ (analizarCelda(celda).numPrueba+i))
+                        if(NumeroLetra(analizarCelda(celda).letraPrueba)+z > 14 || analizarCelda(celda).numPrueba+i>15){
+                            xd=false
+                        }
+                    }
+                }
+            }
+        }
+        
+
+        if (xd==true){
+            for (let a=0; a<barco.length; a++){
+                if (document.getElementById(barco[a]).style.backgroundColor != "black"){
+                    xd = false
+                }
+            }
+        }
+
+
+        if (document.getElementById(celda).style.backgroundColor == "green"){
+            document.getElementById(celda).style.backgroundColor = "black";
+            borrar(analizarCelda(celda).numPrueba, analizarCelda(celda).letraPrueba)
+        } else {
+            if (xd == false){
+                alert("El barco está mal ubicado")
+            } else if (document.getElementById(celda).style.backgroundColor == "black" && queBarco) {
+                if (queBarco == 0){
+                    alert ("Ya pusiste todos tus barcos")
+                } else {
                     for (let i=0; i<barco.length; i++){
                         document.getElementById(barco[i]).style.background = "green";
                         tablero[NumeroLetra(analizarCelda(barco[i]).letraPrueba)][analizarCelda(barco[i]).numPrueba -1].barco = true;
                         tablero[NumeroLetra(analizarCelda(barco[i]).letraPrueba)][analizarCelda(barco[i]).numPrueba -1].cabezaBarcoX=analizarCelda(celda).numPrueba;
                         tablero[NumeroLetra(analizarCelda(barco[i]).letraPrueba)][analizarCelda(barco[i]).numPrueba -1].cabezaBarcoY=analizarCelda(celda).letraPrueba;
+                        tablero[NumeroLetra(analizarCelda(barco[i]).letraPrueba)][analizarCelda(barco[i]).numPrueba -1].tamaño = tamaño;
                     }
     
                     analizarVertical(
@@ -332,17 +390,17 @@ function elegirBarco(id) {
                         analizarHorizontal(analizarCelda(celda).numPrueba, analizarCelda(celda).letraPrueba, analizarCelda(celda).numPrueba, analizarCelda(celda).letraPrueba, false).derecha,
                         analizarHorizontal(analizarCelda(celda).numPrueba, analizarCelda(celda).letraPrueba, analizarCelda(celda).numPrueba, analizarCelda(celda).letraPrueba, false).izquierda
                     );
-    
                 }
+
+            } else{
+                alert ("pusiste todos los barcos");
             }
         }
-        
     }
-    
-
     
 }
 
+/*
 function buscarPartida () {
     socket.emit("BuscarPartida", {idUsuario: idUsuario})
 }
@@ -350,4 +408,4 @@ function buscarPartida () {
 socket.on("connect", () => {
     console.log("Me conecté a WS");
     
-});
+}); */
