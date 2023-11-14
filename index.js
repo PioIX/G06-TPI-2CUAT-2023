@@ -170,6 +170,12 @@ io.on("connection", (socket) => {
   });
 
 
+  socket.on('buscarPartida', async(data) => {
+    console.log("asdasdadasdasd");
+
+});
+
+
   socket.on('disconnect', () => {
       socket.leave(req.session.idGrupo);
   });

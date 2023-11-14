@@ -1,5 +1,5 @@
-/* const IP = "ws://localhost:3001";
-const socket = io(IP); */
+const IP = "ws://localhost:3000";
+const socket = io(IP);
 
 let tablero = ["A", "B", "C", "D", "E","F","G","H","I","J", "K", "L", "M","N","Ñ"];
 let letras = ["A", "B", "C", "D", "E","F","G","H","I","J", "K", "L", "M","N","Ñ"];
@@ -417,7 +417,6 @@ function elegirBarco(id) {
     
 }
 
-/*
 function buscarPartida () {
     socket.emit("BuscarPartida", {idUsuario: idUsuario})
 }
@@ -425,4 +424,4 @@ function buscarPartida () {
 socket.on("connect", () => {
     console.log("Me conecté a WS");
     
-}); */
+});
