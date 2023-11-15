@@ -421,8 +421,12 @@ function elegirBarco(id) {
 }
 
 function buscarPartida () {
-    socket.emit("BuscarPartida", {idUsuario: idUsuario})
+    socket.emit("buscarPartida", {usuario: "tintouriel@pioix.edu.ar"})
 }
+
+
+
+
 
 socket.on("connect", () => {
     console.log("Me conecté a WS");
@@ -430,7 +434,8 @@ socket.on("connect", () => {
 });
 
 socket.on("partidaEncontrada", data =>{
-    location.href("/elegirBarco")
+    console.log("me encanta el fortnite")
+    //location.href("/elegirBarco")
 });
 
 socket.on("server-message", data =>{

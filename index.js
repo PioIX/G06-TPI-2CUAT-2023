@@ -95,7 +95,7 @@ app.get("/login", (req, res) => {
 app.post("/login", async (req, res) => {
   console.log("soy un pedido POST /login")
   const { email, password } = req.body;
-
+  req.session.usuario = email;
   try {
     const userCredential = await authService.loginUser(auth, {
       email,
@@ -147,50 +147,32 @@ io.on("connection", (socket) => {
   const req = socket.request;
   socket.join(0);
 
-  console.log("aaaaaa");
-
   socket.on("buscarPartida", async (data) => {
+    console.log("entre perro")
+    console.log("aaaaa id jugador: ", data.usuario)
     jugadores++
     if (jugadores == 1) {
+      console.log("entre al if")
       MySQL.realizarQuery(`INSERT INTO Partidas () values ()`)
       socket.leave(req.session.idPartida)
-      req.session.idPartida = MySQL.realizarQuery(`select * from Partidas order by id limit 1`).id;
+      req.session.idPartida = MySQL.realizarQuery(`select * from Partidas`);  //order by id DESC limit 1
+      console.log("req session: ", req.session.idPartida)
       socket.join(req.session.idPartida)
-      MySQL.realizarQuery(`INSERT INTO UsuariosPorPartida (idPartida, idJugador1) values (${req.session.idPartida}, "${req.session.usuario}")`);
+      MySQL.realizarQuery(`INSERT INTO UsuariosPorPartida (idPartida, idJugador1) values (${req.session.idPartida}, "${data.usuario}")`);
     } else if (jugadores == 2) {
       jugadores = 0;
       socket.leave(req.session.idPartida)
       req.session.idPartida = MySQL.realizarQuery(`select * from Partidas order by id limit 1`).id;
       socket.join(req.session.idPartida)
-      MySQL.realizarQuery(`UPDATE UsuariosPorPartida SET idJugador2 = "${req.session.usuario}" where idPartida = ${req.session.idPartida}`);
+      MySQL.realizarQuery(`UPDATE UsuariosPorPartida SET idJugador2 = "${data.usuario}" where idPartida = ${req.session.idPartida}`);
       let consulta = MySQL.realizarQuery(`select * from UsuariosPorPartida where idPartida = ${req.session.idPartida}`);
       io.to(req.session.idPartida).emit("partidaEncontrada", { jugador1: consulta[0].jugador1, jugador2: consulta[0].jugador2 });
     }
   })
-
-  socket.on('nuevo-mensaje', async (data) => {
-    await MySQL.realizarQuery(`INSERT INTO mensajesSK (contenido, fecha, idUsuario, idGrupo) VALUES ("${data.mensaje}", "${data.hora}", ${data.idUsuario}, ${req.session.idGrupo})`);
-    let respuesta = await MySQL.realizarQuery(`SELECT * FROM UsuariosPorGruposSK WHERE idGrupo=${req.session.idGrupo}`);
-    io.to(req.session.idGrupo).emit("recibir-mensaje", { mensaje: data.mensaje, date: data.hora, idUsuario: data.idUsuario, usuarios: respuesta });
-  });
-
-  socket.on('elegir-chat', async (data) => {
-    socket.leave(req.session.idGrupo);
-    req.session.idGrupo = data.id;
-    socket.join(req.session.idGrupo);
-    io.to(req.session.idGrupo).emit("chat-elegido", await getMensajes(req, data.idUsuarioPrueba));
-
-  });
-
-
-  socket.on('buscarPartida', async (data) => {
-    console.log("asdasdadasdasd");
-
-  });
 
 
   socket.on('disconnect', () => {
     socket.leave(req.session.idGrupo);
   });
 });
-setInterval(() => io.emit("server-message", { mensaje: "MENSAJE DEL SERVIDOR" }), 2000);
+//setInterval(() => io.emit("server-message", { mensaje: "MENSAJE DEL SERVIDOR" }), 2000);
