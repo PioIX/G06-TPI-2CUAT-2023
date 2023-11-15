@@ -380,6 +380,7 @@
 .pagJuego{
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-left: 100px;
   margin-right: 100px;
 }
@@ -482,4 +483,10 @@ a div {
   opacity: 83%;
   margin-right: auto;
   margin-left: auto;
+}
+
+.bomba{
+  width: 60px;
+  height: 60px;
+  background-position: center;
 }
