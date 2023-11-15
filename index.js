@@ -140,7 +140,7 @@ app.get("/elegirBarco", (req,res) => {
 });
 
 
-let jugadores = [];
+let jugadores = 0;
 
 io.on("connection", (socket) => {
   const req = socket.request;
@@ -148,10 +148,22 @@ io.on("connection", (socket) => {
 
   console.log("aaaaaa");
 
-  socket.on ("buscarPartida", data => {
-    jugadores.push(data.idUsuario);
-    if (jugadores.length>=2){
-      //socket.
+  socket.on ("buscarPartida", async(data) => {
+    jugadores++
+    if (jugadores==1){
+      MySQL.realizarQuery(`INSERT INTO Partidas () values ()`)
+      socket.leave(req.session.idPartida)
+      req.session.idPartida = MySQL.realizarQuery(`select * from Partidas order by id limit 1`).id;
+      socket.join(req.session.idPartida)
+      MySQL.realizarQuery(`INSERT INTO UsuariosPorPartida (idPartida, idJugador1) values (${req.session.idPartida}, "${req.session.usuario}")`);
+    } else if (jugadores==2) {
+      jugadores=0;
+      socket.leave(req.session.idPartida)
+      req.session.idPartida = MySQL.realizarQuery(`select * from Partidas order by id limit 1`).id;
+      socket.join(req.session.idPartida)
+      MySQL.realizarQuery(`UPDATE UsuariosPorPartida SET idJugador2 = "${req.session.usuario}" where idPartida = ${req.session.idPartida}`);
+      let consulta = MySQL.realizarQuery(`select * from UsuariosPorPartida where idPartida = ${req.session.idPartida}`);
+      io.to(req.session.idPartida).emit("partidaEncontrada", {jugador1: consulta[0].jugador1, jugador2: consulta[0].jugador2});
     }
   })
 

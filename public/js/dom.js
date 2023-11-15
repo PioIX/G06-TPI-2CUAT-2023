@@ -375,6 +375,9 @@ function elegirBarco(id) {
                     let barcos = [];
                     let orientacion = ""
                     // socket on
+
+                    socket.emit("")
+
                     for (let i = 0; i<tablero.length; i++){
                         for (let x = 0; x<tablero[i].length; x++){
                             if (tablero[i][x].barco == true) {
@@ -424,4 +427,8 @@ function buscarPartida () {
 socket.on("connect", () => {
     console.log("Me conecté a WS");
     
+});
+
+socket.on("partidaEncontrada", data =>{
+    location.href("/elegirBarco")
 });
