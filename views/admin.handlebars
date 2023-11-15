@@ -1,16 +1,23 @@
 <div class="home1">
-    <center>
+    <div class="containers">
         <div class="container1">
-            <div class="dropdown-container" tabindex="-1">
-                <div class="three-dots"></div>
-                <div class="dropdown">
-                <a href="#"><div>{{user}}</div></a>
-                <a href="#"><div>even more scams</div></a>
-                <a href="#"><div>still some money left?</div></a>
-                </div>
-            </div>        
+            <center>
+                <select class="desplegable" id="categoriaDesplegable">
+                    <option >ID Usuario</option>
+                    <option value=1>ODS 1</li>
+                    <option value=2>ODS 2</option>
+                </select> 
+            </center>     
         </div>
-    </center>
+        <div class="container2">
+            <div class="nuevaPregunta">Nombre Usuario</div>
+            <div class="mb-3 form-group">
+                <input type="text" class="form-control" id="nombre" name="PreguntaNueva" placeholder="">
+            </div>
+            <input type="submit" class="btnAdmin yellow" value="Editar Usuario">
+            <input type="submit" class="btnAdmin yellow" value="Borrar Usuario">
+        </div>
+    </div>
 </div>
 
 

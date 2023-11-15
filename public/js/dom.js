@@ -51,7 +51,7 @@ function elegirBarco(id) {
     let letras = ["A", "B", "C", "D", "E","F","G","H","I","J", "K", "L", "M","N","Ñ"]
     for (let i=0;i<letras.length; i++){
         for (let x=1; x<16; x++){
-            console.log("let ", (letras[0]+))
+            console.log("let ", (letras[0]))
         }
     }
     let b2 = document.getElementById("B2").getAttribute("value")
