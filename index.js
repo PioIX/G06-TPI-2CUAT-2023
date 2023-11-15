@@ -1,5 +1,9 @@
-const express = require("express");
-const exphbs = require("express-handlebars");
+const express = require('express');
+const exphbs = require('express-handlebars');
+const bodyParser = require('body-parser'); //Para el manejo de los strings JSON
+const MySQL = require('./modulos/mysql'); //Añado el archivo mysql.js presente en la carpeta módulos
+const session = require('express-session');
+
 const { initializeApp } = require("firebase/app");
 const {
   getAuth,
@@ -10,36 +14,33 @@ const {
   GoogleAuthProvider,
 } = require("firebase/auth");
 
-const bodyParser = require('body-parser'); //Para el manejo de los strings JSON
-const MySQL = require('./modulos/mysql'); //Añado el archivo mysql.js presente en la carpeta módulos
-const session = require('express-session'); //Para usar variables de sesión
+const app = express(); //Inicializo express para el manejo de las peticiones
 
-const app = express();
 app.use(express.static('public')); //Expongo al lado cliente la carpeta "public"
 
-app.use(express.urlencoded({ extended: false })); // habria que ponerlo en true ??? el firebase de Paul lo tenia en true
+app.use(bodyParser.urlencoded({ extended: false })); //Inicializo el parser JSON
 app.use(bodyParser.json());
 
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
+app.engine('handlebars', exphbs({ defaultLayout: 'main' })); //Inicializo Handlebars. Utilizo como base el layout "Main".
+app.set('view engine', 'handlebars'); //Inicializo Handlebars
 
-const Listen_Port = 3000;
+const Listen_Port = 3000; //Puerto por el que estoy ejecutando la página Web
 
 const server = app.listen(Listen_Port, function () {
-  console.log("Servidor NodeJS corriendo en http://localhost:" + Listen_Port + "/");
-});
+  console.log('Servidor NodeJS corriendo en http://localhost:' + Listen_Port + '/');
+});;
 
-const io = require('socket.io')(server);
+const io = require('socket.io')(server)
 
 const sessionMiddleware = session({
-  secret: 'sararasthastka',
-  resave: true,
-  saveUninitialized: false,
+  secret: "supersarasa",
+  resave: false,
+  saveUninitialized: false
 });
 
 app.use(sessionMiddleware);
 
-io.use(function(socket, next) {
+io.use(function (socket, next) {
   sessionMiddleware(socket.request, socket.request.res, next);
 });
 
@@ -123,18 +124,18 @@ app.get("/prueba", (req, res) => {
 });
 
 /************************************** */
-app.get("/home3", (req,res) => {
+app.get("/home3", (req, res) => {
   console.log("soy un pedido GET /home3");
   req.session.idPartida = 0;
   res.render("home3", null);
 });
 
-app.get("/juego", (req,res) => {
+app.get("/juego", (req, res) => {
   console.log("soy un pedido GET /juego")
   res.render("juego", null);
 });
 
-app.get("/elegirBarco", (req,res) => {
+app.get("/elegirBarco", (req, res) => {
   console.log("soy un pedido GET /elegirBarco")
   res.render("elegirBarco", null);
 });
@@ -148,48 +149,48 @@ io.on("connection", (socket) => {
 
   console.log("aaaaaa");
 
-  socket.on ("buscarPartida", async(data) => {
+  socket.on("buscarPartida", async (data) => {
     jugadores++
-    if (jugadores==1){
+    if (jugadores == 1) {
       MySQL.realizarQuery(`INSERT INTO Partidas () values ()`)
       socket.leave(req.session.idPartida)
       req.session.idPartida = MySQL.realizarQuery(`select * from Partidas order by id limit 1`).id;
       socket.join(req.session.idPartida)
       MySQL.realizarQuery(`INSERT INTO UsuariosPorPartida (idPartida, idJugador1) values (${req.session.idPartida}, "${req.session.usuario}")`);
-    } else if (jugadores==2) {
-      jugadores=0;
+    } else if (jugadores == 2) {
+      jugadores = 0;
       socket.leave(req.session.idPartida)
       req.session.idPartida = MySQL.realizarQuery(`select * from Partidas order by id limit 1`).id;
       socket.join(req.session.idPartida)
       MySQL.realizarQuery(`UPDATE UsuariosPorPartida SET idJugador2 = "${req.session.usuario}" where idPartida = ${req.session.idPartida}`);
       let consulta = MySQL.realizarQuery(`select * from UsuariosPorPartida where idPartida = ${req.session.idPartida}`);
-      io.to(req.session.idPartida).emit("partidaEncontrada", {jugador1: consulta[0].jugador1, jugador2: consulta[0].jugador2});
+      io.to(req.session.idPartida).emit("partidaEncontrada", { jugador1: consulta[0].jugador1, jugador2: consulta[0].jugador2 });
     }
   })
 
-  socket.on('nuevo-mensaje', async(data) => {
-      await MySQL.realizarQuery(`INSERT INTO mensajesSK (contenido, fecha, idUsuario, idGrupo) VALUES ("${data.mensaje}", "${data.hora}", ${data.idUsuario}, ${req.session.idGrupo})`);
-      let respuesta = await MySQL.realizarQuery(`SELECT * FROM UsuariosPorGruposSK WHERE idGrupo=${req.session.idGrupo}`);
-      io.to(req.session.idGrupo).emit("recibir-mensaje", {mensaje: data.mensaje, date: data.hora, idUsuario: data.idUsuario, usuarios: respuesta});
+  socket.on('nuevo-mensaje', async (data) => {
+    await MySQL.realizarQuery(`INSERT INTO mensajesSK (contenido, fecha, idUsuario, idGrupo) VALUES ("${data.mensaje}", "${data.hora}", ${data.idUsuario}, ${req.session.idGrupo})`);
+    let respuesta = await MySQL.realizarQuery(`SELECT * FROM UsuariosPorGruposSK WHERE idGrupo=${req.session.idGrupo}`);
+    io.to(req.session.idGrupo).emit("recibir-mensaje", { mensaje: data.mensaje, date: data.hora, idUsuario: data.idUsuario, usuarios: respuesta });
   });
 
-  socket.on('elegir-chat', async(data) => {
-      socket.leave(req.session.idGrupo);
-      req.session.idGrupo=data.id;
-      socket.join(req.session.idGrupo);
-      io.to(req.session.idGrupo).emit("chat-elegido", await getMensajes(req, data.idUsuarioPrueba));
+  socket.on('elegir-chat', async (data) => {
+    socket.leave(req.session.idGrupo);
+    req.session.idGrupo = data.id;
+    socket.join(req.session.idGrupo);
+    io.to(req.session.idGrupo).emit("chat-elegido", await getMensajes(req, data.idUsuarioPrueba));
 
   });
 
 
-  socket.on('buscarPartida', async(data) => {
+  socket.on('buscarPartida', async (data) => {
     console.log("asdasdadasdasd");
 
-});
+  });
 
 
   socket.on('disconnect', () => {
-      socket.leave(req.session.idGrupo);
+    socket.leave(req.session.idGrupo);
   });
 });
 setInterval(() => io.emit("server-message", { mensaje: "MENSAJE DEL SERVIDOR" }), 2000);

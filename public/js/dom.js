@@ -432,3 +432,7 @@ socket.on("connect", () => {
 socket.on("partidaEncontrada", data =>{
     location.href("/elegirBarco")
 });
+
+socket.on("server-message", data =>{
+    console.log("Mensaje del servidor", data);
+});
