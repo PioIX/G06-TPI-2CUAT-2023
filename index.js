@@ -101,13 +101,28 @@ app.post("/login", async (req, res) => {
       email,
       password,
     });
-    // Aquí puedes redirigir al usuario a la página que desees después del inicio de sesión exitoso
-    res.redirect("/home3");
+    let respuesta = await MySQL.realizarQuery(`SELECT * FROM Usuarios WHERE email = "${email}"`)
+    if (respuesta.length > 0) {
+        for (let i = 0; i < respuesta.length; i++) {
+            if (respuesta[i].email == email) {
+                req.session.usuario = respuesta[i].usuario;
+                req.session.administrador = respuesta[i].administrador;
+                if (respuesta[i].administrador == 1) {
+                  console.log("admin")
+                    res.send({validar: true, userType: true});
+                } else {
+                    res.send({validar: true, userType: false});
+                    console.log("no admin")
+                }
+            }
+        }
+    }
+    else{
+        res.send({validar:false})    
+    } // Aquí puedes redirigir al usuario a la página que desees después del inicio de sesión exitoso
   } catch (error) {
     console.error("Error en el inicio de sesión:", error);
-    res.render("login", {
-      message: "Error en el inicio de sesión: " + error.message,
-    });
+    res.send({validar:false})    
   }
 });
 
@@ -136,4 +151,26 @@ app.get("/elegirBarco", (req,res) => {
 
 app.get("/admin", (req,res) => {
   res.render("admin", null);
+});
+
+app.get("/homeAdmin", (req,res) => {
+  res.render("homeAdmin", null);
+});
+
+app.put("/admin", async (req,res) => {
+  let respuesta = await MySQL.realizarQuery(`SELECT * FROM Usuarios WHERE Usuario = "${req.session.usuario}"`);
+  if (req.body.opcionCorrecta == req.body.opcionElegida) {
+      if (respuesta[0].Puntuacion+1>respuesta[0].PuntuacionMaxima) {
+          await MySQL.realizarQuery(`UPDATE Usuarios SET Puntuacion= Puntuacion+1, PuntuacionMaxima="${respuesta[0].Puntuacion+1}" WHERE Usuario="${req.session.usuario}"`);
+      } else {
+          await MySQL.realizarQuery(`UPDATE Usuarios SET Puntuacion= Puntuacion+1 WHERE Usuario="${req.session.usuario}"`);
+      }
+      await MySQL.realizarQuery(`INSERT INTO PreguntasPorUsuarios (Usuario, IdPregunta, RespondioCorrecto) VALUES ("${req.session.usuario}", ${req.session.idPregunta}, 1)`);
+      res.send({chequeo: true});
+  } else {
+      await MySQL.realizarQuery(`UPDATE Usuarios SET Vidas= Vidas-1 WHERE Usuario="${req.session.usuario}"`);
+      let consulta= await MySQL.realizarQuery(`SELECT * FROM Usuarios WHERE Usuario = "${req.session.usuario}"`);
+      await MySQL.realizarQuery(`INSERT INTO PreguntasPorUsuarios (Usuario, IdPregunta, RespondioCorrecto) VALUES ("${req.session.usuario}", ${req.session.idPregunta}, 0)`);
+      res.send({chequeo: false, vidas:consulta[0].Vidas, admin: req.session.administrador});
+  }
 });

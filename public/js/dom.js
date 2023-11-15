@@ -104,3 +104,182 @@ function elegirBarco(id) {
 
     console.log(document.getElementById(id).value)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//admin
+async function putJSON(data) {   
+    try {
+      const response = await fetch("/login", { 
+        method: "PUT", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+      console.log("Success:", result);
+      if (result.validar == false) {
+        alert("Los datos son incorrectos")
+      } 
+      else {
+        if (result.userType == true) {
+            console.log("adminnn")
+          location.href = "/homeAdmin"
+        }
+        else{
+            console.log(" no  aaaadmin")
+          location.href = "/home3" 
+        }
+      }
+  
+    } catch (error) {
+        console.error("Error:", error);
+    }
+  }
+
+  async function putJSON2(data2) {   
+    try {
+      const response = await fetch("/admin", { 
+        method: "PUT", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data2),
+      });
+      const result = await response.json();
+      console.log("Success:", result);
+      if (result.validar == false) {
+        alert("Los datos son incorrectos")
+      } 
+      else {
+        location.href = "/admin"
+      }
+  
+    } catch (error) {
+        console.error("Error:", error);
+    }
+  }
+function consultaBD(){
+
+}
