@@ -228,58 +228,95 @@ function elegirBarco(id) {
 
 
 //admin
-async function putJSON(data) {   
-    try {
-      const response = await fetch("/login", { 
-        method: "PUT", 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const result = await response.json();
-      console.log("Success:", result);
-      if (result.validar == false) {
-        alert("Los datos son incorrectos")
-      } 
-      else {
-        if (result.userType == true) {
-            console.log("adminnn")
-          location.href = "/homeAdmin"
-        }
-        else{
-            console.log(" no  aaaadmin")
-          location.href = "/home3" 
-        }
-      }
-  
-    } catch (error) {
-        console.error("Error:", error);
-    }
+async function putJSON() {   
+  data ={
+    email: document.getElementById("box5").value,
+    password: document.getElementById("box6").value
   }
-
-  async function putJSON2(data2) {   
-    try {
-      const response = await fetch("/admin", { 
-        method: "PUT", 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data2),
-      });
-      const result = await response.json();
-      console.log("Success:", result);
-      if (result.validar == false) {
-        alert("Los datos son incorrectos")
-      } 
-      else {
+  try {
+    console.log("try")
+    const response = await fetch("/login", { 
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    console.log("Success:", result);
+    if (result.validar == false) {
+      alert("Los datos son incorrectos")
+    } 
+    else {
+      if (result.userType == true) {
         location.href = "/admin"
       }
-  
-    } catch (error) {
-        console.error("Error:", error);
+      else{
+        location.href = "/home3" 
+      }
     }
+  
+  } catch (error) {
+      console.error("Error:", error);
   }
-function consultaBD(){
+}
 
+
+async function putJSON3(data3) {
+  try {
+    const response3 = await fetch("/admin", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data3),
+    });
+    const result3 = await response3.json();
+    console.log("Success:", result3);
+
+    if (result3.queEs === "buscarID") {
+      console.log("Nombre de usuario recibido:", result3.nombreUsuario);
+      if (result3.nombreUsuario) {
+        document.getElementById("nombre").value = result3.nombreUsuario;
+      } else {
+        alert("No se encontró un nombre de usuario para el ID seleccionado");
+      }
+    } else if (result3.queEs === "editarUsuario") {
+      alert("Usuario editado correctamente");
+    } else if (result3.queEs === "otraOperacion") {
+      // Manejar otras operaciones si es necesario
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+function editarUsuario() {
+  let idBuscado = parseInt(document.getElementById("categoriaDesplegable").value);
+  let nuevoNombre = document.getElementById("nombre").value;
+  let data3 = {
+    queEs: "editarUsuario",
+    idBuscado: idBuscado,
+    nuevoNombre: nuevoNombre,
+  };
+  putJSON3(data3);
+}
+
+function buscarUsuario() {
+  console.log("Función buscarUsuario llamada");
+  let idBuscado = parseInt(document.getElementById("categoriaDesplegable").value);
+  let data3 = {
+    queEs: "buscarID",
+    idBuscado: idBuscado,
+  };
+  putJSON3(data3);
+}
+
+async function borrarUsuario() {
+  let idBuscado = parseInt(document.getElementById("categoriaDesplegable").value);
+  let data3 = {
+    queEs: "borrarUsuario",
+    idBuscado: idBuscado,
+  };
+  putJSON3(data3);
 }
