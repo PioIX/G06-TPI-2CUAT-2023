@@ -1,4 +1,5 @@
 <!--<td bgcolor="#ffffff">4</td>-->
+{{> header this}}
 <div class="fondoJuego">
     <table width="600" height="600px"; border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">
         <tr align="center">
@@ -293,3 +294,12 @@
 
     <button type="button" onclick="direccion()" class="pixel2 grey" id="box7">Cambiar direccion</button>
 </div>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var idUsuario = {{idUsuario}};
+    document.getElementById("idOculto").value = idUsuario;
+  });
+</script>

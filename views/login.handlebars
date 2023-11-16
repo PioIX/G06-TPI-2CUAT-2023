@@ -1,3 +1,4 @@
+{{> header this}}
 <div class="login">
   <div class="btnSesion">
     <div class="containerSesion2">
@@ -9,7 +10,7 @@
           <br>
           <input type="password" name="password" class="css-input" id="box6" placeholder="Contraseña" required />
           <br>
-          <button type="submit" class="pixel2 grey" id="box7">Iniciar sesión</button>  
+          <button type="button" class="pixel2 grey" id="box7" onclick="putJSON()">Iniciar sesión</button>  
         </form>
           <form action="/register" method="get" class="container-sm">
             <p class="aaa" id="box8">¿No Tienes Cuenta?<button type="submit" class="" id="box8">Registrate</button></p>      

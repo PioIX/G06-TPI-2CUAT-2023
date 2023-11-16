@@ -1,10 +1,46 @@
 const IP = "ws://localhost:3000";
 const socket = io(IP);
 
+async function putJSON() {
+    data ={
+      email: document.getElementById("box5").value,
+      password: document.getElementById("box6").value
+    }
+    try {
+      console.log("try")
+      const response = await fetch("/login", { 
+        method: "POST", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+      console.log("Success:", result);
+      if (result.validar == false) {
+        alert("Los datos son incorrectos");
+      } 
+      else {
+        if (result.userType == true) {
+          location.href = "/admin";
+        }
+        else{
+            console.log("resss", result.idUsuario);
+            idUsuarioLogueado = result.idUsuario;
+            document.getElementById("idOculto").value = result.idUsuario;
+            console.log(document.getElementById("idOculto"));
+            location.href = `/home3?valor=${document.getElementById("idOculto").value}`;
+        }
+      }
+  
+    } catch (error) {
+        console.error("Error:", error);
+    }
+  }
+
 let tablero = ["A", "B", "C", "D", "E","F","G","H","I","J", "K", "L", "M","N","Ñ"];
 let letras = ["A", "B", "C", "D", "E","F","G","H","I","J", "K", "L", "M","N","Ñ"];
-//let barcos = ["5x2", "4x1", "4x1", "3x1", "3x1", "3x1", "2x1", "2x1", "2x1", "2x1", "mina1", "mina2"]
-let barcos = ["0x0", "mina", "2x1", "3x1", "4x1", "5x2"]
+let barcos = ["0x0", "mina", "2x1", "3x1", "4x1", "5x2"];
 let queBarco = 0;
 let orientacion = "horizontal";
 class Celda {
@@ -421,7 +457,8 @@ function elegirBarco(id) {
 }
 
 function buscarPartida () {
-    socket.emit("buscarPartida", {usuario: "tintouriel@pioix.edu.ar"})
+    console.log(document.getElementById("idOculto").value);
+    socket.emit("buscarPartida", {usuario: document.getElementById("idOculto").value})
 }
 
 
@@ -435,7 +472,8 @@ socket.on("connect", () => {
 
 socket.on("partidaEncontrada", data =>{
     console.log("me encanta el fortnite")
-    //location.href("/elegirBarco")
+    location.href = `/elegirBarco?valor=${document.getElementById("idOculto").value}`
+    //location.href = "/elegirBarco";
 });
 
 socket.on("server-message", data =>{

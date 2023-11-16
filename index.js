@@ -93,22 +93,33 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  console.log("soy un pedido POST /login")
   const { email, password } = req.body;
-  req.session.usuario = email;
+
   try {
     const userCredential = await authService.loginUser(auth, {
       email,
       password,
     });
-    // Aquí puedes redirigir al usuario a la página que desees después del inicio de sesión exitoso
-    res.redirect("/home3");
+    let respuesta = await MySQL.realizarQuery(`SELECT * FROM Usuarios WHERE email = "${email}"`)
+    if (respuesta.length > 0) {
+            if (respuesta[0].email == email) {
+                req.session.usuario = respuesta[0].usuario;
+                req.session.administrador = respuesta[0].administrador;
+                if (respuesta[0].administrador == 1) {
+                    res.send({validar: true, userType: true});
+                } else {
+                    res.send({validar: true, userType: false, idUsuario: respuesta[0].id});
+                }
+            }
+    }
+    else{
+        res.send({validar:false})
+    } // Aquí puedes redirigir al usuario a la página que desees después del inicio de sesión exitoso
   } catch (error) {
     console.error("Error en el inicio de sesión:", error);
-    res.render("login", {
-      message: "Error en el inicio de sesión: " + error.message,
-    });
+    res.send({validar:false})
   }
+
 });
 
 app.get("/home2", (req, res) => {
@@ -127,7 +138,7 @@ app.get("/prueba", (req, res) => {
 app.get("/home3", (req, res) => {
   console.log("soy un pedido GET /home3");
   req.session.idPartida = 0;
-  res.render("home3", null);
+  res.render("home3", {idUsuario: req.query.valor});
 });
 
 app.get("/juego", (req, res) => {
@@ -137,7 +148,12 @@ app.get("/juego", (req, res) => {
 
 app.get("/elegirBarco", (req, res) => {
   console.log("soy un pedido GET /elegirBarco")
-  res.render("elegirBarco", null);
+  res.render("elegirBarco", {idUsuario: req.query.valor});
+});
+
+app.get("/admin", (req, res) => {
+  console.log("soy un pedido GET /admin")
+  res.render("admin");
 });
 
 
@@ -148,25 +164,62 @@ io.on("connection", (socket) => {
   socket.join(0);
 
   socket.on("buscarPartida", async (data) => {
-    console.log("entre perro")
-    console.log("aaaaa id jugador: ", data.usuario)
     jugadores++
+    let idUsuario = -1;
     if (jugadores == 1) {
-      console.log("entre al if")
       MySQL.realizarQuery(`INSERT INTO Partidas () values ()`)
       socket.leave(req.session.idPartida)
-      req.session.idPartida = MySQL.realizarQuery(`select * from Partidas`);  //order by id DESC limit 1
-      console.log("req session: ", req.session.idPartida)
-      socket.join(req.session.idPartida)
-      MySQL.realizarQuery(`INSERT INTO UsuariosPorPartida (idPartida, idJugador1) values (${req.session.idPartida}, "${data.usuario}")`);
+      MySQL.realizarQuery('SELECT * FROM Partidas order by id DESC limit 1')
+        .then(result => {
+          console.log("no tan epicas batallas ", result[0]);
+          req.session.idPartida = result[0].id;
+          console.log(req.session.idPartida);
+      
+          return MySQL.realizarQuery(`SELECT * FROM Usuarios WHERE email = "${data.usuario}"`);
+        })
+        .then(result => {
+          idUsuario = result[0].id;
+          console.log("interesante, ", idUsuario);
+          return MySQL.realizarQuery(`INSERT INTO UsuariosPorPartida (idPartida, idJugador1) values (${req.session.idPartida}, ${idUsuario})`);
+        })
+        .then(result => {
+          console.log("INSERT INTO UsuariosPorPartida ", result)
+          socket.join(req.session.idPartida);
+        })
+        .catch(error => {
+          console.error('Error al realizar la consulta:', error);
+        });
+      
     } else if (jugadores == 2) {
       jugadores = 0;
       socket.leave(req.session.idPartida)
-      req.session.idPartida = MySQL.realizarQuery(`select * from Partidas order by id limit 1`).id;
-      socket.join(req.session.idPartida)
-      MySQL.realizarQuery(`UPDATE UsuariosPorPartida SET idJugador2 = "${data.usuario}" where idPartida = ${req.session.idPartida}`);
-      let consulta = MySQL.realizarQuery(`select * from UsuariosPorPartida where idPartida = ${req.session.idPartida}`);
-      io.to(req.session.idPartida).emit("partidaEncontrada", { jugador1: consulta[0].jugador1, jugador2: consulta[0].jugador2 });
+
+      MySQL.realizarQuery('SELECT * FROM Partidas order by id DESC limit 1')
+        .then(result => {
+          console.log("siuuuuuu ", result)
+          req.session.idPartida = result[0].id -1;
+          console.log( "anashei xddd ", req.session.idPartida);
+      
+          return MySQL.realizarQuery(`SELECT * FROM Usuarios WHERE email = "${data.usuario}"`);
+        })
+        .then(result => {
+          console.log("epicas batallas del rap del frikismo ", result[0]);
+          idUsuario = result[0].id;
+          console.log("interesante, ", idUsuario);
+          return MySQL.realizarQuery(`UPDATE UsuariosPorPartida SET idJugador2 = "${idUsuario}" where idPartida = ${req.session.idPartida}`);
+        })
+        .then(() => {
+          socket.join(req.session.idPartida);
+          return MySQL.realizarQuery(`select * from UsuariosPorPartida where idPartida = ${req.session.idPartida}`);
+        })
+        .then(result => {
+          console.log("asheiii ", result)
+          io.to(req.session.idPartida).emit("partidaEncontrada", { jugador1: result[0].idJugador1, idJugador2: result[0].jugador2 });
+        })
+        .catch(error => {
+          console.error('Error al realizar la consulta:', error);
+        });
+
     }
   })
 

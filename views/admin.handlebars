@@ -1,0 +1,22 @@
+<div class="home1">
+    <div class="containers">
+        <div class="container1">
+            <center>
+                <select class="desplegable" id="categoriaDesplegable">
+                    <option value=""></option>
+                    {{#each id}}
+                        <option value={{this.id}}>{{this.id}}</option>
+                    {{/each}}
+                </select> 
+            </center>
+        </div>
+        <div class="container2">
+            <div class="usuarioss">Nombre Usuario</div>
+            <div class="mb-3 form-group">
+                <input type="text" class="form-control" id="nombre" name="nombreUser" placeholder="nombre del usuario">
+            </div>
+            <input type="submit" class="btnAdmin yellow" value="Editar Usuario">
+            <input type="submit" class="btnAdmin yellow" value="Borrar Usuario">
+        </div>
+    </div>
+</div>
