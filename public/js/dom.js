@@ -1,6 +1,10 @@
 const IP = "ws://localhost:3000";
 const socket = io(IP);
 
+function delay(timeInMs) {
+    return new Promise(resolve => setTimeout(resolve, timeInMs));
+  }
+
 async function putJSON() {
     data ={
       email: document.getElementById("box5").value,
@@ -1129,51 +1133,73 @@ let ataqueX2 = false;
 function atacarBarco(celda) {
     console.log("puedo atacar? ", puedoAtacar)
      if (puedoAtacar){ 
-        if (ataqueX2){
-            ataqueX2=false;
-        } else {
-            for (let i = 0; i < letras.length; i++) {
-                for (let x = 1; x < 16; x++) {
-                    let celda = "2" + letras[i] + x;
-                    document.getElementById(celda).onclick = function() {};
+        if (document.getElementById(celda).style.background == "rgba(147, 181, 243, 0.855)"){
+            if (ataqueX2){
+                ataqueX2=false;
+            } else {
+                for (let i = 0; i < letras.length; i++) {
+                    for (let x = 1; x < 16; x++) {
+                        let celda = "2" + letras[i] + x;
+                        document.getElementById(celda).onclick = function() {};
+                    }
                 }
             }
-        }
-        socket.emit("atacarBarco", {
-            celda: celda,
-            idUsuario: parseInt(document.getElementById("idOculto").value),
-            idPartida: parseInt(document.getElementById("idPartidaOculto").value)
-        }); 
+            socket.emit("atacarBarco", {
+                celda: celda,
+                idUsuario: parseInt(document.getElementById("idOculto").value),
+                idPartida: parseInt(document.getElementById("idPartidaOculto").value)
+            });
+        } else {
+            alert("Posicion erronea. Ataque celdas que no hayan sido atacadas previamente")
+        } 
     } else {
         puedoAtacar = true;
     } 
 }
 
 function analizarHundimiento (celda) {
+    console.log("el color d la celda og es ", document.getElementById(celda).style.background)
     let verde = false
     for (let i=0; i<tablero.length; i++) {
         for (let x=0; x<tablero[i].length; x++) {
             let posicionX = analizarCelda(celda).numPrueba -1
             let posicionY = NumeroLetra(analizarCelda(celda).letraPrueba)
-            if (posicionX == tablero[i][x].cabezaBarcoX || posicionY == tablero[i][x].cabezaBarcoY){
+            if (tablero[posicionY][posicionX].cabezaBarcoX == tablero[i][x].cabezaBarcoX && tablero[posicionY][posicionX].cabezaBarcoY == tablero[i][x].cabezaBarcoY){
+                console.log("entre perro")
                 if (document.getElementById(letras[i] + (x+1)).style.background == "green"){
+                    console.log(letras[i] + (x+1))
                     verde = true
                 }
             }
         }
     }
     if (verde == false){
-        console.log("ya no hay verdes");
+        
         for (let i=0; i<tablero.length; i++) {
             for (let x=0; x<tablero[i].length; x++) {
                 let posicionX = analizarCelda(celda).numPrueba -1
                 let posicionY = NumeroLetra(analizarCelda(celda).letraPrueba)
-                if (posicionX == tablero[i][x].cabezaBarcoX || posicionY == tablero[i][x].cabezaBarcoY){
+                if (tablero[posicionY][posicionX].cabezaBarcoX == tablero[i][x].cabezaBarcoX && tablero[posicionY][posicionX].cabezaBarcoY == tablero[i][x].cabezaBarcoY){
                     console.log("entre al if")
-                    document.getElementById(letras[i] + (x+1)).style.background == "rgba(137, 14, 14, 0.855)"
+                    document.getElementById(letras[i] + (x+1)).style.background = "rgba(137, 14, 14, 0.855)"
+                    socket.emit("devolucion", {celda: letras[i] + (x+1), color: "rgba(137, 14, 14, 0.855)", idUsuario: parseInt(document.getElementById("idOculto").value), idPartida: parseInt(document.getElementById("idPartidaOculto").value)})
                 }
             }
-        } 
+        }
+        let terminar = true;
+        for (let i=0; i<tablero.length; i++) {
+            for (let x=0; x<tablero[i].length; x++) {
+                if (document.getElementById(letras[i]+(x+1)).style.background == "green") {
+                    terminar = false;
+                }
+            }
+        }
+        if (terminar) {
+            delay(4000).then(() => location.href = "/perdiste");
+        }
+    } else {
+        console.log("que raro esto")
+        socket.emit("devolucion", {celda: celda, color: "red", idUsuario: parseInt(document.getElementById("idOculto").value), idPartida: parseInt(document.getElementById("idPartidaOculto").value)})
     }
 }
 
@@ -1195,7 +1221,7 @@ socket.on("barcoAtacado", data => {
         if (document.getElementById(data.celda).style.background== "green"){
             document.getElementById(data.celda).style.background = "red";
             analizarHundimiento(data.celda);
-            socket.emit("devolucion", {celda: data.celda, color: "red", idUsuario: parseInt(document.getElementById("idOculto").value), idPartida: parseInt(document.getElementById("idPartidaOculto").value)})
+            //socket.emit("devolucion", {celda: data.celda, color: "red", idUsuario: parseInt(document.getElementById("idOculto").value), idPartida: parseInt(document.getElementById("idPartidaOculto").value)})
         } else if (document.getElementById(data.celda).style.background== "yellow") {
             document.getElementById(data.celda).style.background = "orange";
             ataqueX2=true;
@@ -1214,7 +1240,15 @@ socket.on("devuelto", data => {
         if (data.color == "orange"){
             puedoAtacar = false;
             //alert("perdiste el turno")
-        } 
+        }
+    }
+});
+
+socket.on ("ganar", data =>{
+    console.log("entre al socketon")
+    if (data.idUsuario != document.getElementById("idOculto").value){
+        console.log("entre al socketon en if")
+        location.href = '/ganaste';
     }
 })
 

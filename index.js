@@ -279,6 +279,10 @@ io.on("connection", (socket) => {
     io.to(data.idPartida).emit("devuelto", {idUsuario: data.idUsuario, celda: data.celda, color: data.color})
   })
 
+  socket.on ("ganaste", data => {
+    io.to(data.idPartida).emit("ganar", {idUsuario: data.idUsuario, celda: data.celda, color: data.color})
+  })
+
   socket.on('disconnect', () => {
     //socket.leave(req.session.idGrupo);
   });
