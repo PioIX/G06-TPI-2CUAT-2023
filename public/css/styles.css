@@ -351,7 +351,7 @@
   background-image:url("/img/fondo1.png");
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100vh;
+  height: 90vh;
   width: 100vw;
 }
 
@@ -375,6 +375,7 @@
   height: 100vh;
   background-size: cover;
   background-repeat: no-repeat;
+  overflow: hidden;
 }
 
 .fondoJuegoNoche{
@@ -383,6 +384,7 @@
   height: 100vh;
   background-size: cover;
   background-repeat: no-repeat;
+  overflow: hidden;
 }
 
 
@@ -395,18 +397,15 @@
 }
 
 .tablero1{
-  margin-top: 25px;
   margin-bottom: 25px;
   margin-right: 25px;
   margin-left: 25px;
 }
 
 .tablero2{
-  margin-top: 25px;
   margin-bottom: 25px;
   margin-right: 25px;
   margin-left: 25px;
-
 }
 
 .txtJuego{
@@ -500,14 +499,13 @@ a div {
   background-position: center;
 }
 
-#table{
+/*#table{
   width: "700px";
   height: "300px";
-  top: 50%;
   left: 50%;
   transform: translate(80%, 25%);
   margin: 0;
-}
+}*/
 
 #cronometro{
   color: white;
@@ -518,3 +516,27 @@ a div {
   margin-top: 50px;
 }
 
+.idHidden{
+  visibility: hidden;
+}
+
+.tableroBtn{
+  display: flex;
+  justify-content: space-between;
+}
+
+.btnElegirBarcos{
+  margin-top: 200px;
+  margin-right: 50px;
+}
+
+
+.elegirBarcos{
+  border: none;
+  box-shadow: inset 6px 6px 0px 0px rgba(255,255,255,0.35), inset -6px -6px 0px 0px rgba(0,0,0,0.15), 12px 12px 0px 0px rgba(0,0,0,0.20);
+  font-size: 15px;
+  margin: 30px;
+  color: #000000;
+  height: 50px;
+  width: 130px;
+}

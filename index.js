@@ -321,3 +321,15 @@ app.put("/admin", async (req, res) => {
     res.status(500).json({ queEs, error: `Error en la operación ${queEs}` });
   }
 });
+
+app.get("/juegoNoche", (req, res) => {
+  console.log("soy un pedido GET / -home-")
+  res.render("juegoNoche");
+});
+
+app.get("/elegirBarcoNoche", (req, res) => {
+  console.log("soy un pedido GET / -home-")
+  res.render("elegirBarcoNoche");
+});
+
+
