@@ -143,20 +143,52 @@ app.get("/home3", (req, res) => {
   res.render("home3", {idUsuario: req.query.valor});
 });
 
-app.get("/juego", (req, res) => {
-  console.log("soy un pedido GET /juego");
-  res.render("juego", {idUsuario: req.query.valor, idPartida: req.query.idPartida});
+app.get("/juego", async (req, res) => {
+  try {
+    const apiUrl = "http://worldtimeapi.org/api/timezone/America/Argentina/Buenos_Aires";
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    console.log(data);
+    let horas = parseInt(data.datetime.split('T')[1].split(':')[0]);
+    console.log(horas);
+    if (horas > 17){
+      res.render("juegoNoche", {idUsuario: req.query.valor, idPartida: req.query.idPartida});
+    }
+    else{
+      res.render("juego", {idUsuario: req.query.valor, idPartida: req.query.idPartida});
+    }
+  } catch (error) {
+    console.error('Error al obtener la hora:', error);
+    res.status(500).json({ error: 'Error al obtener la hora' });
+  }
 });
 
-app.get("/elegirBarco", (req, res) => {
+app.get("/elegirBarco", async (req, res) => {
   console.log("soy un pedido GET /elegirBarco")
-  res.render("elegirBarco", {idUsuario: req.query.valor, idPartida: req.query.idPartida});
+  try {
+    const apiUrl = "http://worldtimeapi.org/api/timezone/America/Argentina/Buenos_Aires";
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    console.log(data);
+    let horas = parseInt(data.datetime.split('T')[1].split(':')[0]);
+    console.log(horas);
+    if (horas > 17){
+      res.render("elegirBarcoNoche", {idUsuario: req.query.valor, idPartida: req.query.idPartida});
+    }
+    else{
+      res.render("elegirBarco", {idUsuario: req.query.valor, idPartida: req.query.idPartida});
+    }
+  } catch (error) {
+    console.error('Error al obtener la hora:', error);
+    res.status(500).json({ error: 'Error al obtener la hora' });
+  }
 });
 
 app.get("/admin", (req, res) => {
   console.log("soy un pedido GET /admin")
   res.render("admin");
 });
+
 
 app.get("/admin", async (req, res) => {
   try {
@@ -199,6 +231,20 @@ app.put("/admin", async (req, res) => {
     console.error("Error en la operación:", error);
     res.status(500).json({ queEs, error: `Error en la operación ${queEs}` });
   }
+});
+
+
+app.get("/ganaste", (req, res) => {
+  res.render("ganaste");
+});
+app.post("/ganaste", (req, res) => {
+  res.render("home3");
+});
+app.get("/perdiste", (req, res) => {
+  res.render("perdiste");
+});
+app.post("/perdiste", (req, res) => {
+  res.render("home3");
 });
 
 
@@ -288,4 +334,58 @@ io.on("connection", (socket) => {
   });
 });
 //setInterval(() => io.emit("server-message", { mensaje: "MENSAJE DEL SERVIDOR" }), 2000);
+
+
+app.get("/admin", async (req, res) => {
+  try {
+    const idResult = await MySQL.realizarQuery(`SELECT id FROM Usuarios`);
+    const usuarioResult = await MySQL.realizarQuery(`SELECT usuario FROM Usuarios`);
+
+    res.render("admin", { id: idResult, usuario: usuarioResult });
+  } catch (error) {
+    console.error("Error en la obtención de datos:", error);
+    res.status(500).send("Error en la obtención de datos");
+  }
+});
+
+
+
+app.get("/homeAdmin", (req,res) => {
+  res.render("homeAdmin", null);
+});
+
+app.put("/admin", async (req, res) => {
+  const { queEs, idBuscado, nuevoNombre } = req.body;
+
+  try {
+    if (queEs === "buscarID") {
+      const usuarioResult = await MySQL.realizarQuery(`SELECT usuario FROM Usuarios WHERE id = ${idBuscado}`);
+      const nombreUsuario = usuarioResult.length > 0 ? usuarioResult[0].usuario : "";
+      console.log("Nombre de usuario encontrado:", nombreUsuario);
+      res.json({ queEs: "buscarID", nombreUsuario: nombreUsuario });
+    } else if (queEs === "editarUsuario") {
+      await MySQL.realizarQuery(`UPDATE Usuarios SET usuario = "${nuevoNombre}" WHERE id = ${idBuscado}`);
+      res.json({ queEs: "editarUsuario" });
+    } else if (queEs === "borrarUsuario") {
+      await MySQL.realizarQuery(`DELETE FROM Usuarios WHERE id = ${idBuscado}`);
+      res.json({ queEs: "borrarUsuario" });
+    } else {
+      // Manejar otras operaciones si es necesario
+      res.json({ queEs: "otraOperacion" });
+    }
+  } catch (error) {
+    console.error("Error en la operación:", error);
+    res.status(500).json({ queEs, error: `Error en la operación ${queEs}` });
+  }
+});
+
+app.get("/juegoNoche", (req, res) => {
+  console.log("soy un pedido GET / -home-")
+  res.render("juegoNoche");
+});
+
+app.get("/elegirBarcoNoche", (req, res) => {
+  console.log("soy un pedido GET / -home-")
+  res.render("elegirBarcoNoche");
+});
 
