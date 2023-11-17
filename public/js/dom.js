@@ -1,6 +1,10 @@
 const IP = "ws://localhost:3000";
 const socket = io(IP);
 
+function delay(timeInMs) {
+    return new Promise(resolve => setTimeout(resolve, timeInMs));
+  }
+
 async function putJSON() {
     data ={
       email: document.getElementById("box5").value,
@@ -272,7 +276,7 @@ function analizarVertical(numPrueba, letraPruebaOG, derecha, izquierda) {
 }
 
 function borrar(numero, letra) {
-    
+    console.log("data que me llega: ", letra, numero);
     for (let i=0; i<tablero.length; i++) {
         for (let x=0; x<tablero[i].length; x++){
             for (let z=0; z<tablero[i][x].prohibidoX.length; z++){
@@ -286,6 +290,7 @@ function borrar(numero, letra) {
             }
         } 
     }
+
     const tablerito = JSON.parse(JSON.stringify(tablero));
 
     for (let i=0; i<tablerito.length; i++){
@@ -359,7 +364,7 @@ function elegirBarco(id) {
     let barco = [];
     let xd = true;
     if (tamaño.length>3 && document.getElementById(celda).style.backgroundColor != "green"){
-        document.getElementById(celda).style.background = "blue";
+        document.getElementById(celda).style.background = "yellow";
         for (let i = 0; i < tablero.length; i++) {
             for (let x = 0; x < tablero[i].length; x++) {
               if (analizarCelda(celda).numPrueba - 1 == x && NumeroLetra(analizarCelda(celda).letraPrueba) == i) {
@@ -503,8 +508,752 @@ socket.on("partidaEncontrada", data =>{
 });
 
 socket.on ("partidaEnJuego", data => {
-    location.href = `/juego?valor=${document.getElementById("idOculto").value}&idPartida=${data.idPartida}`
+    document.getElementById("pantallaTotal").innerHTML = `
+    <div class="fondoJuego">
+    <div class="pagJuego">
+        <table width="700" height="700px"; border="0" cellspacing="1" cellpadding="1" bgcolor="#000000" class="tablero1">
+            <tr align="center">
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">Mi Tablero</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">1</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">2</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">3</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">4</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">5</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">6</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">7</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">8</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">9</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">10</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">11</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">12</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">13</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">14</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">15</font></td>
+            </tr>
+            <tr align="center">
+                <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">A</font></td>
+                <td id="A1"   class="celda" ><font color="#ffffff"></font></td>
+                <td id="A2"   class="celda"><font color="#ffffff"></font></td>
+                <td id="A3"   class="celda"><font color="#ffffff"></font></td>
+                <td id="A4"   class="celda"><font color="#ffffff"></font></td>
+                <td id="A5"   class="celda"><font color="#ffffff"></font></td>
+                <td id="A6"   class="celda"><font color="#ffffff"></font></td>
+                <td id="A7"   class="celda"><font color="#ffffff"></font></td>
+                <td id="A8"   class="celda"><font color="#ffffff"></font></td>
+                <td id="A9"   class="celda"><font color="#ffffff"></font></td>
+                <td id="A10"   class="celda"><font color="#ffffff"></font></td>
+                <td id="A11"   class="celda"><font color="#ffffff"></font></td>
+                <td id="A12"   class="celda"><font color="#ffffff"></font></td>
+                <td id="A13"   class="celda"><font color="#ffffff"></font></td>
+                <td id="A14"   class="celda"><font color="#ffffff"></font></td>
+                <td id="A15"   class="celda"><font color="#ffffff"></font></td>
+            </tr>
+            <tr align="center" B>
+                <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">B</font></td>
+                <td id="B1"   class="celda"><font color="#ffffff"></font></td>
+                <td id="B2"   class="celda"><font color="#ffffff"></font></td>
+                <td id="B3"   class="celda"><font color="#ffffff"></font></td>
+                <td id="B4"   class="celda"><font color="#ffffff"></font></td>
+                <td id="B5"   class="celda"><font color="#ffffff"></font></td>
+                <td id="B6"   class="celda"><font color="#ffffff"></font></td>
+                <td id="B7"   class="celda"><font color="#ffffff"></font></td>
+                <td id="B8"   class="celda"><font color="#ffffff"></font></td>
+                <td id="B9"   class="celda"><font color="#ffffff"></font></td>
+                <td id="B10"   class="celda"><font color="#ffffff"></font></td>
+                <td id="B11"   class="celda"><font color="#ffffff"></font></td>
+                <td id="B12"   class="celda"><font color="#ffffff"></font></td>
+                <td id="B13"   class="celda"><font color="#ffffff"></font></td>
+                <td id="B14"   class="celda"><font color="#ffffff"></font></td>
+                <td id="B15"   class="celda"><font color="#ffffff"></font></td>
+            </tr>
+            <tr align="center">
+                <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">C</font></td>
+                <td id="C1"   class="celda"><font color="#ffffff"></font></td>
+                <td id="C2"   class="celda"><font color="#ffffff"></font></td>
+                <td id="C3"   class="celda"><font color="#ffffff"></font></td>
+                <td id="C4"   class="celda"><font color="#ffffff"></font></td>
+                <td id="C5"   class="celda"><font color="#ffffff"></font></td>
+                <td id="C6"   class="celda"><font color="#ffffff"></font></td>
+                <td id="C7"   class="celda"><font color="#ffffff"></font></td>
+                <td id="C8"   class="celda"><font color="#ffffff"></font></td>
+                <td id="C9"   class="celda"><font color="#ffffff"></font></td>
+                <td id="C10"   class="celda"><font color="#ffffff"></font></td>
+                <td id="C11"   class="celda"><font color="#ffffff"></font></td>
+                <td id="C12"   class="celda"><font color="#ffffff"></font></td>
+                <td id="C13"   class="celda"><font color="#ffffff"></font></td>
+                <td id="C14"   class="celda"><font color="#ffffff"></font></td>
+                <td id="C15"   class="celda"><font color="#ffffff"></font></td>
+            </tr>
+            <tr align="center">
+                <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">D</font></td>
+                <td id="D1"   class="celda"><font color="#ffffff"></font></td>
+                <td id="D2"   class="celda"><font color="#ffffff"></font></td>
+                <td id="D3"   class="celda"><font color="#ffffff"></font></td>
+                <td id="D4"   class="celda"><font color="#ffffff"></font></td>
+                <td id="D5"   class="celda"><font color="#ffffff"></font></td>
+                <td id="D6"   class="celda"><font color="#ffffff"></font></td>
+                <td id="D7"   class="celda"><font color="#ffffff"></font></td>
+                <td id="D8"   class="celda"><font color="#ffffff"></font></td>
+                <td id="D9"   class="celda"><font color="#ffffff"></font></td>
+                <td id="D10"   class="celda"><font color="#ffffff"></font></td>
+                <td id="D11"   class="celda"><font color="#ffffff"></font></td>
+                <td id="D12"   class="celda"><font color="#ffffff"></font></td>
+                <td id="D13"   class="celda"><font color="#ffffff"></font></td>
+                <td id="D14"   class="celda"><font color="#ffffff"></font></td>
+                <td id="D15"   class="celda"><font color="#ffffff"></font></td>
+            </tr>
+            <tr align="center">
+                <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">E</font></td>
+                <td id="E1"   class="celda"><font color="#ffffff"></font></td>
+                <td id="E2"   class="celda"><font color="#ffffff"></font></td>
+                <td id="E3"   class="celda"><font color="#ffffff"></font></td>
+                <td id="E4"   class="celda"><font color="#ffffff"></font></td>
+                <td id="E5"   class="celda"><font color="#ffffff"></font></td>
+                <td id="E6"   class="celda"><font color="#ffffff"></font></td>
+                <td id="E7"   class="celda"><font color="#ffffff"></font></td>
+                <td id="E8"   class="celda"><font color="#ffffff"></font></td>
+                <td id="E9"   class="celda"><font color="#ffffff"></font></td>
+                <td id="E10"   class="celda"><font color="#ffffff"></font></td>
+                <td id="E11"   class="celda"><font color="#ffffff"></font></td>
+                <td id="E12"   class="celda"><font color="#ffffff"></font></td>
+                <td id="E13"   class="celda"><font color="#ffffff"></font></td>
+                <td id="E14"   class="celda"><font color="#ffffff"></font></td>
+                <td id="E15"   class="celda"><font color="#ffffff"></font></td>
+            </tr>
+            <tr align="center">
+                <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">F</font></td>
+                <td id="F1"   class="celda"><font color="#ffffff"></font></td>
+                <td id="F2"   class="celda"><font color="#ffffff"></font></td>
+                <td id="F3"   class="celda"><font color="#ffffff"></font></td>
+                <td id="F4"   class="celda"><font color="#ffffff"></font></td>
+                <td id="F5"   class="celda"><font color="#ffffff"></font></td>
+                <td id="F6"   class="celda"><font color="#ffffff"></font></td>
+                <td id="F7"   class="celda"><font color="#ffffff"></font></td>
+                <td id="F8"   class="celda"><font color="#ffffff"></font></td>
+                <td id="F9"   class="celda"><font color="#ffffff"></font></td>
+                <td id="F10"   class="celda"><font color="#ffffff"></font></td>
+                <td id="F11"   class="celda"><font color="#ffffff"></font></td>
+                <td id="F12"   class="celda"><font color="#ffffff"></font></td>
+                <td id="F13"   class="celda"><font color="#ffffff"></font></td>
+                <td id="F14"   class="celda"><font color="#ffffff"></font></td>
+                <td id="F15"   class="celda"><font color="#ffffff"></font></td>
+            </tr>
+            <tr align="center">
+                <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">G</font></td>
+                <td id="G1"   class="celda"><font color="#ffffff"></font></td>
+                <td id="G2"   class="celda"><font color="#ffffff"></font></td>
+                <td id="G3"   class="celda"><font color="#ffffff"></font></td>
+                <td id="G4"   class="celda"><font color="#ffffff"></font></td>
+                <td id="G5"   class="celda"><font color="#ffffff"></font></td>
+                <td id="G6"   class="celda"><font color="#ffffff"></font></td>
+                <td id="G7"   class="celda"><font color="#ffffff"></font></td>
+                <td id="G8"   class="celda"><font color="#ffffff"></font></td>
+                <td id="G9"   class="celda"><font color="#ffffff"></font></td>
+                <td id="G10"   class="celda"><font color="#ffffff"></font></td>
+                <td id="G11"   class="celda"><font color="#ffffff"></font></td>
+                <td id="G12"   class="celda"><font color="#ffffff"></font></td>
+                <td id="G13"   class="celda"><font color="#ffffff"></font></td>
+                <td id="G14"   class="celda"><font color="#ffffff"></font></td>
+                <td id="G15"   class="celda"><font color="#ffffff"></font></td>
+            </tr>
+            <tr align="center">
+                <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">H</font></td>
+                <td id="H1"   class="celda"><font color="#ffffff"></font></td>
+                <td id="H2"   class="celda"><font color="#ffffff"></font></td>
+                <td id="H3"   class="celda"><font color="#ffffff"></font></td>
+                <td id="H4"   class="celda"><font color="#ffffff"></font></td>
+                <td id="H5"   class="celda"><font color="#ffffff"></font></td>
+                <td id="H6"   class="celda"><font color="#ffffff"></font></td>
+                <td id="H7"   class="celda"><font color="#ffffff"></font></td>
+                <td id="H8"   class="celda"><font color="#ffffff"></font></td>
+                <td id="H9"   class="celda"><font color="#ffffff"></font></td>
+                <td id="H10"   class="celda"><font color="#ffffff"></font></td>
+                <td id="H11"   class="celda"><font color="#ffffff"></font></td>
+                <td id="H12"   class="celda"><font color="#ffffff"></font></td>
+                <td id="H13"   class="celda"><font color="#ffffff"></font></td>
+                <td id="H14"   class="celda"><font color="#ffffff"></font></td>
+                <td id="H15"   class="celda"><font color="#ffffff"></font></td>
+            </tr>
+            <tr align="center">
+                <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">I</font></td>
+                <td id="I1"   class="celda"><font color="#ffffff"></font></td>
+                <td id="I2"   class="celda"><font color="#ffffff"></font></td>
+                <td id="I3"   class="celda"><font color="#ffffff"></font></td>
+                <td id="I4"   class="celda"><font color="#ffffff"></font></td>
+                <td id="I5"   class="celda"><font color="#ffffff"></font></td>
+                <td id="I6"   class="celda"><font color="#ffffff"></font></td>
+                <td id="I7"   class="celda"><font color="#ffffff"></font></td>
+                <td id="I8"   class="celda"><font color="#ffffff"></font></td>
+                <td id="I9"   class="celda"><font color="#ffffff"></font></td>
+                <td id="I10"   class="celda"><font color="#ffffff"></font></td>
+                <td id="I11"   class="celda"><font color="#ffffff"></font></td>
+                <td id="I12"   class="celda"><font color="#ffffff"></font></td>
+                <td id="I13"   class="celda"><font color="#ffffff"></font></td>
+                <td id="I14"   class="celda"><font color="#ffffff"></font></td>
+                <td id="I15"   class="celda"><font color="#ffffff"></font></td>
+            </tr>
+            <tr align="center">
+                <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">J</font></td>
+                <td id="J1"   class="celda"><font color="#ffffff"></font></td>
+                <td id="J2"   class="celda"><font color="#ffffff"></font></td>
+                <td id="J3"   class="celda"><font color="#ffffff"></font></td>
+                <td id="J4"   class="celda"><font color="#ffffff"></font></td>
+                <td id="J5"   class="celda"><font color="#ffffff"></font></td>
+                <td id="J6"   class="celda"><font color="#ffffff"></font></td>
+                <td id="J7"   class="celda"><font color="#ffffff"></font></td>
+                <td id="J8"   class="celda"><font color="#ffffff"></font></td>
+                <td id="J9"   class="celda"><font color="#ffffff"></font></td>
+                <td id="J10"   class="celda"><font color="#ffffff"></font></td>
+                <td id="J11"   class="celda"><font color="#ffffff"></font></td>
+                <td id="J12"   class="celda"><font color="#ffffff"></font></td>
+                <td id="J13"   class="celda"><font color="#ffffff"></font></td>
+                <td id="J14"   class="celda"><font color="#ffffff"></font></td>
+                <td id="J15"   class="celda"><font color="#ffffff"></font></td>
+            </tr>
+            <tr align="center">
+                <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">K</font></td>
+                <td id="K1"   class="celda"><font color="#ffffff"></font></td>
+                <td id="K2"   class="celda"><font color="#ffffff"></font></td>
+                <td id="K3"   class="celda"><font color="#ffffff"></font></td>
+                <td id="K4"   class="celda"><font color="#ffffff"></font></td>
+                <td id="K5"   class="celda"><font color="#ffffff"></font></td>
+                <td id="K6"   class="celda"><font color="#ffffff"></font></td>
+                <td id="K7"   class="celda"><font color="#ffffff"></font></td>
+                <td id="K8"   class="celda"><font color="#ffffff"></font></td>
+                <td id="K9"   class="celda"><font color="#ffffff"></font></td>
+                <td id="K10"   class="celda"><font color="#ffffff"></font></td>
+                <td id="K11"   class="celda"><font color="#ffffff"></font></td>
+                <td id="K12"   class="celda"><font color="#ffffff"></font></td>
+                <td id="K13"   class="celda"><font color="#ffffff"></font></td>
+                <td id="K14"   class="celda"><font color="#ffffff"></font></td>
+                <td id="K15"   class="celda"><font color="#ffffff"></font></td>
+            </tr>
+            <tr align="center">
+                <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">L</font></td>
+                <td id="L1"   class="celda"><font color="#ffffff"></font></td>
+                <td id="L2"   class="celda"><font color="#ffffff"></font></td>
+                <td id="L3"   class="celda"><font color="#ffffff"></font></td>
+                <td id="L4"   class="celda"><font color="#ffffff"></font></td>
+                <td id="L5"   class="celda"><font color="#ffffff"></font></td>
+                <td id="L6"   class="celda"><font color="#ffffff"></font></td>
+                <td id="L7"   class="celda"><font color="#ffffff"></font></td>
+                <td id="L8"   class="celda"><font color="#ffffff"></font></td>
+                <td id="L9"   class="celda"><font color="#ffffff"></font></td>
+                <td id="L10"   class="celda"><font color="#ffffff"></font></td>
+                <td id="L11"   class="celda"><font color="#ffffff"></font></td>
+                <td id="L12"   class="celda"><font color="#ffffff"></font></td>
+                <td id="L13"   class="celda"><font color="#ffffff"></font></td>
+                <td id="L14"   class="celda"><font color="#ffffff"></font></td>
+                <td id="L15"   class="celda"><font color="#ffffff"></font></td>
+            </tr>
+            <tr align="center">
+                <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">M</font></td>
+                <td id="M1"   class="celda"><font color="#ffffff"></font></td>
+                <td id="M2"   class="celda"><font color="#ffffff"></font></td>
+                <td id="M3"   class="celda"><font color="#ffffff"></font></td>
+                <td id="M4"   class="celda"><font color="#ffffff"></font></td>
+                <td id="M5"   class="celda"><font color="#ffffff"></font></td>
+                <td id="M6"   class="celda"><font color="#ffffff"></font></td>
+                <td id="M7"   class="celda"><font color="#ffffff"></font></td>
+                <td id="M8"   class="celda"><font color="#ffffff"></font></td>
+                <td id="M9"   class="celda"><font color="#ffffff"></font></td>
+                <td id="M10"   class="celda"><font color="#ffffff"></font></td>
+                <td id="M11"   class="celda"><font color="#ffffff"></font></td>
+                <td id="M12"   class="celda"><font color="#ffffff"></font></td>
+                <td id="M13"   class="celda"><font color="#ffffff"></font></td>
+                <td id="M14"   class="celda"><font color="#ffffff"></font></td>
+                <td id="M15"   class="celda"><font color="#ffffff"></font></td>
+            </tr>
+            <tr align="center">
+                <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">N</font></td>
+                <td id="N1"   class="celda"><font color="#ffffff"></font></td>
+                <td id="N2"   class="celda"><font color="#ffffff"></font></td>
+                <td id="N3"   class="celda"><font color="#ffffff"></font></td>
+                <td id="N4"   class="celda"><font color="#ffffff"></font></td>
+                <td id="N5"   class="celda"><font color="#ffffff"></font></td>
+                <td id="N6"   class="celda"><font color="#ffffff"></font></td>
+                <td id="N7"   class="celda"><font color="#ffffff"></font></td>
+                <td id="N8"   class="celda"><font color="#ffffff"></font></td>
+                <td id="N9"   class="celda"><font color="#ffffff"></font></td>
+                <td id="N10"   class="celda"><font color="#ffffff"></font></td>
+                <td id="N11"   class="celda"><font color="#ffffff"></font></td>
+                <td id="N12"   class="celda"><font color="#ffffff"></font></td>
+                <td id="N13"   class="celda"><font color="#ffffff"></font></td>
+                <td id="N14"   class="celda"><font color="#ffffff"></font></td>
+                <td id="N15"   class="celda"><font color="#ffffff"></font></td>
+            </tr>
+            <tr align="center">
+                <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">Ñ</font></td>
+                <td id="Ñ1"   class="celda"><font color="#ffffff"></font></td>
+                <td id="Ñ2"   class="celda"><font color="#ffffff"></font></td>
+                <td id="Ñ3"   class="celda"><font color="#ffffff"></font></td>
+                <td id="Ñ4"   class="celda"><font color="#ffffff"></font></td>
+                <td id="Ñ5"   class="celda"><font color="#ffffff"></font></td>
+                <td id="Ñ6"   class="celda"><font color="#ffffff"></font></td>
+                <td id="Ñ7"   class="celda"><font color="#ffffff"></font></td>
+                <td id="Ñ8"   class="celda"><font color="#ffffff"></font></td>
+                <td id="Ñ9"   class="celda"><font color="#ffffff"></font></td>
+                <td id="Ñ10"   class="celda"><font color="#ffffff"></font></td>
+                <td id="Ñ11"   class="celda"><font color="#ffffff"></font></td>
+                <td id="Ñ12"   class="celda"><font color="#ffffff"></font></td>
+                <td id="Ñ13"   class="celda"><font color="#ffffff"></font></td>
+                <td id="Ñ14"   class="celda"><font color="#ffffff"></font></td>
+                <td id="Ñ15"   class="celda"><font color="#ffffff"></font></td>
+            </tr>
+        </table>
+        <table width="700" height="700px"; border="0" cellspacing="1" cellpadding="1" bgcolor="#000000" class="tablero2">
+            <tr align="center">
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">Su Tablero</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">1</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">2</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">3</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">4</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">5</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">6</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">7</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">8</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">9</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">10</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">11</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">12</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">13</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">14</font></td>
+                <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">15</font></td>
+            </tr>
+            <tr align="center">
+            <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">A</font></td>
+            <td id="2A1"  onclick="atacarBarco(id)" class="celda" ><font color="#ffffff"></font></td>
+            <td id="2A2"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2A3"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2A4"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2A5"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2A6"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2A7"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2A8"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2A9"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2A10"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2A11"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2A12"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2A13"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2A14"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2A15"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+        </tr>
+        <tr align="center" B>
+            <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">B</font></td>
+            <td id="2B1"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2B2"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2B3"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2B4"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2B5"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2B6"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2B7"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2B8"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2B9"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2B10"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2B11"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2B12"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2B13"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2B14"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2B15"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+        </tr>
+        <tr align="center">
+            <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">C</font></td>
+            <td id="2C1"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2C2"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2C3"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2C4"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2C5"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2C6"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2C7"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2C8"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2C9"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2C10"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2C11"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2C12"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2C13"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2C14"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2C15"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+        </tr>
+        <tr align="center">
+            <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">D</font></td>
+            <td id="2D1"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2D2"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2D3"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2D4"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2D5"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2D6"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2D7"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2D8"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2D9"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2D10"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2D11"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2D12"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2D13"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2D14"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2D15"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+        </tr>
+        <tr align="center">
+            <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">E</font></td>
+            <td id="2E1"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2E2"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2E3"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2E4"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2E5"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2E6"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2E7"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2E8"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2E9"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2E10"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2E11"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2E12"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2E13"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2E14"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2E15"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+        </tr>
+        <tr align="center">
+            <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">F</font></td>
+            <td id="2F1"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2F2"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2F3"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2F4"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2F5"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2F6"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2F7"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2F8"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2F9"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2F10"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2F11"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2F12"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2F13"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2F14"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2F15"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+        </tr>
+        <tr align="center">
+            <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">G</font></td>
+            <td id="2G1"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2G2"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2G3"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2G4"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2G5"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2G6"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2G7"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2G8"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2G9"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2G10"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2G11"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2G12"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2G13"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2G14"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2G15"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+        </tr>
+        <tr align="center">
+            <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">H</font></td>
+            <td id="2H1"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2H2"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2H3"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2H4"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2H5"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2H6"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2H7"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2H8"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2H9"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2H10"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2H11"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2H12"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2H13"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2H14"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2H15"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+        </tr>
+        <tr align="center">
+            <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">I</font></td>
+            <td id="2I1"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2I2"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2I3"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2I4"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2I5"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2I6"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2I7"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2I8"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2I9"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2I10"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2I11"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2I12"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2I13"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2I14"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2I15"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+        </tr>
+        <tr align="center">
+            <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">J</font></td>
+            <td id="2J1"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2J2"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2J3"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2J4"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2J5"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2J6"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2J7"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2J8"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2J9"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2J10"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2J11"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2J12"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2J13"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2J14"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2J15"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+        </tr>
+        <tr align="center">
+            <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">K</font></td>
+            <td id="2K1"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2K2"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2K3"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2K4"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2K5"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2K6"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2K7"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2K8"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2K9"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2K10"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2K11"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2K12"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2K13"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2K14"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2K15"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+        </tr>
+        <tr align="center">
+            <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">L</font></td>
+            <td id="2L1"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2L2"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2L3"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2L4"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2L5"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2L6"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2L7"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2L8"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2L9"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2L10"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2L11"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2L12"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2L13"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2L14"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2L15"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+        </tr>
+        <tr align="center">
+            <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">M</font></td>
+            <td id="2M1"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2M2"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2M3"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2M4"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2M5"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2M6"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2M7"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2M8"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2M9"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2M10"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2M11"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2M12"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2M13"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2M14"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2M15"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+        </tr>
+        <tr align="center">
+            <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">N</font></td>
+            <td id="2N1"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2N2"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2N3"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2N4"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2N5"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2N6"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2N7"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2N8"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2N9"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2N10"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2N11"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2N12"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2N13"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2N14"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2N15"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+        </tr>
+        <tr align="center">
+            <td bgcolor="#ffffff" class="letraFila"><font class="txtJuego">Ñ</font></td>
+            <td id="2Ñ1"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2Ñ2"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2Ñ3"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2Ñ4"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2Ñ5"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2Ñ6"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2Ñ7"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2Ñ8"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2Ñ9"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2Ñ10"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2Ñ11"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2Ñ12"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2Ñ13"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2Ñ14"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+            <td id="2Ñ15"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
+        </tr>
+        </table>
+        <button class="bomba">
+            <center><img src="img/bomb.png" width="40px" height="40px"></center>
+        </button>
+    </div>
+</div>
+    `;
+    for (let i=0;i<letras.length; i++){
+        for (let x=1; x<16; x++){
+            let celda = "2"+letras[i]+x;
+            document.getElementById(celda).style.background = "rgba(147, 181, 243, 0.855)";
+        }
+    } 
+    for (let a=0; a<data.barcos.length; a++){
+        if (data.barcos[a].idJugador == parseInt(document.getElementById("idOculto").value)){
+            if (data.barcos[a].mina){
+                document.getElementById(analizarCelda(data.barcos[a].cabezaBarco).letraPrueba + (analizarCelda(data.barcos[a].cabezaBarco).numPrueba)).style.background = "yellow";
+            } else {
+                document.getElementById(analizarCelda(data.barcos[a].cabezaBarco).letraPrueba + (analizarCelda(data.barcos[a].cabezaBarco).numPrueba)).style.background = "green";
+                if (data.barcos[a].orientacion == "horizontal") {
+                    for (let i = 0; i<parseInt(data.barcos[a].tipo[0]); i++){
+                        document.getElementById(analizarCelda(data.barcos[a].cabezaBarco).letraPrueba + (analizarCelda(data.barcos[a].cabezaBarco).numPrueba + i)).style.background = "green";
+                        if (parseInt(data.barcos[a].tipo[2])==2) {
+                            document.getElementById(letras[NumeroLetra(analizarCelda(data.barcos[a].cabezaBarco).letraPrueba)+1] + (analizarCelda(data.barcos[a].cabezaBarco).numPrueba + i)).style.background = "green";
+                        }
+                    }
+                }
+                if (data.barcos[a].orientacion == "vertical") {
+                    for (let i = 0; i<parseInt(data.barcos[a].tipo[0]); i++){
+                        document.getElementById(letras[NumeroLetra(analizarCelda(data.barcos[a].cabezaBarco).letraPrueba)+i] + (analizarCelda(data.barcos[a].cabezaBarco).numPrueba)).style.background = "green";
+                        if (parseInt(data.barcos[a].tipo[2])==2) {
+                            document.getElementById(letras[NumeroLetra(analizarCelda(data.barcos[a].cabezaBarco).letraPrueba)+i] + (analizarCelda(data.barcos[a].cabezaBarco).numPrueba +1)).style.background = "green";
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 });
+let puedoAtacar = true
+let ataqueX2 = false;
+function atacarBarco(celda) {
+    console.log("puedo atacar? ", puedoAtacar)
+     if (puedoAtacar){ 
+        if (document.getElementById(celda).style.background == "rgba(147, 181, 243, 0.855)"){
+            if (ataqueX2){
+                ataqueX2=false;
+            } else {
+                for (let i = 0; i < letras.length; i++) {
+                    for (let x = 1; x < 16; x++) {
+                        let celda = "2" + letras[i] + x;
+                        document.getElementById(celda).onclick = function() {};
+                    }
+                }
+            }
+            socket.emit("atacarBarco", {
+                celda: celda,
+                idUsuario: parseInt(document.getElementById("idOculto").value),
+                idPartida: parseInt(document.getElementById("idPartidaOculto").value)
+            });
+        } else {
+            alert("Posicion erronea. Ataque celdas que no hayan sido atacadas previamente")
+        } 
+    } else {
+        puedoAtacar = true;
+    } 
+}
+
+function analizarHundimiento (celda) {
+    console.log("el color d la celda og es ", document.getElementById(celda).style.background)
+    let verde = false
+    for (let i=0; i<tablero.length; i++) {
+        for (let x=0; x<tablero[i].length; x++) {
+            let posicionX = analizarCelda(celda).numPrueba -1
+            let posicionY = NumeroLetra(analizarCelda(celda).letraPrueba)
+            if (tablero[posicionY][posicionX].cabezaBarcoX == tablero[i][x].cabezaBarcoX && tablero[posicionY][posicionX].cabezaBarcoY == tablero[i][x].cabezaBarcoY){
+                console.log("entre perro")
+                if (document.getElementById(letras[i] + (x+1)).style.background == "green"){
+                    console.log(letras[i] + (x+1))
+                    verde = true
+                }
+            }
+        }
+    }
+    if (verde == false){
+        
+        for (let i=0; i<tablero.length; i++) {
+            for (let x=0; x<tablero[i].length; x++) {
+                let posicionX = analizarCelda(celda).numPrueba -1
+                let posicionY = NumeroLetra(analizarCelda(celda).letraPrueba)
+                if (tablero[posicionY][posicionX].cabezaBarcoX == tablero[i][x].cabezaBarcoX && tablero[posicionY][posicionX].cabezaBarcoY == tablero[i][x].cabezaBarcoY){
+                    console.log("entre al if")
+                    document.getElementById(letras[i] + (x+1)).style.background = "rgba(137, 14, 14, 0.855)"
+                    socket.emit("devolucion", {celda: letras[i] + (x+1), color: "rgba(137, 14, 14, 0.855)", idUsuario: parseInt(document.getElementById("idOculto").value), idPartida: parseInt(document.getElementById("idPartidaOculto").value)})
+                }
+            }
+        }
+        let terminar = true;
+        for (let i=0; i<tablero.length; i++) {
+            for (let x=0; x<tablero[i].length; x++) {
+                if (document.getElementById(letras[i]+(x+1)).style.background == "green") {
+                    terminar = false;
+                }
+            }
+        }
+        if (terminar) {
+            delay(4000).then(() => location.href = "/perdiste");
+        }
+    } else {
+        console.log("que raro esto")
+        socket.emit("devolucion", {celda: celda, color: "red", idUsuario: parseInt(document.getElementById("idOculto").value), idPartida: parseInt(document.getElementById("idPartidaOculto").value)})
+    }
+}
+
+
+
+socket.on("barcoAtacado", data => {
+    if (data.idUsuario != parseInt(document.getElementById("idOculto").value)) {
+        for (let i = 0; i < letras.length; i++) {
+            for (let x = 1; x < 16; x++) {
+                let celda = "2" + letras[i] + x;
+                document.getElementById(celda).onclick = function() {
+                    atacarBarco(celda);
+                };
+            }
+        }
+
+        
+        data.celda = data.celda.slice(1);
+        if (document.getElementById(data.celda).style.background== "green"){
+            document.getElementById(data.celda).style.background = "red";
+            analizarHundimiento(data.celda);
+            //socket.emit("devolucion", {celda: data.celda, color: "red", idUsuario: parseInt(document.getElementById("idOculto").value), idPartida: parseInt(document.getElementById("idPartidaOculto").value)})
+        } else if (document.getElementById(data.celda).style.background== "yellow") {
+            document.getElementById(data.celda).style.background = "orange";
+            ataqueX2=true;
+            socket.emit("devolucion", {celda: data.celda, color: "orange", idUsuario: parseInt(document.getElementById("idOculto").value), idPartida: parseInt(document.getElementById("idPartidaOculto").value)})
+        } else{
+                document.getElementById(data.celda).style.background = "blue";
+                socket.emit("devolucion", {celda: data.celda, color: "blue", idUsuario: parseInt(document.getElementById("idOculto").value), idPartida: parseInt(document.getElementById("idPartidaOculto").value)})
+        }
+        //alert("es tu turno")
+    }
+});
+
+socket.on("devuelto", data => {
+    if (data.idUsuario != parseInt(document.getElementById("idOculto").value)){
+        document.getElementById("2"+data.celda).style.background = data.color;
+        if (data.color == "orange"){
+            puedoAtacar = false;
+            //alert("perdiste el turno")
+        }
+    }
+});
+
+socket.on ("ganar", data =>{
+    console.log("entre al socketon")
+    if (data.idUsuario != document.getElementById("idOculto").value){
+        console.log("entre al socketon en if")
+        location.href = '/ganaste';
+    }
+})
+
 
 socket.on("server-message", data =>{
     console.log("Mensaje del servidor", data);
@@ -513,7 +1262,6 @@ socket.on("server-message", data =>{
 
 
 //admin
-
 
 
 
@@ -545,6 +1293,7 @@ async function putJSON3(data3) {
     console.error("Error:", error);
   }
 }
+
 
 function editarUsuario() {
   let idBuscado = parseInt(document.getElementById("categoriaDesplegable").value);
