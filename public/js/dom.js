@@ -287,7 +287,7 @@ function borrar(numero, letra) {
         } 
     }
     const tablerito = JSON.parse(JSON.stringify(tablero));
-    
+
     for (let i=0; i<tablerito.length; i++){
         for (let x=0; x<tablerito[i].length; x++){
             if (tablerito[i][x].cabezaBarcoY == tablerito [NumeroLetra(letra)][numero-1].cabezaBarcoY && tablerito[i][x].cabezaBarcoX == tablerito [NumeroLetra(letra)][numero-1].cabezaBarcoX){

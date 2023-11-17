@@ -189,6 +189,18 @@ app.get("/admin", (req, res) => {
   res.render("admin");
 });
 
+app.get("/ganaste", (req, res) => {
+  res.render("ganaste");
+});
+app.put("/ganaste", (req, res) => {
+  res.render("game3");
+});
+app.get("/perdiste", (req, res) => {
+  res.render("perdiste");
+});
+app.put("/perdiste", (req, res) => {
+  res.render("game3");
+});
 
 
 let jugadores = 0;
