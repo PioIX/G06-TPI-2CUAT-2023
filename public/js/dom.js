@@ -507,41 +507,6 @@ socket.on("server-message", data =>{
     console.log("Mensaje del servidor", data);
 });
 
-//admin
-async function putJSON() {   
-  data ={
-    email: document.getElementById("box5").value,
-    password: document.getElementById("box6").value
-  }
-  try {
-    console.log("try")
-    const response = await fetch("/login", { 
-      method: "POST", 
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    const result = await response.json();
-    console.log("Success:", result);
-    if (result.validar == false) {
-      alert("Los datos son incorrectos")
-    } 
-    else {
-      if (result.userType == true) {
-        location.href = "/admin"
-      }
-      else{
-        location.href = "/home3" 
-      }
-    }
-  
-  } catch (error) {
-      console.error("Error:", error);
-  }
-}
-
-
 async function putJSON3(data3) {
   try {
     const response3 = await fetch("/admin", {
@@ -599,4 +564,57 @@ async function borrarUsuario() {
     idBuscado: idBuscado,
   };
   putJSON3(data3);
+}
+
+
+// Agrega esta variable global para el cronómetro
+let cronometroInterval;
+
+socket.on("connect", () => {
+    console.log("Me conecté a WS");
+});
+
+socket.on("partidaEncontrada", data =>{
+    // Detener el cronómetro antes de redirigir a la pantalla de elegirBarco
+    detenerCronometro();
+    location.href = `/elegirBarco?valor=${document.getElementById("idOculto").value}&idPartida=${data.idPartida}`;
+});
+
+socket.on("partidaEnJuego", data => {
+    // Detener el cronómetro antes de redirigir a la pantalla de juego
+    detenerCronometro();
+    location.href = `/juego?valor=${document.getElementById("idOculto").value}&idPartida=${data.idPartida}`;
+});
+
+socket.on("server-message", data =>{
+    console.log("Mensaje del servidor", data);
+});
+let a=0
+function iniciarPartida() {
+    // Deshabilitar el botón
+    document.getElementById("box9").disabled = true;
+
+    // Mostrar el cronómetro
+    document.getElementById("cronometro").style.display = "block";
+
+    // Iniciar el contador
+    let segundos = 0;
+
+    cronometroInterval = setInterval(function() {
+        a=1
+        segundos++;
+        document.getElementById("tiempo").innerText = segundos; 
+    }, 1000);
+
+    // Envía el evento "buscarPartida" al servidor
+    socket.emit("buscarPartida", { usuario: document.getElementById("idOculto").value });
+}
+
+function detenerCronometro() {
+    // Detener el contador
+    clearInterval(cronometroInterval);
+
+    // Ocultar el cronómetro
+    document.getElementById("cronometro").style.display = "none";
+    a=0
 }

@@ -490,3 +490,22 @@ a div {
   height: 60px;
   background-position: center;
 }
+
+#table{
+  width: "700px";
+  height: "300px";
+  top: 50%;
+  left: 50%;
+  transform: translate(80%, 25%);
+  margin: 0;
+}
+
+#cronometro{
+  color: white;
+}
+
+#contenedor {
+  text-align: center;
+  margin-top: 50px;
+}
+
