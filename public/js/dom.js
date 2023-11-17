@@ -286,13 +286,16 @@ function borrar(numero, letra) {
             }
         } 
     }
-    for (let i=0; i<tablero.length; i++){
-        for (let x=0; x<tablero[i].length; x++){
-            if (tablero[i][x].cabezaBarcoY == tablero [NumeroLetra(letra)][numero-1].cabezaBarcoY && tablero[i][x].cabezaBarcoX == tablero [NumeroLetra(letra)][numero-1].cabezaBarcoX){
+    const tablerito = JSON.parse(JSON.stringify(tablero));
+    
+    for (let i=0; i<tablerito.length; i++){
+        for (let x=0; x<tablerito[i].length; x++){
+            if (tablerito[i][x].cabezaBarcoY == tablerito [NumeroLetra(letra)][numero-1].cabezaBarcoY && tablerito[i][x].cabezaBarcoX == tablerito [NumeroLetra(letra)][numero-1].cabezaBarcoX){
                 document.getElementById(letras[i]+(x+1)).style.backgroundColor= "rgba(147, 181, 243, 0.855)";
                 tablero[i][x].tamaño = "";
                 tablero[i][x].barco = false;
                 tablero[i][x].mina = false;
+                tablero[i][x].orientacion = "";
                 tablero[i][x].cabezaBarcoX = "";
                 tablero[i][x].cabezaBarcoY = "";
             } 
@@ -373,7 +376,7 @@ function elegirBarco(id) {
             queBarco--;
             enviar = true
         }
-    } else if (tamaño.length>3 && document.getElementById(celda).style.backgorundColor=="green"){
+    } else if (tamaño.length>3 && document.getElementById(celda).style.backgroundColor=="green"){
         alert ("mina mal ubicada");
     }
     else {
@@ -508,38 +511,7 @@ socket.on("server-message", data =>{
 });
 
 //admin
-async function putJSON() {   
-  data ={
-    email: document.getElementById("box5").value,
-    password: document.getElementById("box6").value
-  }
-  try {
-    console.log("try")
-    const response = await fetch("/login", { 
-      method: "POST", 
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    const result = await response.json();
-    console.log("Success:", result);
-    if (result.validar == false) {
-      alert("Los datos son incorrectos")
-    } 
-    else {
-      if (result.userType == true) {
-        location.href = "/admin"
-      }
-      else{
-        location.href = "/home3" 
-      }
-    }
-  
-  } catch (error) {
-      console.error("Error:", error);
-  }
-}
+
 
 
 async function putJSON3(data3) {
