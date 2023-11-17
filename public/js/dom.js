@@ -79,7 +79,7 @@ function casillerosNegros() {
         tablero[i]= [1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
         for (let x=1; x<16; x++){
             let celda = letras[i]+x;
-            document.getElementById(celda).style.backgroundColor = "black";
+            document.getElementById(celda).style.backgroundColor = "rgba(147, 181, 243, 0.855)";
             tablero[i][x-1] = new Celda();
         }
     } 
@@ -128,7 +128,7 @@ function analizarHorizontal (numPruebaOG, letraPruebaOG, numOG, letraOG, hacer) 
     }
     if (numPrueba<16) {
         if (document.getElementById(celdaDerecha).style.backgroundColor != "green"){ //color3
-            document.getElementById(celdaDerecha).style.backgroundColor = "red";
+            document.getElementById(celdaDerecha).style.backgroundColor = "rgba(240, 91, 91, 0.855)";
             for (let i=0; i<letras.length; i++){
                 if (letras[i]==letraPruebaOG) {
                     letraPrueba=i
@@ -154,7 +154,7 @@ function analizarHorizontal (numPruebaOG, letraPruebaOG, numOG, letraOG, hacer) 
     }
     if (numPrueba>0) {
         if (document.getElementById(celdaIzquierda).style.backgroundColor != "green"){
-            document.getElementById(celdaIzquierda).style.backgroundColor = "red";
+            document.getElementById(celdaIzquierda).style.backgroundColor = "rgba(240, 91, 91, 0.855)";
             for (let i=0; i<letras.length; i++){
                 if (letras[i]==letraPruebaOG) {
                     letraPrueba=i
@@ -189,23 +189,23 @@ function analizarVertical(numPrueba, letraPruebaOG, derecha, izquierda) {
     }
     if (letraPrueba>(-1)){
         if (document.getElementById(celdaArriba).style.backgroundColor != "green"){
-            document.getElementById(celdaArriba).style.backgroundColor = "red";
+            document.getElementById(celdaArriba).style.backgroundColor = "rgba(240, 91, 91, 0.855)";
             if (derecha<16){
                 for (let i=numPrueba; i<(derecha+1); i++){
-                    document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
+                    document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "rgba(240, 91, 91, 0.855)";
                     tablero[letraPrueba][i-1].prohibidoY.push(letraPruebaOG);
                     tablero[letraPrueba][i-1].prohibidoX.push(numPrueba);
                 }
             } else {
                 for (let i=numPrueba; i<16; i++){
-                    document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
+                    document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "rgba(240, 91, 91, 0.855)";
                     tablero[letraPrueba][i-1].prohibidoY.push(letraPruebaOG);
                     tablero[letraPrueba][i-1].prohibidoX.push(numPrueba);
                 }
             }
             if (izquierda>0){
                 for (let i=izquierda; i<numPrueba; i++){
-                    document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
+                    document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "rgba(240, 91, 91, 0.855)";
                     tablero[letraPrueba][i-1].prohibidoY.push(letraPruebaOG);
                     tablero[letraPrueba][i-1].prohibidoX.push(numPrueba);
                 }
@@ -232,23 +232,23 @@ function analizarVertical(numPrueba, letraPruebaOG, derecha, izquierda) {
 
     if (letraPrueba<15){
         if (document.getElementById(celdaAbajo).style.backgroundColor != "green"){
-            document.getElementById(celdaAbajo).style.backgroundColor = "red";
+            document.getElementById(celdaAbajo).style.backgroundColor = "rgba(240, 91, 91, 0.855)";
             if (derecha<16){
                 for (let i=numPrueba; i<(derecha+1); i++){
-                    document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
+                    document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "rgba(240, 91, 91, 0.855)";
                     tablero[letraPrueba][i-1].prohibidoY.push(letraPruebaOG);
                     tablero[letraPrueba][i-1].prohibidoX.push(numPrueba);
                 }
             } else {
                 for (let i=numPrueba; i<16; i++){
-                    document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
+                    document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "rgba(240, 91, 91, 0.855)";
                     tablero[letraPrueba][i-1].prohibidoY.push(letraPruebaOG);
                     tablero[letraPrueba][i-1].prohibidoX.push(numPrueba);
                 }
             }
             if (izquierda>0){
                 for (let i=izquierda; i<numPrueba; i++){
-                    document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "red";
+                    document.getElementById(letras[letraPrueba]+(i)).style.backgroundColor = "rgba(240, 91, 91, 0.855)";
                     tablero[letraPrueba][i-1].prohibidoY.push(letraPruebaOG);
                     tablero[letraPrueba][i-1].prohibidoX.push(numPrueba);
                 }
@@ -279,7 +279,7 @@ function borrar(numero, letra) {
             for (let z=0; z<tablero[i][x].prohibidoX.length; z++){
                 if (tablero[i][x].prohibidoX[z]==tablero [NumeroLetra(letra)][numero-1].cabezaBarcoX && tablero[i][x].prohibidoY[z]==tablero [NumeroLetra(letra)][numero-1].cabezaBarcoY) {
                     if (tablero[i][x].prohibidoX.length == 1 && tablero[i][x].prohibidoY.length == 1) {
-                        document.getElementById(letras[i]+(x+1)).style.backgroundColor = "black";
+                        document.getElementById(letras[i]+(x+1)).style.backgroundColor = "rgba(147, 181, 243, 0.855)";
                     }
                     tablero[i][x].prohibidoX.splice(z, 1);
                     tablero[i][x].prohibidoY.splice(z, 1);
@@ -290,7 +290,7 @@ function borrar(numero, letra) {
     for (let i=0; i<tablero.length; i++){
         for (let x=0; x<tablero[i].length; x++){
             if (tablero[i][x].cabezaBarcoY == tablero [NumeroLetra(letra)][numero-1].cabezaBarcoY && tablero[i][x].cabezaBarcoX == tablero [NumeroLetra(letra)][numero-1].cabezaBarcoX){
-                document.getElementById(letras[i]+(x+1)).style.backgroundColor= "black";
+                document.getElementById(letras[i]+(x+1)).style.backgroundColor= "rgba(147, 181, 243, 0.855)";
                 tablero[i][x].tamaño = "";
                 tablero[i][x].barco = false;
                 tablero[i][x].mina = false;
@@ -407,7 +407,7 @@ function elegirBarco(id) {
 
         if (xd==true){
             for (let a=0; a<barco.length; a++){
-                if (document.getElementById(barco[a]).style.backgroundColor != "black"){
+                if (document.getElementById(barco[a]).style.backgroundColor != "rgba(147, 181, 243, 0.855)"){
                     xd = false
                 }
             }
@@ -415,12 +415,13 @@ function elegirBarco(id) {
 
 
         if (document.getElementById(celda).style.backgroundColor == "green"){
-            document.getElementById(celda).style.backgroundColor = "black";
+            document.getElementById(celda).style.backgroundColor = "rgba(147, 181, 243, 0.855)";
             borrar(analizarCelda(celda).numPrueba, analizarCelda(celda).letraPrueba)
         } else {
+
             if (xd == false){
                 alert("El barco está mal ubicado")
-            } else if (document.getElementById(celda).style.backgroundColor == "black") {
+            } else if (document.getElementById(celda).style.backgroundColor == "rgba(147, 181, 243, 0.855)") {
                 if (queBarco == 0){
                     alert ("Ya pusiste todos tus barcos")
                 } else {
