@@ -1197,10 +1197,9 @@ function analizarHundimiento (celda) {
             }
         }
         if (terminar) {
-            delay(4000).then(() => location.href = "/perdiste");
+            delay(4000).then(() => location.href = `/perdiste`);
         }
     } else {
-        console.log("que raro esto")
         socket.emit("devolucion", {celda: celda, color: "red", idUsuario: parseInt(document.getElementById("idOculto").value), idPartida: parseInt(document.getElementById("idPartidaOculto").value)})
     }
 }
@@ -1243,16 +1242,23 @@ socket.on("devuelto", data => {
             puedoAtacar = false;
             //alert("perdiste el turno")
         }
+
+        let terminar = true;
+        for (let i=0; i<tablero.length; i++) {
+            for (let x=0; x<tablero[i].length; x++) {
+                console.log("ESTILO", document.getElementById("2"+letras[i]+(x+1)).style.background)
+                if (document.getElementById("2"+letras[i]+(x+1)).style.background == "green") {
+                    console.log("entre añ if para ", "2"+letras[i]+(x+1))
+                    terminar = false;
+                }
+            }
+        }
+        if (terminar) {
+            //delay(4000).then(() => location.href = `/ganaste`);
+        }
     }
 });
 
-socket.on ("ganar", data =>{
-    console.log("entre al socketon")
-    if (data.idUsuario != document.getElementById("idOculto").value){
-        console.log("entre al socketon en if")
-        location.href = '/ganaste';
-    }
-})
 
 
 socket.on("server-message", data =>{
@@ -1348,7 +1354,7 @@ socket.on("partidaEnJuego", data => {
 socket.on("server-message", data =>{
     console.log("Mensaje del servidor", data);
 });
-let a=0
+
 function iniciarPartida() {
     // Deshabilitar el botón
     document.getElementById("box9").disabled = true;
@@ -1360,7 +1366,7 @@ function iniciarPartida() {
     let segundos = 0;
 
     cronometroInterval = setInterval(function() {
-        a=1
+
         segundos++;
         document.getElementById("tiempo").innerText = segundos; 
     }, 1000);
@@ -1375,5 +1381,4 @@ function detenerCronometro() {
 
     // Ocultar el cronómetro
     document.getElementById("cronometro").style.display = "none";
-    a=0
 }
