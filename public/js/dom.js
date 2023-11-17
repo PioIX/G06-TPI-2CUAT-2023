@@ -1113,7 +1113,6 @@ socket.on ("partidaEnJuego", data => {
                 }
                 if (data.barcos[a].orientacion == "vertical") {
                     for (let i = 0; i<parseInt(data.barcos[a].tipo[0]); i++){
-                        console.log("ashei ", letras[NumeroLetra(analizarCelda(data.barcos[a].cabezaBarco).letraPrueba)+i])
                         document.getElementById(letras[NumeroLetra(analizarCelda(data.barcos[a].cabezaBarco).letraPrueba)+i] + (analizarCelda(data.barcos[a].cabezaBarco).numPrueba)).style.background = "green";
                         if (parseInt(data.barcos[a].tipo[2])==2) {
                             document.getElementById(letras[NumeroLetra(analizarCelda(data.barcos[a].cabezaBarco).letraPrueba)+i] + (analizarCelda(data.barcos[a].cabezaBarco).numPrueba +1)).style.background = "green";
@@ -1151,106 +1150,30 @@ function atacarBarco(celda) {
 }
 
 function analizarHundimiento (celda) {
-    let derechaCelda = celda
-    let verde = false;
-    let barco = []
-    while (document.getElementById(derechaCelda).background == red) {
-        for (let x = analizarCelda(celda).numPrueba; x<16; x++){
-            derechaCelda= analizarCelda(celda).letraPrueba + x
-            if (document.getElementById(derechaCelda).style.backgroud == "green"){
-                verde = true;
-            } else if (document.getElementById(derechaCelda).background == red){
-                barco.push(derechaCelda);
+    let verde = false
+    for (let i=0; i<tablero.length; i++) {
+        for (let x=0; x<tablero[i].length; x++) {
+            let posicionX = analizarCelda(celda).numPrueba -1
+            let posicionY = NumeroLetra(analizarCelda(celda).letraPrueba)
+            if (posicionX == tablero[i][x].cabezaBarcoX || posicionY == tablero[i][x].cabezaBarcoY){
+                if (document.getElementById(letras[i] + (x+1)).style.background == "green"){
+                    verde = true
+                }
             }
         }
     }
     if (verde == false){
-        let izquierdaCelda= celda;
-        while (document.getElementById(izquierdaCelda).background == red) {
-            for (let x = analizarCelda(celda).numPrueba; x>0; x--){
-                izquierdaCelda= analizarCelda(celda).letraPrueba + x
-                if (document.getElementById(izquierdaCelda).style.backgroud == "green"){
-                    verde = true;
-                } else if (document.getElementById(izquierdaCelda).background == red){
-                    barco.push(izquierdaCelda);
+        console.log("ya no hay verdes");
+        for (let i=0; i<tablero.length; i++) {
+            for (let x=0; x<tablero[i].length; x++) {
+                let posicionX = analizarCelda(celda).numPrueba -1
+                let posicionY = NumeroLetra(analizarCelda(celda).letraPrueba)
+                if (posicionX == tablero[i][x].cabezaBarcoX || posicionY == tablero[i][x].cabezaBarcoY){
+                    console.log("entre al if")
+                    document.getElementById(letras[i] + (x+1)).style.background == "rgba(137, 14, 14, 0.855)"
                 }
             }
-        }
-        if (verde == false){
-            let diferencia = analizarCelda(derechaCelda).numPrueba - analizarCelda(izquierdaCelda).numPrueba - 1;
-            if (diferencia>=3) {
-                let arribaCelda = letras[NumeroLetra(analizarCelda(izquierdaCelda).letraPrueba)-1] + (analizarCelda(izquierdaCelda).numPrueba +1)
-                while (document.getElementById(arribaCelda).background == red) {
-                    for (let x = analizarCelda(celda).numPrueba; x<16; x++){
-                        arribaCelda= analizarCelda(celda).letraPrueba + x
-                        if (document.getElementById(arribaCelda).style.backgroud == "green"){
-                            verde = true;
-                        } else if (document.getElementById(arribaCelda).background == red){
-                            barco.push(arribaCelda);
-                        }
-                    }
-                }
-                if (document.getElementById(arribaCelda).background != red) {
-                    let abajoCelda = letras[NumeroLetra(analizarCelda(izquierdaCelda).letraPrueba)+1] + (analizarCelda(izquierdaCelda).numPrueba +1)
-                }
-                while (document.getElementById(abajoCelda).background == red) {
-                    for (let x = analizarCelda(celda).numPrueba; x<16; x++){
-                        abajoCelda= analizarCelda(celda).letraPrueba + x
-                        if (document.getElementById(abajoCelda).style.backgroud == "green"){
-                            verde = true;
-                        } else if (document.getElementById(abajoCelda).background == red){
-                            barco.push(abajoCelda);
-                        }
-                    }
-                }
-            } else {
-                if (verde== false){
-                    let arribaCelda = letras[NumeroLetra(analizarCelda(izquierdaCelda).letraPrueba)-1] + (analizarCelda(izquierdaCelda).numPrueba +1)
-                    while (document.getElementById(arribaCelda).background == red) {
-                        for (let i=analizarCelda(arribaCelda).numPrueba; i>0; i--){
-                            arribaCelda = letras[NumeroLetra(analizarCelda(arribaCelda).letraPrueba) -i] + analizarCelda(arribaCelda).numPrueba;
-                            if (document.getElementById(arribaCelda).style.backgroud == "green"){
-                                verde = true;
-                            } else if (document.getElementById(arribaCelda).background == red){
-                                barco.push(arribaCelda);
-                            }
-                        }
-                    }
-                    if (verde == false && diferencia ==2 ) {
-                        derechaCelda = letras[NumeroLetra(analizarCelda(arribaCelda).letraPrueba)+1] + (analizarCelda(arribaCelda).numPrueba +1)
-                        if (document.getElementById(derechaCelda).style.backgroud == "green"){
-                            verde = true;
-                        } else if (document.getElementById(derechaCelda).background == red){
-                            barco.push(derechaCelda);
-                        }
-                        if (verde == false) {
-                            abajoCelda = letras[NumeroLetra(analizarCelda(izquierdaCelda).letraPrueba)+1] + (analizarCelda(izquierdaCelda).numPrueba)
-                            while (document.getElementById(arribaCelda).background == red) {}
-                        }
-                    }
-                }
-            }
-            
-
-
-
-
-
-            let arribaCelda = analizarCelda(izquierdaCelda).letraPrueba + (analizarCelda(izquierdaCelda).numPrueba +1)
-            while (document.getElementById(arribaCelda).background == red) {
-                for (let x = analizarCelda(celda).numPrueba; x<16; x++){
-                    arribaCelda= analizarCelda(celda).letraPrueba + x
-                    if (document.getElementById(arribaCelda).style.backgroud == "green"){
-                        verde = true;
-                    } else if (document.getElementById(arribaCelda).background == red){
-                        barco.push(arribaCelda);
-                    }
-                }
-            }
-            if (verde==false) {
-
-            }
-        }
+        } 
     }
 }
 
@@ -1271,6 +1194,7 @@ socket.on("barcoAtacado", data => {
         data.celda = data.celda.slice(1);
         if (document.getElementById(data.celda).style.background== "green"){
             document.getElementById(data.celda).style.background = "red";
+            analizarHundimiento(data.celda);
             socket.emit("devolucion", {celda: data.celda, color: "red", idUsuario: parseInt(document.getElementById("idOculto").value), idPartida: parseInt(document.getElementById("idPartidaOculto").value)})
         } else if (document.getElementById(data.celda).style.background== "yellow") {
             document.getElementById(data.celda).style.background = "orange";
