@@ -7,7 +7,6 @@ async function putJSON() {
       password: document.getElementById("box6").value
     }
     try {
-      console.log("try")
       const response = await fetch("/login", { 
         method: "POST", 
         headers: {
@@ -25,10 +24,8 @@ async function putJSON() {
           location.href = "/admin";
         }
         else{
-            console.log("resss", result.idUsuario);
             idUsuarioLogueado = result.idUsuario;
             document.getElementById("idOculto").value = result.idUsuario;
-            console.log(document.getElementById("idOculto"));
             location.href = `/home3?valor=${document.getElementById("idOculto").value}`;
         }
       }
@@ -43,16 +40,28 @@ let letras = ["A", "B", "C", "D", "E","F","G","H","I","J", "K", "L", "M","N","Ñ
 let barcos = ["0x0", "mina", "2x1", "3x1", "4x1", "5x2"];
 let queBarco = 0;
 let orientacion = "horizontal";
+let enviar = false;
+
 class Celda {
     constructor(){
         this.barco = false;
         this.mina = false;
-        this.cabezaBarcoY = "!";
+        this.cabezaBarcoY = "";
         this.cabezaBarcoX = "";
         this.clickeado = false;
         this.prohibidoY= [];
         this.prohibidoX= [];
         this.tamaño = "";
+        this.orientacion = "";
+    }
+}
+class Barco {
+    constructor(){
+        this.barco = false;
+        this.mina = false;
+        this.cabezaBarco = null;
+        this.tamaño = null;
+        this.orientacion = null;
     }
 } 
 
@@ -283,6 +292,10 @@ function borrar(numero, letra) {
             if (tablero[i][x].cabezaBarcoY == tablero [NumeroLetra(letra)][numero-1].cabezaBarcoY && tablero[i][x].cabezaBarcoX == tablero [NumeroLetra(letra)][numero-1].cabezaBarcoX){
                 document.getElementById(letras[i]+(x+1)).style.backgroundColor= "black";
                 tablero[i][x].tamaño = "";
+                tablero[i][x].barco = false;
+                tablero[i][x].mina = false;
+                tablero[i][x].cabezaBarcoX = "";
+                tablero[i][x].cabezaBarcoY = "";
             } 
         }
     }
@@ -342,20 +355,23 @@ function elegirBarco(id) {
     let posicionY = parseInt(tamaño[2]);
     let barco = [];
     let xd = true;
-    console.log(celda)
-    console.log(document.getElementById(celda).style.backgorundColor)
     if (tamaño.length>3 && document.getElementById(celda).style.backgroundColor != "green"){
         document.getElementById(celda).style.background = "blue";
-        for (let i = 0; i<tablero.length; i++){
-            for (let x = 0; x<tablero[i].length; x++){
-                if (analizarCelda(celda).numPrueba -1 == x && NumeroLetra(analizarCelda(celda).letraPrueba) == i){
-                    tablero[i][x].mina = true;
-                    tablero[i][x].tamaño = tamaño;
-                }
+        for (let i = 0; i < tablero.length; i++) {
+            for (let x = 0; x < tablero[i].length; x++) {
+              if (analizarCelda(celda).numPrueba - 1 == x && NumeroLetra(analizarCelda(celda).letraPrueba) == i) {
+                tablero[i][x].mina = true;
+                tablero[i][x].tamaño = tamaño;
+                tablero[i][x].cabezaBarcoY = letras[i];
+                tablero[i][x].cabezaBarcoX = x + 1;
+              }
             }
-        }
+          }
+
+          
         if (queBarco==1){
             queBarco--;
+            enviar = true
         }
     } else if (tamaño.length>3 && document.getElementById(celda).style.backgorundColor=="green"){
         alert ("mina mal ubicada");
@@ -405,32 +421,8 @@ function elegirBarco(id) {
             if (xd == false){
                 alert("El barco está mal ubicado")
             } else if (document.getElementById(celda).style.backgroundColor == "black") {
-                console.log("epico ", queBarco)
                 if (queBarco == 0){
                     alert ("Ya pusiste todos tus barcos")
-                    let barcos = [];
-                    let orientacion = ""
-                    // socket on
-
-                    socket.emit("")
-
-                    for (let i = 0; i<tablero.length; i++){
-                        for (let x = 0; x<tablero[i].length; x++){
-                            if (tablero[i][x].barco == true) {
-                                if (tablero[i][x].tamaño.length>3){
-                                    //------
-                                } else {
-                                    if (tablero[i][x].tamaño[0]>tablero[i][x].tamaño[2]){
-                                        orientacion = "horizontal";
-                                    } else {
-                                        orientacion = "vertical";
-                                    }
-                                }
-                                
-                                barcos.push({cabeza: (tablero[i][x].cabezaBarcoY+tablero[i][x].cabezaBarcoX), })
-                            }
-                        }
-                    }
                 } else {
                     for (let i=0; i<barco.length; i++){
                         document.getElementById(barco[i]).style.background = "green";
@@ -438,6 +430,7 @@ function elegirBarco(id) {
                         tablero[NumeroLetra(analizarCelda(barco[i]).letraPrueba)][analizarCelda(barco[i]).numPrueba -1].cabezaBarcoX=analizarCelda(celda).numPrueba;
                         tablero[NumeroLetra(analizarCelda(barco[i]).letraPrueba)][analizarCelda(barco[i]).numPrueba -1].cabezaBarcoY=analizarCelda(celda).letraPrueba;
                         tablero[NumeroLetra(analizarCelda(barco[i]).letraPrueba)][analizarCelda(barco[i]).numPrueba -1].tamaño = tamaño;
+                        tablero[NumeroLetra(analizarCelda(barco[i]).letraPrueba)][analizarCelda(barco[i]).numPrueba -1].orientacion = orientacion;
                     }
     
                     analizarVertical(
@@ -453,15 +446,46 @@ function elegirBarco(id) {
             }
         }
     }
-    
 }
 
 function buscarPartida () {
-    console.log(document.getElementById("idOculto").value);
     socket.emit("buscarPartida", {usuario: document.getElementById("idOculto").value})
 }
 
-
+function guardarBarcos () {
+    if (enviar){
+        let barcosBD = [];
+        let guardar = true;
+        for (let i=0; i<tablero.length; i++){
+            for (let x=0; x<tablero[i].length; x++){
+                if (tablero[i][x].barco || tablero[i][x].mina){
+                    for (let z=0; z<barcosBD.length; z++){
+                        if (barcosBD[z].cabezaBarco== (tablero[i][x].cabezaBarcoY + tablero[i][x].cabezaBarcoX)){
+                            guardar = false;
+                        }
+                    }
+                    if (guardar) {
+                        
+                        let barco = new Barco;
+                        barco.cabezaBarco= tablero[i][x].cabezaBarcoY + tablero[i][x].cabezaBarcoX;
+                        if (tablero[i][x].barco){
+                            barco.barco = true;
+                        } else {
+                            barco.mina = true
+                        }
+                        barco.orientacion = tablero[i][x].orientacion;
+                        barco.tamaño = tablero[i][x].tamaño;
+                        barcosBD.push(barco);
+                    }
+                }
+                guardar = true;
+            }
+        }
+        socket.emit("barcosGuardados", {barcos: barcosBD, idUsuario: parseInt(document.getElementById("idOculto").value), idPartida: parseInt(document.getElementById("idPartidaOculto").value)});
+    } else {
+        alert ("Todavía no pusiste todos tus barcos");
+    }
+}
 
 
 
@@ -471,9 +495,11 @@ socket.on("connect", () => {
 });
 
 socket.on("partidaEncontrada", data =>{
-    console.log("me encanta el fortnite")
-    location.href = `/elegirBarco?valor=${document.getElementById("idOculto").value}`
-    //location.href = "/elegirBarco";
+    location.href = `/elegirBarco?valor=${document.getElementById("idOculto").value}&idPartida=${data.idPartida}`
+});
+
+socket.on ("partidaEnJuego", data => {
+    location.href = `/juego?valor=${document.getElementById("idOculto").value}&idPartida=${data.idPartida}`
 });
 
 socket.on("server-message", data =>{

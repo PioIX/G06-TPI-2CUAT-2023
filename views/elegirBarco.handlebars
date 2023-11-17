@@ -292,14 +292,18 @@
         </tr>
     </table>
 
-    <button type="button" onclick="direccion()" class="pixel2 grey" id="box7">Cambiar direccion</button>
+    <button type="button" onclick="direccion()" class="pixel2 grey" id="cambiarDireccion">Cambiar direccion</button>
+    <button type="button" onclick="guardarBarcos()" class="pixel2 grey" id="guardarBarcos">Jugar</button>
+
 </div>
 
 
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    var idUsuario = {{idUsuario}};
+    let idUsuario = {{idUsuario}};
+    let idPartida = {{idPartida}}
     document.getElementById("idOculto").value = idUsuario;
+    document.getElementById("idPartidaOculto").value = idPartida;
   });
 </script>
