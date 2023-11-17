@@ -1,18 +1,51 @@
-{{> header this}}
+<input name="idOculto" id="idOculto"></input>
+<input name="idPartidaOculto" id="idPartidaOculto"></input>
 <div class="home3">
-<div class="home1">
-  <div class="btnSesion">
-    <div class="containerSesion">
-      <center>
-        <input type="button" class="pixel1 yellow" id="box9" value="Jugar" onclick="buscarPartida()">
-      </center>
+  <div class="home1">
+    <div class="btnSesion">
+      <div class="containerSesion">
+        <center>
+          <input type="button" class="pixel1 yellow" id="box9" value="Jugar" onclick="iniciarPartida()">
+          <div id="cronometro" style="display:none;">Cronómetro: <span id="tiempo">0</span> segundos</div>
+        </center>
+        <div id="GIFF">
+
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var idUsuario = {{idUsuario}};
     document.getElementById("idOculto").value = idUsuario;
   });
-</script>
 
+  function iniciarPartida() {
+    // Deshabilitar el botón
+    document.getElementById("box9").disabled = true;
+
+    // Mostrar el cronómetro
+    document.getElementById("cronometro").style.display = "block";
+
+    // Iniciar el contador
+    var segundos = 0;
+    var contador = setInterval(function() {
+      segundos++;
+      document.getElementById("tiempo").innerText = segundos;
+    }, 1000);
+
+    // Simular una partida (puedes reemplazar esto con tu lógica de búsqueda de partida)
+    setTimeout(function() {
+      // Habilitar el botón después de 5 segundos (simulación)
+      document.getElementById("box9").disabled = false;
+
+      // Ocultar el cronómetro
+      document.getElementById("cronometro").style.display = "none";
+
+      // Detener el contador
+      clearInterval(contador);
+    }, 50000);
+  }
+</script> 

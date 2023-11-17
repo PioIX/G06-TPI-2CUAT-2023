@@ -510,7 +510,10 @@ socket.on("server-message", data =>{
     console.log("Mensaje del servidor", data);
 });
 
+
+
 //admin
+
 
 
 
@@ -571,4 +574,57 @@ async function borrarUsuario() {
     idBuscado: idBuscado,
   };
   putJSON3(data3);
+}
+
+
+// Agrega esta variable global para el cronómetro
+let cronometroInterval;
+
+socket.on("connect", () => {
+    console.log("Me conecté a WS");
+});
+
+socket.on("partidaEncontrada", data =>{
+    // Detener el cronómetro antes de redirigir a la pantalla de elegirBarco
+    detenerCronometro();
+    location.href = `/elegirBarco?valor=${document.getElementById("idOculto").value}&idPartida=${data.idPartida}`;
+});
+
+socket.on("partidaEnJuego", data => {
+    // Detener el cronómetro antes de redirigir a la pantalla de juego
+    detenerCronometro();
+    location.href = `/juego?valor=${document.getElementById("idOculto").value}&idPartida=${data.idPartida}`;
+});
+
+socket.on("server-message", data =>{
+    console.log("Mensaje del servidor", data);
+});
+let a=0
+function iniciarPartida() {
+    // Deshabilitar el botón
+    document.getElementById("box9").disabled = true;
+
+    // Mostrar el cronómetro
+    document.getElementById("cronometro").style.display = "block";
+
+    // Iniciar el contador
+    let segundos = 0;
+
+    cronometroInterval = setInterval(function() {
+        a=1
+        segundos++;
+        document.getElementById("tiempo").innerText = segundos; 
+    }, 1000);
+
+    // Envía el evento "buscarPartida" al servidor
+    socket.emit("buscarPartida", { usuario: document.getElementById("idOculto").value });
+}
+
+function detenerCronometro() {
+    // Detener el contador
+    clearInterval(cronometroInterval);
+
+    // Ocultar el cronómetro
+    document.getElementById("cronometro").style.display = "none";
+    a=0
 }
