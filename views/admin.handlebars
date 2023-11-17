@@ -9,14 +9,16 @@
                     {{/each}}
                 </select> 
             </center>
+                 <input type="button" class="btnAdmin yellow" onclick="buscarUsuario()" value="Poner nombre">
+            </center>     
         </div>
         <div class="container2">
             <div class="usuarioss">Nombre Usuario</div>
             <div class="mb-3 form-group">
                 <input type="text" class="form-control" id="nombre" name="nombreUser" placeholder="nombre del usuario">
             </div>
-            <input type="submit" class="btnAdmin yellow" value="Editar Usuario">
-            <input type="submit" class="btnAdmin yellow" value="Borrar Usuario">
+            <input type="submit" class="btnAdmin yellow" value="Editar Usuario" onclick="editarUsuario()">
+            <input type="submit" class="btnAdmin yellow" value="Borrar Usuario" onclick="borrarUsuario()">
         </div>
     </div>
 </div>

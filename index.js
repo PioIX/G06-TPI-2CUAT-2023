@@ -61,6 +61,7 @@ const authService = require("./authService");
 //start
 
 app.get("/", (req, res) => {
+
   console.log("soy un pedido GET / -home-")
   res.render("home");
 });
@@ -71,12 +72,13 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
-  console.log("soy un pedido POST /register")
-  const { email, password } = req.body;
+
+  const { email, password, user } = req.body;
 
   try {
     await authService.registerUser(auth, { email, password });
-    res.render("register", {
+    res.render("login", {
+      sendUser: MySQL.realizarQuery(`INSERT INTO Usuarios (administrador, usuario, email, partida, partidasGanadas, barcosHundidos) values(0, "${user}", "${email}", "0", "0", "0")`),
       message: "Registro exitoso. Puedes iniciar sesión ahora.",
     });
   } catch (error) {
@@ -113,13 +115,13 @@ app.post("/login", async (req, res) => {
             }
     }
     else{
-        res.send({validar:false})
+        res.send({validar:false})    
     } // Aquí puedes redirigir al usuario a la página que desees después del inicio de sesión exitoso
   } catch (error) {
     console.error("Error en el inicio de sesión:", error);
-    res.send({validar:false})
+    res.send({validar:false})    
   }
-
+  
 });
 
 app.get("/home2", (req, res) => {
@@ -155,6 +157,7 @@ app.get("/admin", (req, res) => {
   console.log("soy un pedido GET /admin")
   res.render("admin");
 });
+
 
 
 let jugadores = 0;
@@ -232,3 +235,46 @@ io.on("connection", (socket) => {
   });
 });
 //setInterval(() => io.emit("server-message", { mensaje: "MENSAJE DEL SERVIDOR" }), 2000);
+
+app.get("/admin", async (req, res) => {
+  try {
+    const idResult = await MySQL.realizarQuery(`SELECT id FROM Usuarios`);
+    const usuarioResult = await MySQL.realizarQuery(`SELECT usuario FROM Usuarios`);
+
+    res.render("admin", { id: idResult, usuario: usuarioResult });
+  } catch (error) {
+    console.error("Error en la obtención de datos:", error);
+    res.status(500).send("Error en la obtención de datos");
+  }
+});
+
+
+
+app.get("/homeAdmin", (req,res) => {
+  res.render("homeAdmin", null);
+});
+
+app.put("/admin", async (req, res) => {
+  const { queEs, idBuscado, nuevoNombre } = req.body;
+
+  try {
+    if (queEs === "buscarID") {
+      const usuarioResult = await MySQL.realizarQuery(`SELECT usuario FROM Usuarios WHERE id = ${idBuscado}`);
+      const nombreUsuario = usuarioResult.length > 0 ? usuarioResult[0].usuario : "";
+      console.log("Nombre de usuario encontrado:", nombreUsuario);
+      res.json({ queEs: "buscarID", nombreUsuario: nombreUsuario });
+    } else if (queEs === "editarUsuario") {
+      await MySQL.realizarQuery(`UPDATE Usuarios SET usuario = "${nuevoNombre}" WHERE id = ${idBuscado}`);
+      res.json({ queEs: "editarUsuario" });
+    } else if (queEs === "borrarUsuario") {
+      await MySQL.realizarQuery(`DELETE FROM Usuarios WHERE id = ${idBuscado}`);
+      res.json({ queEs: "borrarUsuario" });
+    } else {
+      // Manejar otras operaciones si es necesario
+      res.json({ queEs: "otraOperacion" });
+    }
+  } catch (error) {
+    console.error("Error en la operación:", error);
+    res.status(500).json({ queEs, error: `Error en la operación ${queEs}` });
+  }
+});
