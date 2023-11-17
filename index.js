@@ -158,6 +158,49 @@ app.get("/admin", (req, res) => {
   res.render("admin");
 });
 
+app.get("/admin", async (req, res) => {
+  try {
+    const idResult = await MySQL.realizarQuery(`SELECT id FROM Usuarios`);
+    const usuarioResult = await MySQL.realizarQuery(`SELECT usuario FROM Usuarios`);
+
+    res.render("admin", { id: idResult, usuario: usuarioResult });
+  } catch (error) {
+    console.error("Error en la obtención de datos:", error);
+    res.status(500).send("Error en la obtención de datos");
+  }
+});
+
+
+
+app.get("/homeAdmin", (req,res) => {
+  res.render("homeAdmin", null);
+});
+
+app.put("/admin", async (req, res) => {
+  const { queEs, idBuscado, nuevoNombre } = req.body;
+
+  try {
+    if (queEs === "buscarID") {
+      const usuarioResult = await MySQL.realizarQuery(`SELECT usuario FROM Usuarios WHERE id = ${idBuscado}`);
+      const nombreUsuario = usuarioResult.length > 0 ? usuarioResult[0].usuario : "";
+      console.log("Nombre de usuario encontrado:", nombreUsuario);
+      res.json({ queEs: "buscarID", nombreUsuario: nombreUsuario });
+    } else if (queEs === "editarUsuario") {
+      await MySQL.realizarQuery(`UPDATE Usuarios SET usuario = "${nuevoNombre}" WHERE id = ${idBuscado}`);
+      res.json({ queEs: "editarUsuario" });
+    } else if (queEs === "borrarUsuario") {
+      await MySQL.realizarQuery(`DELETE FROM Usuarios WHERE id = ${idBuscado}`);
+      res.json({ queEs: "borrarUsuario" });
+    } else {
+      // Manejar otras operaciones si es necesario
+      res.json({ queEs: "otraOperacion" });
+    }
+  } catch (error) {
+    console.error("Error en la operación:", error);
+    res.status(500).json({ queEs, error: `Error en la operación ${queEs}` });
+  }
+});
+
 
 
 let jugadores = 0;
@@ -229,6 +272,12 @@ io.on("connection", (socket) => {
       
     }
   })
+  socket.on ("atacarBarco", data => {
+    io.to(data.idPartida).emit("barcoAtacado", {idUsuario: data.idUsuario, celda: data.celda})
+  });
+  socket.on ("devolucion", data => {
+    io.to(data.idPartida).emit("devuelto", {idUsuario: data.idUsuario, celda: data.celda, color: data.color})
+  })
 
   socket.on('disconnect', () => {
     //socket.leave(req.session.idGrupo);
@@ -236,45 +285,3 @@ io.on("connection", (socket) => {
 });
 //setInterval(() => io.emit("server-message", { mensaje: "MENSAJE DEL SERVIDOR" }), 2000);
 
-app.get("/admin", async (req, res) => {
-  try {
-    const idResult = await MySQL.realizarQuery(`SELECT id FROM Usuarios`);
-    const usuarioResult = await MySQL.realizarQuery(`SELECT usuario FROM Usuarios`);
-
-    res.render("admin", { id: idResult, usuario: usuarioResult });
-  } catch (error) {
-    console.error("Error en la obtención de datos:", error);
-    res.status(500).send("Error en la obtención de datos");
-  }
-});
-
-
-
-app.get("/homeAdmin", (req,res) => {
-  res.render("homeAdmin", null);
-});
-
-app.put("/admin", async (req, res) => {
-  const { queEs, idBuscado, nuevoNombre } = req.body;
-
-  try {
-    if (queEs === "buscarID") {
-      const usuarioResult = await MySQL.realizarQuery(`SELECT usuario FROM Usuarios WHERE id = ${idBuscado}`);
-      const nombreUsuario = usuarioResult.length > 0 ? usuarioResult[0].usuario : "";
-      console.log("Nombre de usuario encontrado:", nombreUsuario);
-      res.json({ queEs: "buscarID", nombreUsuario: nombreUsuario });
-    } else if (queEs === "editarUsuario") {
-      await MySQL.realizarQuery(`UPDATE Usuarios SET usuario = "${nuevoNombre}" WHERE id = ${idBuscado}`);
-      res.json({ queEs: "editarUsuario" });
-    } else if (queEs === "borrarUsuario") {
-      await MySQL.realizarQuery(`DELETE FROM Usuarios WHERE id = ${idBuscado}`);
-      res.json({ queEs: "borrarUsuario" });
-    } else {
-      // Manejar otras operaciones si es necesario
-      res.json({ queEs: "otraOperacion" });
-    }
-  } catch (error) {
-    console.error("Error en la operación:", error);
-    res.status(500).json({ queEs, error: `Error en la operación ${queEs}` });
-  }
-});
