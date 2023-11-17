@@ -143,14 +143,45 @@ app.get("/home3", (req, res) => {
   res.render("home3", {idUsuario: req.query.valor});
 });
 
-app.get("/juego", (req, res) => {
-  console.log("soy un pedido GET /juego");
-  res.render("juego", {idUsuario: req.query.valor, idPartida: req.query.idPartida});
+app.get("/juego", async (req, res) => {
+  try {
+    const apiUrl = "http://worldtimeapi.org/api/timezone/America/Argentina/Buenos_Aires";
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    console.log(data);
+    let horas = parseInt(data.datetime.split('T')[1].split(':')[0]);
+    console.log(horas);
+    if (horas > 17){
+      res.render("juegoNoche", {idUsuario: req.query.valor, idPartida: req.query.idPartida});
+    }
+    else{
+      res.render("juego", {idUsuario: req.query.valor, idPartida: req.query.idPartida});
+    }
+  } catch (error) {
+    console.error('Error al obtener la hora:', error);
+    res.status(500).json({ error: 'Error al obtener la hora' });
+  }
 });
 
-app.get("/elegirBarco", (req, res) => {
+app.get("/elegirBarco", async (req, res) => {
   console.log("soy un pedido GET /elegirBarco")
-  res.render("elegirBarco", {idUsuario: req.query.valor, idPartida: req.query.idPartida});
+  try {
+    const apiUrl = "http://worldtimeapi.org/api/timezone/America/Argentina/Buenos_Aires";
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    console.log(data);
+    let horas = parseInt(data.datetime.split('T')[1].split(':')[0]);
+    console.log(horas);
+    if (horas > 17){
+      res.render("elegirBarcoNoche", {idUsuario: req.query.valor, idPartida: req.query.idPartida});
+    }
+    else{
+      res.render("elegirBarco", {idUsuario: req.query.valor, idPartida: req.query.idPartida});
+    }
+  } catch (error) {
+    console.error('Error al obtener la hora:', error);
+    res.status(500).json({ error: 'Error al obtener la hora' });
+  }
 });
 
 app.get("/admin", (req, res) => {
@@ -158,6 +189,18 @@ app.get("/admin", (req, res) => {
   res.render("admin");
 });
 
+app.get("/ganaste", (req, res) => {
+  res.render("ganaste");
+});
+app.put("/ganaste", (req, res) => {
+  res.render("home3");
+});
+app.get("/perdiste", (req, res) => {
+  res.render("perdiste");
+});
+app.put("/perdiste", (req, res) => {
+  res.render("home3");
+});
 
 
 let jugadores = 0;
