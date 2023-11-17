@@ -193,13 +193,13 @@ app.get("/ganaste", (req, res) => {
   res.render("ganaste");
 });
 app.put("/ganaste", (req, res) => {
-  res.render("game3");
+  res.render("home3");
 });
 app.get("/perdiste", (req, res) => {
   res.render("perdiste");
 });
 app.put("/perdiste", (req, res) => {
-  res.render("game3");
+  res.render("home3");
 });
 
 
