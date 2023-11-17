@@ -364,7 +364,7 @@
 .celda{
   width: 37.5px;
   height: 37.5px;
-  background-color: #93b5f3da;
+  background-color: rgba(147, 181, 243, 0.855);
   border: 1px solid #000000;
   
 }

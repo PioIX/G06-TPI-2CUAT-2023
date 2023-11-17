@@ -1,11 +1,18 @@
+{{> header this}}
+<div class="home3">
 <div class="home1">
   <div class="btnSesion">
     <div class="containerSesion">
       <center>
-        <form action="/juego" method="get">
-          <input type="submit" class="pixel1 yellow" id="box9" value="Jugar">
-        </form>
+        <input type="button" class="pixel1 yellow" id="box9" value="Jugar" onclick="buscarPartida()">
       </center>
     </div>
   </div>
 </div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var idUsuario = {{idUsuario}};
+    document.getElementById("idOculto").value = idUsuario;
+  });
+</script>
+
