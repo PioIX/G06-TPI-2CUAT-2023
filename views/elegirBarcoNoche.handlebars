@@ -1,10 +1,9 @@
-<!--<td bgcolor="#ffffff">4</td>-->
 <div class="fondoJuegoNoche">
     <div class="idHidden">
         <input name="idOculto" id="idOculto"></input>
         <input name="idPartidaOculto" id="idPartidaOculto"></input>
     </div>
-    <div class="tableroBtn">
+    <div id="pantallaTotal" class="tableroBtn">
         <table id="table" border="0" cellspacing="1" cellpadding="1" bgcolor="white">
             <tr align="center">
                 <td bgcolor="#ffffff" class="numColumna"><font >X</font></td>
@@ -295,19 +294,22 @@
                 <td id="Ñ15" onclick="elegirBarco(id)" class="celda" value = 0><font color="#ffffff"></font></td>
             </tr>
         </table>
-        <div class="btnElegirBarcos">
-            <button type="button" onclick="direccion()" class="elegirBarcos" id="cambiarDireccion">Cambiar direccion</button>
-            <button type="button" onclick="guardarBarcos()" class="elegirBarcos" id="guardarBarcos">Jugar</button>
-        </div>
+
+        <button type="button" onclick="direccion()" class="pixel2 grey" id="cambiarDireccion">Cambiar direccion</button>
+        <button type="button" onclick="guardarBarcos()" class="pixel2 grey" id="guardarBarcos">Jugar</button>
+
     </div>
+
+
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let idUsuario = {{idUsuario}};
+        let idPartida = {{idPartida}}
+        document.getElementById("idOculto").value = idUsuario;
+        document.getElementById("idPartidaOculto").value = idPartida;
+        casillerosNegros();
+    });
+    </script>
 </div>
-
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    let idUsuario = {{idUsuario}};
-    let idPartida = {{idPartida}}
-    document.getElementById("idOculto").value = idUsuario;
-    document.getElementById("idPartidaOculto").value = idPartida;
-  });
-</script>
