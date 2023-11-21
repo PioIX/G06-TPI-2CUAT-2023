@@ -1,5 +1,5 @@
 const IP = "ws://localhost:3000";
-const socket = io();
+const socket = io(IP);
 
 function delay(timeInMs) {
     return new Promise(resolve => setTimeout(resolve, timeInMs));
@@ -89,9 +89,7 @@ function casillerosNegros() {
     } 
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    casillerosNegros();
-});
+
   
 function analizarCelda (celdaPrueba) {
     let numPrueba = 0;
@@ -276,7 +274,7 @@ function analizarVertical(numPrueba, letraPruebaOG, derecha, izquierda) {
 }
 
 function borrar(numero, letra) {
-    console.log("data que me llega: ", letra, numero);
+    
     for (let i=0; i<tablero.length; i++) {
         for (let x=0; x<tablero[i].length; x++){
             for (let z=0; z<tablero[i][x].prohibidoX.length; z++){
@@ -509,9 +507,7 @@ socket.on("partidaEncontrada", data =>{
 
 socket.on ("partidaEnJuego", data => {
     document.getElementById("pantallaTotal").innerHTML = `
-    <div class="fondoJuego">
-    <div class="pagJuego">
-        <table width="700" height="700px"; border="0" cellspacing="1" cellpadding="1" bgcolor="#000000" class="tablero1">
+    <table width="700" height="700px"; border="0" cellspacing="1" cellpadding="1" bgcolor="#000000" class="tablero1">
             <tr align="center">
                 <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">Mi Tablero</font></td>
                 <td bgcolor="#ffffff" class="numColumna"><font class="txtJuego">1</font></td>
@@ -1090,11 +1086,7 @@ socket.on ("partidaEnJuego", data => {
             <td id="2Ñ14"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
             <td id="2Ñ15"  onclick="atacarBarco(id)" class="celda"><font color="#ffffff"></font></td>
         </tr>
-        </table>
-        <button class="bomba">
-            <center><img src="img/bomb.png" width="40px" height="40px"></center>
-        </button>
-    </div>
+    </table>
 </div>
     `;
     for (let i=0;i<letras.length; i++){
@@ -1133,7 +1125,6 @@ socket.on ("partidaEnJuego", data => {
 let puedoAtacar = true
 let ataqueX2 = false;
 function atacarBarco(celda) {
-    console.log("puedo atacar? ", puedoAtacar)
      if (puedoAtacar){ 
         if (document.getElementById(celda).style.background == "rgba(147, 181, 243, 0.855)"){
             if (ataqueX2){
@@ -1160,16 +1151,13 @@ function atacarBarco(celda) {
 }
 
 function analizarHundimiento (celda) {
-    console.log("el color d la celda og es ", document.getElementById(celda).style.background)
     let verde = false
     for (let i=0; i<tablero.length; i++) {
         for (let x=0; x<tablero[i].length; x++) {
             let posicionX = analizarCelda(celda).numPrueba -1
             let posicionY = NumeroLetra(analizarCelda(celda).letraPrueba)
             if (tablero[posicionY][posicionX].cabezaBarcoX == tablero[i][x].cabezaBarcoX && tablero[posicionY][posicionX].cabezaBarcoY == tablero[i][x].cabezaBarcoY){
-                console.log("entre perro")
                 if (document.getElementById(letras[i] + (x+1)).style.background == "green"){
-                    console.log(letras[i] + (x+1))
                     verde = true
                 }
             }
@@ -1182,7 +1170,6 @@ function analizarHundimiento (celda) {
                 let posicionX = analizarCelda(celda).numPrueba -1
                 let posicionY = NumeroLetra(analizarCelda(celda).letraPrueba)
                 if (tablero[posicionY][posicionX].cabezaBarcoX == tablero[i][x].cabezaBarcoX && tablero[posicionY][posicionX].cabezaBarcoY == tablero[i][x].cabezaBarcoY){
-                    console.log("entre al if")
                     document.getElementById(letras[i] + (x+1)).style.background = "rgba(137, 14, 14, 0.855)"
                     socket.emit("devolucion", {celda: letras[i] + (x+1), color: "rgba(137, 14, 14, 0.855)", idUsuario: parseInt(document.getElementById("idOculto").value), idPartida: parseInt(document.getElementById("idPartidaOculto").value)})
                 }
@@ -1197,14 +1184,22 @@ function analizarHundimiento (celda) {
             }
         }
         if (terminar) {
-            delay(4000).then(() => location.href = "/perdiste");
+            socket.emit("perdiste", {idUsuario: document.getElementById("idOculto").value, idPartida: document.getElementById("idPartidaOculto").value})
+            delay(4000).then(() => location.href = "/perdiste")
         }
     } else {
-        console.log("que raro esto")
         socket.emit("devolucion", {celda: celda, color: "red", idUsuario: parseInt(document.getElementById("idOculto").value), idPartida: parseInt(document.getElementById("idPartidaOculto").value)})
     }
 }
 
+socket.on ("resultado", data => {
+    console.log("ganaste wachin?? o perdiste??")
+    if (data.idUsuario != parseInt(document.getElementById("idOculto").value)) {
+        delay(4000).then(() => location.href = "/ganaste");
+    } else {
+        delay(4000).then(() => location.href = "/perdiste");
+    }
+  })
 
 
 socket.on("barcoAtacado", data => {
@@ -1223,7 +1218,6 @@ socket.on("barcoAtacado", data => {
         if (document.getElementById(data.celda).style.background== "green"){
             document.getElementById(data.celda).style.background = "red";
             analizarHundimiento(data.celda);
-            //socket.emit("devolucion", {celda: data.celda, color: "red", idUsuario: parseInt(document.getElementById("idOculto").value), idPartida: parseInt(document.getElementById("idPartidaOculto").value)})
         } else if (document.getElementById(data.celda).style.background== "yellow") {
             document.getElementById(data.celda).style.background = "orange";
             ataqueX2=true;
@@ -1232,7 +1226,6 @@ socket.on("barcoAtacado", data => {
                 document.getElementById(data.celda).style.background = "blue";
                 socket.emit("devolucion", {celda: data.celda, color: "blue", idUsuario: parseInt(document.getElementById("idOculto").value), idPartida: parseInt(document.getElementById("idPartidaOculto").value)})
         }
-        //alert("es tu turno")
     }
 });
 
@@ -1241,27 +1234,12 @@ socket.on("devuelto", data => {
         document.getElementById("2"+data.celda).style.background = data.color;
         if (data.color == "orange"){
             puedoAtacar = false;
-            //alert("perdiste el turno")
         }
     }
 });
 
-socket.on ("ganar", data =>{
-    console.log("entre al socketon")
-    if (data.idUsuario != document.getElementById("idOculto").value){
-        console.log("entre al socketon en if")
-        location.href = '/ganaste';
-    }
-})
 
 
-socket.on("server-message", data =>{
-    console.log("Mensaje del servidor", data);
-});
-
-
-
-//admin
 
 
 
@@ -1287,7 +1265,6 @@ async function putJSON3(data3) {
     } else if (result3.queEs === "editarUsuario") {
       alert("Usuario editado correctamente");
     } else if (result3.queEs === "otraOperacion") {
-      // Manejar otras operaciones si es necesario
     }
   } catch (error) {
     console.error("Error:", error);
@@ -1324,23 +1301,15 @@ async function borrarUsuario() {
   };
   putJSON3(data3);
 }
-
-
-// Agrega esta variable global para el cronómetro
 let cronometroInterval;
 
-socket.on("connect", () => {
-    console.log("Me conecté a WS");
-});
 
 socket.on("partidaEncontrada", data =>{
-    // Detener el cronómetro antes de redirigir a la pantalla de elegirBarco
     detenerCronometro();
     location.href = `/elegirBarco?valor=${document.getElementById("idOculto").value}&idPartida=${data.idPartida}`;
 });
 
 socket.on("partidaEnJuego", data => {
-    // Detener el cronómetro antes de redirigir a la pantalla de juego
     detenerCronometro();
     location.href = `/juego?valor=${document.getElementById("idOculto").value}&idPartida=${data.idPartida}`;
 });
@@ -1350,13 +1319,8 @@ socket.on("server-message", data =>{
 });
 let a=0
 function iniciarPartida() {
-    // Deshabilitar el botón
     document.getElementById("box9").disabled = true;
-
-    // Mostrar el cronómetro
     document.getElementById("cronometro").style.display = "block";
-
-    // Iniciar el contador
     let segundos = 0;
 
     cronometroInterval = setInterval(function() {
@@ -1364,16 +1328,11 @@ function iniciarPartida() {
         segundos++;
         document.getElementById("tiempo").innerText = segundos; 
     }, 1000);
-
-    // Envía el evento "buscarPartida" al servidor
     socket.emit("buscarPartida", { usuario: document.getElementById("idOculto").value });
 }
 
 function detenerCronometro() {
-    // Detener el contador
     clearInterval(cronometroInterval);
-
-    // Ocultar el cronómetro
     document.getElementById("cronometro").style.display = "none";
     a=0
 }
