@@ -1,5 +1,5 @@
-const IP = "ws://localhost:3000";
-const socket = io(IP);
+//const IP = "ws://localhost:3000";
+//const socket = io(IP);
 
 function delay(timeInMs) {
     return new Promise(resolve => setTimeout(resolve, timeInMs));
@@ -1235,6 +1235,20 @@ socket.on("devuelto", data => {
         if (data.color == "orange"){
             puedoAtacar = false;
         }
+
+        let terminar = true;
+        for (let i=0; i<tablero.length; i++) {
+            for (let x=0; x<tablero[i].length; x++) {
+                console.log("ESTILO", document.getElementById("2"+letras[i]+(x+1)).style.background)
+                if (document.getElementById("2"+letras[i]+(x+1)).style.background == "green") {
+                    console.log("entre añ if para ", "2"+letras[i]+(x+1))
+                    terminar = false;
+                }
+            }
+        }
+        if (terminar) {
+            //delay(4000).then(() => location.href = `/ganaste`);
+        }
     }
 });
 
@@ -1317,14 +1331,14 @@ socket.on("partidaEnJuego", data => {
 socket.on("server-message", data =>{
     console.log("Mensaje del servidor", data);
 });
-let a=0
+
 function iniciarPartida() {
     document.getElementById("box9").disabled = true;
     document.getElementById("cronometro").style.display = "block";
     let segundos = 0;
 
     cronometroInterval = setInterval(function() {
-        a=1
+
         segundos++;
         document.getElementById("tiempo").innerText = segundos; 
     }, 1000);
@@ -1334,5 +1348,4 @@ function iniciarPartida() {
 function detenerCronometro() {
     clearInterval(cronometroInterval);
     document.getElementById("cronometro").style.display = "none";
-    a=0
 }

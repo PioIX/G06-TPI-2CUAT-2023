@@ -237,6 +237,7 @@ app.get("/ganaste", (req, res) => {
   res.render("ganaste");
 });
 app.get("/perdiste", (req, res) => {
+  req.query
   res.render("perdiste");
 });
 
@@ -370,11 +371,13 @@ io.on("connection", (socket) => {
     io.to(data.idPartida).emit("devuelto", {idUsuario: data.idUsuario, celda: data.celda, color: data.color})
   })
 
+
   socket.on ("perdiste", data => {
     console.log("perdiste wasaaaaaa")
     console.log("id partida perri", data.idPartida)
     io.to(data.idPartida).emit("resultado", {idUsuario: data.idUsuario})
   })
+
 
   socket.on('disconnect', () => {
   });
